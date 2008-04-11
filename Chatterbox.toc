@@ -1,0 +1,13 @@
+## Interface: 20400
+## Title: Chatterbox
+## Notes: Lightweight Chat Improvements
+## Author: Antiarc
+## OptionalDeps: Ace3
+## X-Category: Chat/Communication
+## X-Embeds: Ace3
+## Version: 1.0
+## SavedVariables: ChatterboxDB
+
+embeds.xml
+Chatterbox.lua
+modules.xml

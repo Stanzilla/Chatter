@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Justify Text")
+local mod = Chatter:NewModule("Justify Text")
 mod.toggleLabel = "Enable text justification"
 
 local defaults = {
@@ -13,7 +13,7 @@ local VALID_JUSTIFICATIONS = {
 
 local options = {}
 function mod:OnInitialize()
-	self.db = Chatterbox.db:RegisterNamespace("JustifyText", defaults)
+	self.db = Chatter.db:RegisterNamespace("JustifyText", defaults)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local s = "FRAME_" .. i
 		local f = _G["ChatFrame" .. i]

@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Timestamps", "AceHook-3.0")
+local mod = Chatter:NewModule("Timestamps", "AceHook-3.0")
 
 local SELECTED_FORMAT
 local COLOR
@@ -56,7 +56,7 @@ local options = {
 }
 
 function mod:OnInitialize()
-	self.db = Chatterbox.db:RegisterNamespace("Timestamps", defaults)
+	self.db = Chatter.db:RegisterNamespace("Timestamps", defaults)
 end
 
 function mod:OnEnable()

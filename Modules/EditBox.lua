@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Edit Box Polish")
+local mod = Chatter:NewModule("Edit Box Polish")
 
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders = {}, {}
@@ -142,7 +142,7 @@ function mod:LibSharedMedia_Registered()
 end
 
 function mod:OnInitialize()
-	self.db = Chatterbox.db:RegisterNamespace("EditBox", defaults)
+	self.db = Chatter.db:RegisterNamespace("EditBox", defaults)
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	self.frame = CreateFrame("Frame", nil, ChatFrameEditBox)
 	self.frame:SetAllPoints(ChatFrameEditBox)

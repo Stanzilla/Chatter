@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Highlights", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatter:NewModule("Highlights", "AceHook-3.0", "AceEvent-3.0")
 
 local Media = LibStub("LibSharedMedia-3.0")
 local sounds = {}
@@ -69,7 +69,7 @@ local options = {
 }
 
 function mod:OnInitialize()
-	self.db = Chatterbox.db:RegisterNamespace("Highlight", defaults)
+	self.db = Chatter.db:RegisterNamespace("Highlight", defaults)
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	self:AddCustomChannels(GetChannelList())
 end

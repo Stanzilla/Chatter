@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Sticky Channels")
+local mod = Chatter:NewModule("Sticky Channels")
 
 local channels = {
 	SAY = "Say",
@@ -13,7 +13,7 @@ local options = {}
 local defaults = {profile = {}}
 
 function mod:OnInitialize()
-	self.db = Chatterbox.db:RegisterNamespace("StickyChannels", defaults)
+	self.db = Chatter.db:RegisterNamespace("StickyChannels", defaults)
 	for k, v in pairs(channels) do
 		defaults.profile[k] = true
 		options[k] = {

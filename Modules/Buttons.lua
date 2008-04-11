@@ -1,4 +1,4 @@
-local Buttons = Chatterbox:NewModule("Disable Buttons")
+local Buttons = Chatter:NewModule("Disable Buttons")
 Buttons.toggleLabel = "Disable Buttons"
 
 local fmt = _G.string.format

@@ -1,4 +1,5 @@
-local mod = Chatterbox:NewModule("Player Class Colors", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatter:NewModule("Player Class Colors", "AceHook-3.0", "AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 
 local gsub = _G.string.gsub
 local find = _G.string.find
@@ -23,7 +24,7 @@ local names = setmetatable({}, {
 })
 
 function mod:OnInitialize()
-	self.db = Chatterbox.db:RegisterNamespace("PlayerNames", defaults)
+	self.db = Chatter.db:RegisterNamespace("PlayerNames", defaults)
 end
 
 function mod:OnEnable()

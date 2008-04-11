@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Borders/Background")
+local mod = Chatter:NewModule("Borders/Background")
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders = {}, {}
 
@@ -39,7 +39,7 @@ function mod:OnInitialize()
 		end
 	end
 	
-	self.db = Chatterbox.db:RegisterNamespace("ChatFrameBorders", defaults)
+	self.db = Chatter.db:RegisterNamespace("ChatFrameBorders", defaults)
 	
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	for i = 1, NUM_CHAT_WINDOWS do

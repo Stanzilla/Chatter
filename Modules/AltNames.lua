@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Alt Linking", "AceHook-3.0")
+local mod = Chatter:NewModule("Alt Linking", "AceHook-3.0")
 local NAMES
 
 local defaults = { realm = {} }
@@ -41,7 +41,7 @@ UnitPopupButtons["SET_MAIN"] = {
 }
 
 function mod:OnInitialize()
-	self.db = Chatterbox.db:RegisterNamespace("AltLinks", defaults)
+	self.db = Chatter.db:RegisterNamespace("AltLinks", defaults)
 end
 
 function mod:OnEnable()

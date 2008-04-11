@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Channel Names", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatter:NewModule("Channel Names", "AceHook-3.0", "AceEvent-3.0")
 
 local gsub = _G.string.gsub
 local find = _G.string.find
@@ -34,7 +34,7 @@ local function excludeChannels(...)
 end
 
 function mod:OnInitialize()
-	self.db = Chatterbox.db:RegisterNamespace("ChannelNames", defaults)
+	self.db = Chatter.db:RegisterNamespace("ChannelNames", defaults)
 	for k, _ in pairs(self.db.profile.channels) do
 		options[k:gsub(" ", "_")] = {
 			type = "input",

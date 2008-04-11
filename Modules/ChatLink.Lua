@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("ChatLink", "AceHook-3.0")
+local mod = Chatter:NewModule("ChatLink", "AceHook-3.0")
 local gsub = _G.string.gsub
 local find = _G.string.find
 local GetChannelName = _G.GetChannelName

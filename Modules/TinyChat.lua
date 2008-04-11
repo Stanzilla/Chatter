@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Tiny Chat")
+local mod = Chatter:NewModule("Tiny Chat")
 
 function mod:Info()
 	return "Allows you to make the chat frames much smaller than usual."

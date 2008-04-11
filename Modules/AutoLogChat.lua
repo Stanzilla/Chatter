@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Chat Autolog")
+local mod = Chatter:NewModule("Chat Autolog")
 
 function mod:OnEnable()
 	self.isLogging = LoggingChat()

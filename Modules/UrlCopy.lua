@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("URL Copy", "AceHook-3.0")
+local mod = Chatter:NewModule("URL Copy", "AceHook-3.0")
 
 local gsub = _G.string.gsub
 local ipairs = _G.ipairs
@@ -15,7 +15,7 @@ local patterns = {
 }
 
 --[[		Popup Box		]]--
-StaticPopupDialogs["ChatterboxUrlCopyDialog"] = {
+StaticPopupDialogs["ChatterUrlCopyDialog"] = {
 	text = "URL",
 	button2 = TEXT(CLOSE),
 	hasEditBox = 1,
@@ -67,7 +67,7 @@ end
 function mod:SetItemRef(link, text, button)
 	if sub(link, 1, 3) == "url" then
 		currentLink = sub(link, 5)
-		StaticPopup_Show("ChatterboxUrlCopyDialog")
+		StaticPopup_Show("ChatterUrlCopyDialog")
 		return
 	end
 	return self.hooks.SetItemRef(link, text, button)

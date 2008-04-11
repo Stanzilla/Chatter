@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Disable Fading")
+local mod = Chatter:NewModule("Disable Fading")
 mod.toggleLabel = "Disable Fading"
 
 function mod:OnEnable()

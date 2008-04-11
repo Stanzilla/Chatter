@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Invite Links", "AceHook-3.0")
+local mod = Chatter:NewModule("Invite Links", "AceHook-3.0")
 
 local gsub = _G.string.gsub
 local ipairs = _G.ipairs

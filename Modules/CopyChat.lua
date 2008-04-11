@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Chat Copy", "AceHook-3.0")
+local mod = Chatter:NewModule("Chat Copy", "AceHook-3.0")
 
 local lines = {}
 local table_concat = _G.table.concat
@@ -20,8 +20,8 @@ local InsetBackdrop  = {
 local buttons = {}
 
 function mod:OnInitialize()
-	local frame = CreateFrame("Frame", "ChatterboxCopyFrame", UIParent)
-	tinsert(UISpecialFrames, "ChatterboxCopyFrame")
+	local frame = CreateFrame("Frame", "ChatterCopyFrame", UIParent)
+	tinsert(UISpecialFrames, "ChatterCopyFrame")
 	frame:SetBackdrop(PaneBackdrop)
 	frame:SetBackdropColor(0,0,0,1)
 	frame:SetWidth(500)
@@ -31,7 +31,7 @@ function mod:OnInitialize()
 	frame:SetFrameStrata("DIALOG")
 	self.frame = frame
 	
-	local scrollArea = CreateFrame("ScrollFrame", "ChatterboxCopyScroll", frame, "UIPanelScrollFrameTemplate")
+	local scrollArea = CreateFrame("ScrollFrame", "ChatterCopyScroll", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
 	scrollArea:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
 	

@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Tell Target (/tt)", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatter:NewModule("Tell Target (/tt)", "AceHook-3.0", "AceEvent-3.0", "AceConsole-3.0")
 local UnitIsPlayer = _G.UnitIsPlayer
 local UnitCanAssist = _G.UnitCanAssist
 local UnitIsCharmed = _G.UnitIsCharmed
@@ -7,6 +7,7 @@ local gsub = _G.string.gsub
 function mod:OnEnable()
 	-- self:SecureHook("ChatEdit_ParseText")
 	self:HookScript(ChatFrameEditBox, "OnTextChanged")
+	self:RegisterChatCommand("tt", "SendChatMessage")
 end
 
 function mod:OnTextChanged(obj)
@@ -22,7 +23,7 @@ function mod:TellTarget(frame, msg)
 	if UnitIsPlayer("target") and (UnitCanAssist("player", "target") or UnitIsCharmed("target"))then
 		unitname, realm = UnitName("target")
 		if unitname then unitname = gsub(unitname, " ", "") end
-		if realm and unitname and #realm > 0 then
+		if unitname and not UnitIsSameServer("target") then
 			unitname = unitname .. "-" .. gsub(realm, " ", "")
 		end
 	end
@@ -33,3 +34,9 @@ end
 function mod:Info()
 	return "Enables the /tt command to send a tell to your target."
 end
+
+function mod:SendChatMessage(input)
+	ChatFrame1:AddMessage(input)
+	self:TellTarget(DEFAULT_CHAT_FRAME, input)
+end
+

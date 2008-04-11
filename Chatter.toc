@@ -1,5 +1,5 @@
 ## Interface: 20400
-## Title: Chatterbox
+## Title: Chatter
 ## Notes: Lightweight Chat Improvements
 ## Author: Antiarc
 ## OptionalDeps: Ace3, LibSharedMedia-3.0
@@ -9,5 +9,15 @@
 ## SavedVariables: ChatterboxDB
 
 embeds.xml
-Chatterbox.lua
+
+Localization\enUS.lua
+Localization\deDE.lua
+Localization\frFR.lua
+Localization\esES.lua
+Localization\zhCH.lua
+Localization\zhTW.lua
+Localization\koKR.lua
+
+Chatter.lua
 modules.xml
+

@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("Chat Font")
+local mod = Chatter:NewModule("Chat Font")
 local Media = LibStub("LibSharedMedia-3.0")
 local fonts = {}
 local fonts_and_default = {Default = "Default"}
@@ -43,7 +43,7 @@ function mod:OnInitialize()
 	for i = 1, NUM_CHAT_WINDOWS do
 		defaults.profile.frames["FRAME_" .. i] = {}
 	end
-	self.db = Chatterbox.db:RegisterNamespace("ChatFont", defaults)
+	self.db = Chatter.db:RegisterNamespace("ChatFont", defaults)
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]

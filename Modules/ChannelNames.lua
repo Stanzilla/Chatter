@@ -42,7 +42,7 @@ function mod:OnInitialize()
 			desc = "Replace this channel name with...",
 			get = function() return self.db.profile.channels[k] end,
 			set = function(info, v)
-				self.db.profile.channels[k] = v
+				self.db.profile.channels[k] = #v > 0 and v or nil
 			end
 		}
 	end
@@ -61,7 +61,7 @@ function mod:AddCustomChannels(...)
 				order = id <= 4 and 99 or 101,
 				get = function() return self.db.profile.customChannels[id] end,
 				set = function(info, v)
-					self.db.profile.customChannels[id] = v
+					self.db.profile.customChannels[id] = #v > 0 and v or nil
 				end
 			}
 		end

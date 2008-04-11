@@ -48,6 +48,7 @@ function mod:OnInitialize()
 		frame:EnableMouse(false)
 		cf:SetFrameStrata("LOW")
 		frame:SetFrameStrata("BACKGROUND")
+		frame:SetFrameLevel(1)
 		frame:Hide()
 		frame.id = "FRAME_" .. i
 		tinsert(frames, frame)

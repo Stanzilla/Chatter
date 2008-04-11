@@ -90,7 +90,8 @@ function mod:UnitPopup_ShowMenu(dropdownMenu, which, unit, name, userData, ...)
 end
 
 function mod:AddAlt(alt, main)
-	self.db.realm[alt] = main
+	if #main == 0 then main = nil end
+	self.db.realm[alt] = main	
 end
 
 function mod:AddMessage(frame, text, ...)

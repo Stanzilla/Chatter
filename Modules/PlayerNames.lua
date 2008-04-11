@@ -1,9 +1,13 @@
 local mod = Chatter:NewModule("Player Class Colors", "AceHook-3.0", "AceEvent-3.0")
+mod.modName = "Player Names"
+
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 
 local gsub = _G.string.gsub
 local find = _G.string.find
 local pairs = _G.pairs
+local lookup = {}
+local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shaman", "Warlock", "Warrior"}
 
 local defaults = {
 	realm = {
@@ -24,6 +28,10 @@ local names = setmetatable({}, {
 })
 
 function mod:OnInitialize()
+	for i = 1, #classes do
+		lookup[L[classes[i]]] = classes[i]:upper()
+	end
+	
 	self.db = Chatter.db:RegisterNamespace("PlayerNames", defaults)
 end
 
@@ -55,7 +63,7 @@ function mod:FRIENDLIST_UPDATE(evt)
 	for i = 1, GetNumFriends() do
 		local name, _, class = GetFriendInfo(i)
 		if class then
-			self:AddPlayer(name, class:upper())
+			self:AddPlayer(name, lookup[class])
 		end
 	end
 end
@@ -110,9 +118,9 @@ function mod:UPDATE_MOUSEOVER_UNIT(evt)
 end
 
 function mod:CHAT_MSG_SYSTEM(evt, msg)
-	local name, class = select(3, msg:find("^|Hplayer:%w+|h%[(%w+)%]|h: Level %d+ %w+ (%w+)"))
+	local name, class = select(3, msg:find("^|Hplayer:%w+|h%[(%w+)%]|h: %w+ %d+ %w+ (%w+)"))
 	if name and class then
-		self:AddPlayer(name, class:upper())
+		self:AddPlayer(name, lookup[class])
 	end
 end
 
@@ -120,9 +128,13 @@ function mod:WHO_LIST_UPDATE(evt)
 	for i = 1, GetNumWhoResults() do
 		local name, _, _, _, class = GetWhoInfo(i)
 		if class then
-			self:AddPlayer(name, class:upper())
+			self:AddPlayer(name, lookup[class])
 		end
 	end
+end
+
+local function changeName(name, name2)
+	return "|h[" .. names[name2] .. "]|h"
 end
 
 function mod:AddMessage(frame, text, ...)
@@ -131,9 +143,9 @@ function mod:AddMessage(frame, text, ...)
 	end
 
 	local name = arg2
-	if event == "CHAT_MSG_SYSTEM" then name = select(3, text:find("|h%[(.+)%]|h")) end
-	if name and type(name) == string then
-		text = text:gsub("|h%["..name.."%]|h", "|h[".. names[name].."]|h")
+	if event == "CHAT_MSG_SYSTEM" then name = select(3, text:find("|h%[([^%] ]+)|h")) end
+	if name and type(name) == "string" then
+		text = text:gsub("|h(%[("..name..")%])|h", changeName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

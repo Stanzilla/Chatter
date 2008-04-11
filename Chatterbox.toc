@@ -2,7 +2,7 @@
 ## Title: Chatterbox
 ## Notes: Lightweight Chat Improvements
 ## Author: Antiarc
-## OptionalDeps: Ace3
+## OptionalDeps: Ace3, LibSharedMedia-3.0
 ## X-Category: Chat/Communication
 ## X-Embeds: Ace3
 ## Version: 1.0

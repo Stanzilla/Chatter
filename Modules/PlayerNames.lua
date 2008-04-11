@@ -131,7 +131,9 @@ function mod:AddMessage(frame, text, ...)
 
 	local name = arg2
 	if event == "CHAT_MSG_SYSTEM" then name = select(3, text:find("|h%[(.+)%]|h")) end
-	if name then text = text:gsub("|h%["..name.."%]|h", "|h[".. names[name].."]|h") end
+	if name and type(name) == string then
+		text = text:gsub("|h%["..name.."%]|h", "|h[".. names[name].."]|h")
+	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

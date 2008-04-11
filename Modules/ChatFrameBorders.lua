@@ -203,7 +203,6 @@ end
 
 function mod:OnDisable()
 	for i = 1, #frames do
-		ChatFrame1:AddMessage(frames[i]:GetName())
 		frames[i]:Hide()
 	end
 end

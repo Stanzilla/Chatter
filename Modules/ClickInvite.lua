@@ -29,7 +29,7 @@ function mod:AddMessage(frame, text, ...)
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
 
-	if valid_events[event] then
+	if valid_events[event] and type(arg2) == "string" then
 		local pt = text
 		for i = 1, #strings do
 			local s = strings[i]

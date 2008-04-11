@@ -100,7 +100,7 @@ function mod:AddMessage(frame, text, ...)
 
 	local name = arg2
 	if event == "CHAT_MSG_SYSTEM" then name = select(3, text:find("|h%[(.+)%]|h")) end
-	if name then
+	if name and type(name) == "string" then
 		local alt = NAMES[name]
 		if alt then
 			text = text:gsub("|h%[([^%]]+"..name.."[^%]]+)%]|h", "|h[%1 (" .. alt .. ")]|h") 

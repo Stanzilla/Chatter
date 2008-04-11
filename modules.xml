@@ -15,6 +15,7 @@
 	<Script file="Modules\ClickInvite.lua" />
 	<Script file="Modules\TellTarget.lua" />
 	<Script file="Modules\Highlight.lua" />
+	<Script file="Modules\ChatFading.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
 
 </Ui>

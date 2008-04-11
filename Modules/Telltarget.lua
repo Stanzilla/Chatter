@@ -1,4 +1,5 @@
-local mod = Chatterbox:NewModule("Telltarget", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatterbox:NewModule("Tell Target (/tt)", "AceHook-3.0", "AceEvent-3.0")
+
 local gsub = _G.string.gsub
 
 function mod:OnEnable()

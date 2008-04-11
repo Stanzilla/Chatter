@@ -35,7 +35,9 @@ local options = {
 
 local defaults = {
 	profile = {
-		modules = {}
+		modules = {
+			["Disable Fading"] = false
+		}
 	}
 }
 
@@ -45,7 +47,7 @@ Chatterbox:SetDefaultModuleState(false)
 function Chatterbox:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("ChatterboxDB", defaults)
 	for k, v in self:IterateModules() do
-		options.args.modules.args[k] = {
+		options.args.modules.args[k:gsub(" ", "_")] = {
 			type = "group",
 			name = k,
 			args = nil
@@ -57,7 +59,7 @@ function Chatterbox:OnInitialize()
 		t = t or {}
 		t.toggle = {
 			type = "toggle", 
-			name = "Enable " .. k, 
+			name = v.toggleLabel or ("Enable " .. k), 
 			desc = v.Info and v:Info() or ("Enable " .. k), 
 			order = 1,
 			get = function()
@@ -74,7 +76,7 @@ function Chatterbox:OnInitialize()
 				end
 			end
 		}
-		options.args.modules.args[k].args = t
+		options.args.modules.args[k:gsub(" ", "_")].args = t
 	end	
 	optFrame = AceConfigDialog:AddToBlizOptions("Chatterbox", "Chatterbox")
 	

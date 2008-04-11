@@ -1,4 +1,6 @@
-local Buttons = Chatterbox:NewModule("Buttons")
+local Buttons = Chatterbox:NewModule("Disable Buttons")
+Buttons.toggleLabel = "Disable Buttons"
+
 local fmt = _G.string.format
 local function hide(self)
 	self:Hide()

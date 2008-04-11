@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("ChatFrameBorders")
+local mod = Chatterbox:NewModule("Borders/Background")
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders = {}, {}
 

@@ -1,4 +1,5 @@
-local mod = Chatterbox:NewModule("ChatScroll", "AceHook-3.0")
+local mod = Chatterbox:NewModule("Mousewheel Scroll", "AceHook-3.0")
+
 local IsShiftKeyDown = _G.IsShiftKeyDown
 local IsControlKeyDown = _G.IsControlKeyDown
 

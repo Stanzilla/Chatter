@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("EditBox")
+local mod = Chatterbox:NewModule("Edit Box Polish")
 
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders = {}, {}

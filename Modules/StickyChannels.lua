@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("StickyChannels")
+local mod = Chatterbox:NewModule("Sticky Channels")
 
 local channels = {
 	SAY = "Say",

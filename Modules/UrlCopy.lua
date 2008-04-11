@@ -1,4 +1,5 @@
-local mod = Chatterbox:NewModule("UrlCopy", "AceHook-3.0")
+local mod = Chatterbox:NewModule("URL Copy", "AceHook-3.0")
+
 local gsub = _G.string.gsub
 local ipairs = _G.ipairs
 local fmt = _G.string.format

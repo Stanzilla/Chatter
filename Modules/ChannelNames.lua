@@ -1,4 +1,5 @@
-local mod = Chatterbox:NewModule("ChannelNames", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatterbox:NewModule("Channel Names", "AceHook-3.0", "AceEvent-3.0")
+
 local gsub = _G.string.gsub
 local find = _G.string.find
 local pairs = _G.pairs

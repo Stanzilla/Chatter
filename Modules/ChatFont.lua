@@ -1,4 +1,4 @@
-local mod = Chatterbox:NewModule("ChatFont")
+local mod = Chatterbox:NewModule("Chat Font")
 local Media = LibStub("LibSharedMedia-3.0")
 local fonts = {}
 local fonts_and_default = {Default = "Default"}

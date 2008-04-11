@@ -1,4 +1,5 @@
-local mod = Chatterbox:NewModule("Highlight", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatterbox:NewModule("Highlights", "AceHook-3.0", "AceEvent-3.0")
+
 local Media = LibStub("LibSharedMedia-3.0")
 local sounds = {}
 

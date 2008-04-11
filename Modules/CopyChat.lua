@@ -1,4 +1,5 @@
-local mod = Chatterbox:NewModule("CopyChat", "AceHook-3.0")
+local mod = Chatterbox:NewModule("Chat Copy", "AceHook-3.0")
+
 local lines = {}
 local table_concat = _G.table.concat
 

@@ -2,7 +2,7 @@ local mod = Chatterbox:NewModule("Telltarget", "AceHook-3.0", "AceEvent-3.0")
 local gsub = _G.string.gsub
 
 function mod:OnEnable()
-	self:RawHook("ChatEdit_ParseText", true)
+	self:SecureHook("ChatEdit_ParseText")
 end
 
 function mod:ChatEdit_ParseText(editBox, send)
@@ -12,7 +12,6 @@ function mod:ChatEdit_ParseText(editBox, send)
 			self:TellTarget(editBox.chatFrame, msg)
 		end
 	end
-	self.hooks.ChatEdit_ParseText(editBox, send)
 end
 	
 function mod:TellTarget(frame, msg)	

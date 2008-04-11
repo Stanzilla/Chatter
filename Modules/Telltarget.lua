@@ -5,16 +5,16 @@ local UnitIsCharmed = _G.UnitIsCharmed
 local gsub = _G.string.gsub
 
 function mod:OnEnable()
-	self:SecureHook("ChatEdit_ParseText")
+	-- self:SecureHook("ChatEdit_ParseText")
+	self:HookScript(ChatFrameEditBox, "OnTextChanged")
 end
 
-function mod:ChatEdit_ParseText(editBox, send)
-	local text = editBox:GetText()
-	if text:find("/") == 1 then
-		if gsub(text, "/([^%s]+)%s(.*)", "/%1", 1) == "/tt" then
-			self:TellTarget(editBox.chatFrame, msg)
-		end
+function mod:OnTextChanged(obj)
+	local text = obj:GetText()
+	if text:sub(1, 4) == "/tt " then
+		self:TellTarget(DEFAULT_CHAT_FRAME, text:sub(5))
 	end
+	self.hooks[obj].OnTextChanged(obj)
 end
 	
 function mod:TellTarget(frame, msg)	
@@ -27,6 +27,7 @@ function mod:TellTarget(frame, msg)
 		end
 	end
 	ChatFrame_SendTell((unitname or "InvalidTarget"), frame)
+	ChatFrameEditBox:SetText(msg)
 end
 
 function mod:Info()

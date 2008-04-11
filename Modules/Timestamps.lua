@@ -24,8 +24,20 @@ local options = {
 		get = function() return mod.db.profile.format end,
 		set = function(info, v)
 			mod.db.profile.format = v
-			SELECTED_FORMAT = v
+			SELECTED_FORMAT = ("[" .. v .. "]")
 		end
+	},
+	customFormat = {
+		type = "input",
+		name = "Custom format (advanced)",
+		desc = "Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list of valid formatting symbols.",
+		get = function() return mod.db.profile.customFormat end,
+		set = function(info, v)
+			if #v == 0 then v = nil end
+			mod.db.profile.customFormat = v
+			SELECTED_FORMAT = v
+		end,
+		order = 101
 	},
 	color = {
 		type = "color",
@@ -48,7 +60,7 @@ function mod:OnInitialize()
 end
 
 function mod:OnEnable()
-	SELECTED_FORMAT = self.db.profile.format
+	SELECTED_FORMAT = mod.db.profile.customFormat or ("[" .. self.db.profile.format .. "]")
 	local c = self.db.profile.color	
 	COLOR = ("%02x%02x%02x"):format(c.r * 255, c.g * 255, c.b * 255)
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -63,7 +75,7 @@ function mod:AddMessage(frame, text, ...)
 	if not text then 
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
-	text = "|cff"..COLOR.."["..date(SELECTED_FORMAT).."]|r "..text
+	text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r "..text
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

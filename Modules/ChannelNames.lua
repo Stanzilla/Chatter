@@ -94,7 +94,7 @@ function mod:AddMessage(frame, text, ...)
 		text = gsub(text, "%[([^%]]*" .. k .. ")%]", v)
 	end
 	for k, v in pairs(customChannels) do
-		text = gsub(text, "%[" .. k .. ".[^%]]*%]", v)
+		text = gsub(text, "%[" .. k .. "%.[^%]]*%]", v)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

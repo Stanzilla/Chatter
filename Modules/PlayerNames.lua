@@ -53,7 +53,9 @@ end
 function mod:FRIENDLIST_UPDATE(evt)
 	for i = 1, GetNumFriends() do
 		local name, _, class = GetFriendInfo(i)
-		self:AddPlayer(name, class:upper())
+		if class then
+			self:AddPlayer(name, class:upper())
+		end
 	end
 end
 
@@ -116,7 +118,9 @@ end
 function mod:WHO_LIST_UPDATE(evt)
 	for i = 1, GetNumWhoResults() do
 		local name, _, _, _, class = GetWhoInfo(i)
-		self:AddPlayer(name, class:upper())
+		if class then
+			self:AddPlayer(name, class:upper())
+		end
 	end
 end
 

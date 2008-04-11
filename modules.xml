@@ -11,6 +11,7 @@
 	<Script file="Modules\EditBox.lua" />
 	<Script file="Modules\ChatFont.lua" />
 	<Script file="Modules\CopyChat.lua" />
+	<Script file="Modules\Timestamps.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
 
 </Ui>

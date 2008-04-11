@@ -83,6 +83,10 @@ function Chatterbox:OnInitialize()
 	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 	self:RegisterChatCommand("chatter", "OpenConfig")
 	self:RegisterChatCommand("chatterbox", "OpenConfig")
+	
+	self.db.RegisterCallback(self, "OnProfileChanged", "SetUpdateConfig")
+	self.db.RegisterCallback(self, "OnProfileCopied", "SetUpdateConfig")
+	self.db.RegisterCallback(self, "OnProfileReset", "SetUpdateConfig")
 end
 
 function Chatterbox:OpenConfig(input)
@@ -93,6 +97,33 @@ function Chatterbox:OpenConfig(input)
 		return
 	end
 	InterfaceOptionsFrame_OpenToFrame(optFrame)
+end
+
+do
+	local timer, t = nil, 0
+	function update()
+		t = t + arg1
+		if t > 0.5 then
+			timer:SetScript("OnUpdate", nil)
+			Chatterbox:UpdateConfig()
+		end
+	end
+	function Chatterbox:SetUpdateConfig()
+		t = 0
+		timer = timer or CreateFrame("Frame", nil, UIParent)
+		timer:SetScript("OnUpdate", update)
+	end
+end
+
+function Chatterbox:UpdateConfig()
+	self:Print("Updating config")
+	for k, v in self:IterateModules() do
+		if v:IsEnabled() then
+			self:Print("Cycling", k)
+			v:Disable()
+			v:Enable()
+		end
+	end
 end
 
 function Chatterbox:OnEnable()

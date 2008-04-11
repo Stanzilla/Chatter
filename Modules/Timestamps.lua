@@ -11,7 +11,7 @@ local FORMATS = {
 }
 
 local defaults = {
-	profile = { format = "%M:%S", color = { r = 0.45, g = 0.45, b = 0.45 } }
+	profile = { format = "%X", color = { r = 0.45, g = 0.45, b = 0.45 } }
 }
 
 local options = {

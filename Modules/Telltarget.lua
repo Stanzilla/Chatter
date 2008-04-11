@@ -31,5 +31,5 @@ function mod:TellTarget(frame, msg)
 end
 
 function mod:Info()
-	return "Enables the /tt command to send a tell to your target.\n\nThis will cause performance degredation if you use any combat macros."
+	return "Enables the /tt command to send a tell to your target."
 end

@@ -2,9 +2,21 @@ Chatterbox = LibStub("AceAddon-3.0"):NewAddon("Chatterbox", "AceConsole-3.0") 	-
 local AceConfig = LibStub("AceConfig-3.0")
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
+local optFrame
+
 local options = {
 	type = "group",
 	args = {
+		aceConfig = {
+			type = "execute",
+			name = "Standalone Config",
+			desc = "Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable.",
+			func = function()
+				InterfaceOptionsFrame:Hide()
+				AceConfigDialog:SetDefaultSize("Chatterbox", 500, 550)
+				AceConfigDialog:Open("Chatterbox")
+			end
+		},
 		config = {
 			type = "execute",
 			guiHidden = true,
@@ -28,7 +40,6 @@ local defaults = {
 }
 
 AceConfig:RegisterOptionsTable("Chatterbox", options)
-local optFrame
 Chatterbox:SetDefaultModuleState(false)
 
 function Chatterbox:OnInitialize()
@@ -66,12 +77,19 @@ function Chatterbox:OnInitialize()
 		options.args.modules.args[k].args = t
 	end	
 	optFrame = AceConfigDialog:AddToBlizOptions("Chatterbox", "Chatterbox")
+	
 	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 	self:RegisterChatCommand("chatter", "OpenConfig")
 	self:RegisterChatCommand("chatterbox", "OpenConfig")
 end
 
-function Chatterbox:OpenConfig()
+function Chatterbox:OpenConfig(input)
+	if input == "config" then
+		InterfaceOptionsFrame:Hide()
+		AceConfigDialog:SetDefaultSize("Chatterbox", 500, 550)
+		AceConfigDialog:Open("Chatterbox")
+		return
+	end
 	InterfaceOptionsFrame_OpenToFrame(optFrame)
 end
 

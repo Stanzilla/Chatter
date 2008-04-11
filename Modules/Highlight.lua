@@ -59,7 +59,7 @@ local options = {
 			mod.db.profile.words[v:lower()] = nil
 		end,
 		values = function() return mod.db.profile.words end,
-		confirm = function(info, v) return ("Remove %s from your highlights?"):format(v) end
+		confirm = function(info, v) return ("Remove this word from your highlights?") end
 	}	
 }
 

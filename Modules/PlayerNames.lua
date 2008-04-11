@@ -4,14 +4,14 @@ local find = _G.string.find
 local pairs = _G.pairs
 
 local defaults = {
-	global = {
+	realm = {
 		names = {}
 	}
 }
 
 local names = setmetatable({}, {
 	__index = function(t, v)
-		local c = RAID_CLASS_COLORS[mod.db.global.names[v]]
+		local c = RAID_CLASS_COLORS[mod.db.realm.names[v]]
 		if c then
 			t[v] = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v)
 		else
@@ -44,7 +44,7 @@ end
 
 function mod:AddPlayer(name, class)
 	if name and class and class ~= "UNKNOWN" then
-		self.db.global.names[name] = class
+		self.db.realm.names[name] = class
 		names[name] = nil
 	end
 end

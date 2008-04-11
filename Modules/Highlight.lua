@@ -12,7 +12,8 @@ local defaults = {
 		words = {},
 		sound = true,
 		soundFile = nil,
-		popup = true
+		popup = true,
+		customChannels = {}
 	}
 }
 
@@ -68,6 +69,7 @@ function mod:OnInitialize()
 	self.db = Chatterbox.db:RegisterNamespace("Highlight", defaults)
 	self.db.profile.words[UnitName("player"):lower()] = UnitName("player")
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
+	self:AddCustomChannels(GetChannelList())
 end
 
 function mod:LibSharedMedia_Registered()
@@ -86,7 +88,36 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_YELL", "ParseChat")
 end
 
-function mod:ParseChat(evt, msg, sender)
+function mod:AddCustomChannels(...)
+	-- excludeChannels(EnumerateServerChannels())
+	for i = 1, select("#", ...), 2 do
+		local id, name = select(i, ...)
+		if not options[name:gsub(" ", "_")] then
+			options[name:gsub(" ", "_")] = {
+				type = "select",
+				name = name,
+				values = sounds,
+				desc = "Play a sound when a message is received in this channel",
+				order = 101,
+				get = function() return self.db.profile.customChannels[id] or "None" end,
+				set = function(info, v)
+					self.db.profile.customChannels[id] = v
+				end
+			}
+		end
+	end
+end
+
+function mod:ParseChat(evt, msg, sender, ...)
+	if evt == "CHAT_MSG_CHANNEL" then
+		local num = select(6, ...)
+		local snd = self.db.profile.customChannels[num]
+		if snd then
+			PlaySoundFile(Media:Fetch("sound", snd))
+			return
+		end
+	end
+	
 	local msg = msg:lower()
 	for k, v in pairs(words) do
 		if msg:find(k) then

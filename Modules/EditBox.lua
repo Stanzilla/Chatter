@@ -6,6 +6,8 @@ local backgrounds, borders = {}, {}
 local VALID_ATTACH_POINTS = {
 	TOP = "Top",
 	BOTTOM = "Bottom",
+	FREE = "Free-floating",
+	LOCK = "Free-floating, Locked"
 }
 
 local options = {
@@ -129,6 +131,7 @@ local defaults = {
 	}
 }
 
+
 function mod:LibSharedMedia_Registered()
 	for k, v in pairs(Media:List("background")) do
 		backgrounds[v] = v
@@ -144,6 +147,18 @@ function mod:OnInitialize()
 	self.frame = CreateFrame("Frame", nil, ChatFrameEditBox)
 	self.frame:SetAllPoints(ChatFrameEditBox)
 	self.frame:SetFrameStrata("HIGH")
+	
+	self.lDrag = CreateFrame("Frame", nil, ChatFrameEditBox)
+	self.lDrag:SetWidth(15)
+	self.lDrag:SetPoint("TOPLEFT", ChatFrameEditBox, "TOPLEFT")
+	self.lDrag:SetPoint("BOTTOMLEFT", ChatFrameEditBox, "BOTTOMLEFT")
+
+	self.rDrag = CreateFrame("Frame", nil, ChatFrameEditBox)
+	self.rDrag:SetWidth(15)
+	self.rDrag:SetPoint("TOPRIGHT", ChatFrameEditBox, "TOPRIGHT")
+	self.rDrag:SetPoint("BOTTOMRIGHT", ChatFrameEditBox, "BOTTOMRIGHT")
+	
+	self.lDrag.left = true
 end
 
 function mod:OnEnable()
@@ -155,7 +170,7 @@ function mod:OnEnable()
 	right:Hide()
 	self.frame:Show()
 	self:SetBackdrop()
-	self:SetAttach()
+	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 end
 
 function mod:OnDisable()
@@ -188,15 +203,86 @@ function mod:SetBackdrop()
 	self.frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
 end
 
-function mod:SetAttach(val)
-	ChatFrameEditBox:ClearAllPoints()
-	local val = val or self.db.profile.attach
-	if val == "TOP" then
-		ChatFrameEditBox:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT")
-		ChatFrameEditBox:SetPoint("BOTTOMRIGHT", ChatFrame1, "TOPRIGHT")
-	else
-		ChatFrameEditBox:SetPoint("TOPLEFT", ChatFrame1, "BOTTOMLEFT")
-		ChatFrameEditBox:SetPoint("TOPRIGHT", ChatFrame1, "BOTTOMRIGHT")
+do
+	local function startMoving(self)
+		self:StartMoving()
+	end
+
+	local function stopMoving(self)
+		self:StopMovingOrSizing()
+		mod.db.profile.editX = self:GetLeft()
+		mod.db.profile.editY = self:GetTop()
+		mod.db.profile.editW = self:GetRight() - self:GetLeft()
+	end
+
+	local cfHeight
+	local function constrainHeight()
+		ChatFrameEditBox:SetHeight(cfHeight)
+	end
+	
+	local function startDragging(self)
+		cfHeight = ChatFrameEditBox:GetHeight()
+		self:GetParent():StartSizing(not self.left and "TOPRIGHT" or "TOPLEFT")
+		self:SetScript("OnUpdate", constrainHeight)
+	end
+	
+	local function stopDragging(self)
+		local parent = self:GetParent()
+		parent:StopMovingOrSizing()
+		self:SetScript("OnUpdate", nil)
+		mod.db.profile.editX = parent:GetLeft()
+		mod.db.profile.editY = parent:GetTop()
+		mod.db.profile.editW = parent:GetWidth()
+	end
+
+	function mod:SetAttach(val, x, y, w)
+		local val = val or self.db.profile.attach
+		if not x and val == "FREE" then
+			x, y, w = ChatFrameEditBox:GetLeft(), ChatFrameEditBox:GetTop(), max(ChatFrameEditBox:GetWidth(), (ChatFrameEditBox:GetRight() or 0) - (ChatFrameEditBox:GetLeft() or 0))
+		end
+		ChatFrameEditBox:ClearAllPoints()
+		if val ~= "FREE" then
+			ChatFrameEditBox:SetMovable(false)
+			self.lDrag:EnableMouse(false)
+			self.rDrag:EnableMouse(false)
+			ChatFrameEditBox:SetScript("OnMouseDown", nil)
+			ChatFrameEditBox:SetScript("OnMouseUp", nil)
+			self.lDrag:EnableMouse(false)
+			self.rDrag:EnableMouse(false)			
+			self.lDrag:SetScript("OnMouseDown", nil)
+			self.rDrag:SetScript("OnMouseDown", nil)
+			self.lDrag:SetScript("OnMouseUp", nil)
+			self.rDrag:SetScript("OnMouseUp", nil)
+		end
+		
+		if val == "TOP" then
+			ChatFrameEditBox:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT")
+			ChatFrameEditBox:SetPoint("BOTTOMRIGHT", ChatFrame1, "TOPRIGHT")
+		elseif val == "BOTTOM" then			
+			ChatFrameEditBox:SetPoint("TOPLEFT", ChatFrame1, "BOTTOMLEFT")
+			ChatFrameEditBox:SetPoint("TOPRIGHT", ChatFrame1, "BOTTOMRIGHT")
+		elseif val == "FREE" then
+			ChatFrameEditBox:EnableMouse(true)
+			ChatFrameEditBox:SetMovable(true)
+			ChatFrameEditBox:SetResizable(true)
+			ChatFrameEditBox:SetScript("OnMouseDown", startMoving)
+			ChatFrameEditBox:SetScript("OnMouseUp", stopMoving)
+			ChatFrameEditBox:SetWidth(w)
+			ChatFrameEditBox:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
+			ChatFrameEditBox:SetMinResize(40, 1)
+			
+			self.lDrag:EnableMouse(true)
+			self.rDrag:EnableMouse(true)
+			
+			self.lDrag:SetScript("OnMouseDown", startDragging)
+			self.rDrag:SetScript("OnMouseDown", startDragging)
+
+			self.lDrag:SetScript("OnMouseUp", stopDragging)
+			self.rDrag:SetScript("OnMouseUp", stopDragging)
+		elseif val == "LOCK" then
+			ChatFrameEditBox:SetWidth(w)
+			ChatFrameEditBox:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
+		end
 	end
 end
 

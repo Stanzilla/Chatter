@@ -17,6 +17,8 @@ local InsetBackdrop  = {
 	insets = { left = 3, right = 3, top = 5, bottom = 3 }
 }
 
+local buttons = {}
+
 function mod:OnInitialize()
 	local frame = CreateFrame("Frame", "ChatterboxCopyFrame", UIParent)
 	tinsert(UISpecialFrames, "ChatterboxCopyFrame")
@@ -74,10 +76,21 @@ function mod:OnInitialize()
 			button:SetWidth(10)
 			GameTooltip:Hide()
 		end)
+		button:Hide()
+		tinsert(buttons, button)
 	end
 end
 
 function mod:OnEnable()
+	for i = 1, #buttons do
+		buttons[i]:Show()
+	end
+end
+
+function mod:OnDisable()
+	for i = 1, #buttons do
+		buttons[i]:Hide()
+	end
 end
 
 function mod:Copy(frame)

@@ -251,3 +251,7 @@ function mod:SetAnchors(frame, fix)
 		frame:SetPoint("BOTTOMRIGHT", p, "BOTTOMRIGHT", 5, -10)
 	end
 end
+
+function mod:Info()
+	return "Gives you finer control over the chat frame's background and border colors"
+end

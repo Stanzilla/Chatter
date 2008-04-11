@@ -12,6 +12,8 @@
 	<Script file="Modules\ChatFont.lua" />
 	<Script file="Modules\CopyChat.lua" />
 	<Script file="Modules\Timestamps.lua" />
+	<Script file="Modules\ClickInvite.lua" />
+	<Script file="Modules\TellTarget.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
 
 </Ui>

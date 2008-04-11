@@ -47,7 +47,7 @@ function Chatterbox:OnInitialize()
 		t.toggle = {
 			type = "toggle", 
 			name = "Enable " .. k, 
-			desc = "Enable " .. k, 
+			desc = v.Info and v:Info() or ("Enable " .. k), 
 			order = 1,
 			get = function()
 				return Chatterbox.db.profile.modules[k] ~= false or false

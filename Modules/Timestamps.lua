@@ -14,3 +14,7 @@ function mod:AddMessage(frame, text, ...)
 	text = "|cff"..COLOR.."["..date("%X").."]|r "..text
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
+
+function mod:Info()
+	return "Adds timestamps to chat."
+end

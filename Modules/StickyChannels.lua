@@ -31,7 +31,7 @@ end
 
 function mod:OnEnable()
 	for k, v in pairs(channels) do
-		ChatTypeInfo[k].sticky = self.db.profile[k]
+		ChatTypeInfo[k].sticky = self.db.profile[k] and 1 or 0
 	end
 end
 
@@ -46,4 +46,8 @@ end
 
 function mod:GetOptions()
 	return options
+end
+
+function mod:Info()
+	return "Makes channels you select sticky."
 end

@@ -92,3 +92,7 @@ end
 function mod:GetOptions()
 	return options
 end
+
+function mod:Info()
+	return "Enables you to replace channel names with your own names"
+end

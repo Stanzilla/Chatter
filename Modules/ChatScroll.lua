@@ -37,3 +37,7 @@ function mod:OnDisable()
 		cf:EnableMouseWheel(false)
 	end
 end
+
+function mod:Info()
+	return "Lets you use the mousewheel to page up and down chat."
+end

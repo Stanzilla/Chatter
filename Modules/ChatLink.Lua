@@ -54,5 +54,9 @@ function mod:SendChatMessage(msg, chatType, language, channel)
 end
 
 function mod:AddMessage(frame, text, ...)
-	return self.hooks[frame].AddMessage(frame, self:ParseLinks(text), ...)
+	return self.hooks[frame].AddMessage(frame, mod:ParseLinks(text), ...)
+end
+
+function mod:Info()
+	return "Lets you link items, enchants, spells, and quests in custom channels."
 end

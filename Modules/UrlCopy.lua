@@ -68,3 +68,7 @@ function mod:SetItemRef(link, text, button)
 	end
 	return self.hooks.SetItemRef(link, text, button)
 end
+
+function mod:Info()
+	return "Lets you copy URLs out of chat."
+end

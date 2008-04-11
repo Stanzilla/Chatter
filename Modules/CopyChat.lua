@@ -101,3 +101,7 @@ function mod:GetLines(...)
 	end
 	return ct - 1
 end
+
+function mod:Info()
+	return "Lets you copy text out of your chat frames."
+end

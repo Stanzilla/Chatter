@@ -125,3 +125,7 @@ function mod:AddMessage(frame, text, ...)
 	if name then text = text:gsub("|h%["..name.."%]|h", "|h[".. names[name].."]|h") end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
+
+function mod:Info()
+	return "Colors player names according to their class."
+end

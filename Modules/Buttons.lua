@@ -35,3 +35,7 @@ function Buttons:OnDisable()
 		bottomButton:Show()
 	end
 end
+
+function Buttons:Info()
+	return "Hides the buttons attached to the chat frame"
+end

@@ -199,3 +199,7 @@ function mod:SetAttach(val)
 		ChatFrameEditBox:SetPoint("TOPRIGHT", ChatFrame1, "BOTTOMRIGHT")
 	end
 end
+
+function mod:Info()
+	return "Lets you customize the position and look of the edit box"
+end

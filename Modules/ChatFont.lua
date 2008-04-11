@@ -124,3 +124,7 @@ end
 function mod:GetOptions()
 	return options
 end
+
+function mod:Info()
+	return "Enables you to set a custom font and font size for your chat frames"
+end

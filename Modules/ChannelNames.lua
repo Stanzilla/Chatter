@@ -84,6 +84,10 @@ function mod:CHAT_MSG_CHANNEL_NOTICE()
 end
 
 function mod:AddMessage(frame, text, ...)
+	if not text then 
+		return self.hooks[frame].AddMessage(frame, text, ...)
+	end
+
 	local oldText = text
 	for k, v in pairs(channels) do
 		text = gsub(text, "%[([^%]]*" .. k .. ")%]", v)

@@ -24,6 +24,10 @@ local valid_events = {
 	CHAT_MSG_GUILD = true
 }
 function mod:AddMessage(frame, text, ...)
+	if not text then 
+		return self.hooks[frame].AddMessage(frame, text, ...)
+	end
+
 	if valid_events[event] then
 		local pt = text
 		for i = 1, #strings do

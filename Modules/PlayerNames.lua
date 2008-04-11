@@ -120,6 +120,10 @@ function mod:WHO_LIST_UPDATE(evt)
 end
 
 function mod:AddMessage(frame, text, ...)
+	if not text then 
+		return self.hooks[frame].AddMessage(frame, text, ...)
+	end
+
 	local name = arg2
 	if event == "CHAT_MSG_SYSTEM" then name = select(3, text:find("|h%[(.+)%]|h")) end
 	if name then text = text:gsub("|h%["..name.."%]|h", "|h[".. names[name].."]|h") end

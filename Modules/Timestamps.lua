@@ -11,6 +11,9 @@ end
 
 local COLOR = "777777"
 function mod:AddMessage(frame, text, ...)
+	if not text then 
+		return self.hooks[frame].AddMessage(frame, text, ...)
+	end
 	text = "|cff"..COLOR.."["..date("%X").."]|r "..text
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

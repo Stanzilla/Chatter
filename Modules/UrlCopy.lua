@@ -54,6 +54,9 @@ end
 
 local style = " |cffffffff|Hurl:%s|h[%s]|h|r "
 function mod:AddMessage(frame, text, ...)
+	if not text then 
+		return self.hooks[frame].AddMessage(frame, text, ...)
+	end
 	for i, v in ipairs(patterns) do
 		text = gsub(text, v[1], fmt(style, v[2], v[2]))
 	end

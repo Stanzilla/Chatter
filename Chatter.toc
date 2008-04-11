@@ -6,7 +6,7 @@
 ## X-Category: Chat/Communication
 ## X-Embeds: Ace3
 ## Version: 1.0
-## SavedVariables: ChatterboxDB
+## SavedVariables: ChatterDB
 
 embeds.xml
 

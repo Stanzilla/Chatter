@@ -50,7 +50,7 @@ function Chatter:OnInitialize()
 	for k, v in self:IterateModules() do
 		options.args.modules.args[k:gsub(" ", "_")] = {
 			type = "group",
-			name = k,
+			name = (v.modName or k),
 			args = nil
 		}
 		local t
@@ -60,8 +60,8 @@ function Chatter:OnInitialize()
 		t = t or {}
 		t.toggle = {
 			type = "toggle", 
-			name = v.toggleLabel or ("Enable " .. k), 
-			desc = v.Info and v:Info() or ("Enable " .. k), 
+			name = v.toggleLabel or ("Enable " .. (v.modName or k)), 
+			desc = v.Info and v:Info() or ("Enable " .. (v.modName or k)), 
 			order = 1,
 			get = function()
 				return Chatter.db.profile.modules[k] ~= false or false

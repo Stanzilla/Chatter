@@ -2,6 +2,7 @@ local mod = Chatter:NewModule("Player Class Colors", "AceHook-3.0", "AceEvent-3.
 mod.modName = "Player Names"
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+local local_names = {}
 
 local gsub = _G.string.gsub
 local find = _G.string.find
@@ -12,12 +13,39 @@ local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shama
 local defaults = {
 	realm = {
 		names = {}
+	},
+	profile = {	saveData = false }
+}
+
+local options = {
+	save = {
+		type = "toggle",
+		name = "Save data",
+		desc = "Save class data between sessions. Will increase memory usage.",
+		get = function()
+			return mod.db.profile.saveData
+		end,
+		set = function(info, v)
+			mod.db.profile.saveData = v
+			if v then
+				for k, v in pairs(local_names) do
+					mod.db.realm.names[k] = v
+					local_names[k] = nil
+				end
+			else
+				for k, v in pairs(mod.db.realm.names) do
+					local_names[k] = v
+					mod.db.realm.names[k] = nil
+				end
+			end
+		end
 	}
 }
 
 local names = setmetatable({}, {
 	__index = function(t, v)
-		local c = RAID_CLASS_COLORS[mod.db.realm.names[v]]
+		key = mod.db.profile.saveData and mod.db.realm.names[v] or local_names[v]
+		local c = RAID_CLASS_COLORS[key]
 		if c then
 			t[v] = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v)
 		else
@@ -33,6 +61,10 @@ function mod:OnInitialize()
 	end
 	
 	self.db = Chatter.db:RegisterNamespace("PlayerNames", defaults)
+	
+	if self.db.global and self.db.global.names then
+		self.db.global.names = nil	-- get rid of old data
+	end
 end
 
 function mod:OnEnable()
@@ -54,7 +86,11 @@ end
 
 function mod:AddPlayer(name, class)
 	if name and class and class ~= "UNKNOWN" then
-		self.db.realm.names[name] = class
+		if self.db.profile.saveData then
+			self.db.realm.names[name] = class
+		else
+			local_names[name] = class
+		end
 		names[name] = nil
 	end
 end
@@ -152,4 +188,8 @@ end
 
 function mod:Info()
 	return "Colors player names according to their class."
+end
+
+function mod:GetOptions()
+	return options
 end

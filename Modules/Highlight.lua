@@ -11,7 +11,7 @@ local player = UnitName("player")
 local defaults = {
 	profile = {
 		words = {
-			[player] = player
+			[player] = player:lower()
 		},
 		sound = true,
 		soundFile = nil,

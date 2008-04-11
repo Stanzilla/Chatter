@@ -1,5 +1,7 @@
 local mod = Chatterbox:NewModule("Tell Target (/tt)", "AceHook-3.0", "AceEvent-3.0")
-
+local UnitIsPlayer = _G.UnitIsPlayer
+local UnitCanAssist = _G.UnitCanAssist
+local UnitIsCharmed = _G.UnitIsCharmed
 local gsub = _G.string.gsub
 
 function mod:OnEnable()
@@ -28,5 +30,5 @@ function mod:TellTarget(frame, msg)
 end
 
 function mod:Info()
-	return "Enables the /tt command to send a tell to your target"
+	return "Enables the /tt command to send a tell to your target.\n\nThis will cause performance degredation if you use any combat macros."
 end

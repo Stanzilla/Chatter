@@ -37,7 +37,8 @@ local defaults = {
 	profile = {
 		modules = {
 			["Disable Fading"] = false,
-			["Chat Autolog"] = false
+			["Chat Autolog"] = false,
+			["Tell Target (/tt)"] = false
 		}
 	}
 }

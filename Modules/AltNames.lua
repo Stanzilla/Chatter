@@ -64,7 +64,7 @@ end
 local types = {"SELF", "PLAYER", "FRIEND", "PARTY"}
 function mod:OnDisable()
 	for j = 1, #types do
-		local t = types[i]
+		local t = types[j]
 		for i = 1, #UnitPopupMenus[t] do
 			if #UnitPopupMenus[t][i] == "SET_MAIN" then
 				tremove(#UnitPopupMenus[t], i)

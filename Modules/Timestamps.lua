@@ -3,10 +3,11 @@ local mod = Chatterbox:NewModule("Timestamps", "AceHook-3.0")
 local SELECTED_FORMAT
 local COLOR
 local FORMATS = {
-	["%I:%M:%S %p"] = "HH:MM:SS AM (12-hour clock)",
-	["%X"] = "HH:MM:SS (24-hour clock)",
-	["%I:%M"] = "HH:MM (12-hour clock)",
-	["%H:%M"] = "HH:MM (24-hour clock)",
+	["%I:%M:%S %p"] = "HH:MM:SS AM (12-hour)",
+	["%I:%M:S"] = "HH:MM (12-hour)",
+	["%X"] = "HH:MM:SS (24-hour)",
+	["%I:%M"] = "HH:MM (12-hour)",
+	["%H:%M"] = "HH:MM (24-hour)",
 	["%M:%S"] = "MM:SS",
 }
 

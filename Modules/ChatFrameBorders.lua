@@ -245,8 +245,8 @@ function mod:SetAnchors(frame, fix)
 		frame:SetPoint("BOTTOMLEFT", p, "BOTTOMLEFT", -5, -10)
 		frame:SetPoint("BOTTOMRIGHT", p, "BOTTOMRIGHT", 5, -10)
 	else
-		frame:SetPoint("TOPLEFT", p, "TOPLEFT", -5, 10)
-		frame:SetPoint("TOPRIGHT", p, "TOPRIGHT", 5, 10)
+		frame:SetPoint("TOPLEFT", p, "TOPLEFT", -5, 5)
+		frame:SetPoint("TOPRIGHT", p, "TOPRIGHT", 5, 5)
 		frame:SetPoint("BOTTOMLEFT", p, "BOTTOMLEFT", -5, -10)
 		frame:SetPoint("BOTTOMRIGHT", p, "BOTTOMRIGHT", 5, -10)
 	end

@@ -50,7 +50,7 @@ function mod:OnInitialize()
 end
 
 function mod:AddCustomChannels(...)
-	excludeChannels(EnumerateServerChannels())
+	-- excludeChannels(EnumerateServerChannels())
 	for i = 1, select("#", ...), 2 do
 		local id, name = select(i, ...)
 		if not serverChannels[name] and not options[name:gsub(" ", "_")] then
@@ -58,10 +58,10 @@ function mod:AddCustomChannels(...)
 				type = "input",
 				name = name,
 				desc = "Replace this channel name with...",
-				order = 101,
-				get = function() return self.db.profile.customChannels[GetChannelName(name)] end,
+				order = id <= 4 and 99 or 101,
+				get = function() return self.db.profile.customChannels[id] end,
 				set = function(info, v)
-					self.db.profile.customChannels[GetChannelName(name)] = v
+					self.db.profile.customChannels[id] = v
 				end
 			}
 		end

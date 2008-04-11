@@ -45,6 +45,8 @@ function mod:OnInitialize()
 		local cf = _G["ChatFrame" .. i]
 		local frame = CreateFrame("Frame", nil, cf, "ChatFrameBorderTemplate")
 		frame:EnableMouse(false)
+		cf:SetFrameStrata("LOW")
+		frame:SetFrameStrata("BACKGROUND")
 		frame:Hide()
 		frame.id = "FRAME_" .. i
 		tinsert(frames, frame)
@@ -180,6 +182,7 @@ function mod:LibSharedMedia_Registered()
 end
 
 function mod:OnEnable()
+	self:SetBackdrops()
 	for i = 1, #frames do
 		frames[i]:Show()
 	end
@@ -192,7 +195,7 @@ function mod:OnDisable()
 	end
 end
 
-function mod:SetBackdrops(frame)
+function mod:SetBackdrops()
 	for i = 1, #frames do
 		self:SetBackdrop(frames[i])
 	end

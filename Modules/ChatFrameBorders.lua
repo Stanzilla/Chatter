@@ -13,6 +13,7 @@ local defaults = {
 
 local frame_defaults = {
 	enable = true,
+	combatLogFix = false,
 	background = "Blizzard Tooltip",
 	border = "Blizzard Tooltip",
 	inset = 4,
@@ -24,7 +25,7 @@ local frame_defaults = {
 local function deepcopy(tbl)
    local new = {}
    for key,value in pairs(tbl) do
-      new[key] = type(value) ~= "table" and value or deepcopy(value)  -- if it's a table, run deepCopy on it too, so we get a copy and not the original
+      new[key] = type(value) == "table" and deepcopy(value) or value -- if it's a table, run deepCopy on it too, so we get a copy and not the original
    end
    return new
 end
@@ -70,6 +71,16 @@ function mod:OnInitialize()
 						else
 							frame:Hide()
 						end
+					end
+				},
+				combatLogFix = {
+					type = "toggle",
+					name = "Combat Log Fix",
+					desc = "Resize this border to fit the new combat log",
+					get = function() return mod.db.profile.frames[frame.id].combatLogFix end,
+					set = function(info, v)
+						mod.db.profile.frames[frame.id].combatLogFix = v
+						mod:SetAnchors(frame, v)
 					end
 				},
 				background = {
@@ -185,6 +196,7 @@ function mod:OnEnable()
 	self:SetBackdrops()
 	for i = 1, #frames do
 		frames[i]:Show()
+		mod:SetAnchors(frames[i], self.db.profile.frames["FRAME_" .. i].combatLogFix)
 	end
 end
 
@@ -222,4 +234,20 @@ end
 
 function mod:GetOptions()
 	return options
+end
+
+function mod:SetAnchors(frame, fix)
+	local p = frame:GetParent()
+	frame:ClearAllPoints()
+	if fix then
+		frame:SetPoint("TOPLEFT", p, "TOPLEFT", -5, 30)
+		frame:SetPoint("TOPRIGHT", p, "TOPRIGHT", 5, 30)
+		frame:SetPoint("BOTTOMLEFT", p, "BOTTOMLEFT", -5, -10)
+		frame:SetPoint("BOTTOMRIGHT", p, "BOTTOMRIGHT", 5, -10)
+	else
+		frame:SetPoint("TOPLEFT", p, "TOPLEFT", -5, 10)
+		frame:SetPoint("TOPRIGHT", p, "TOPRIGHT", 5, 10)
+		frame:SetPoint("BOTTOMLEFT", p, "BOTTOMLEFT", -5, -10)
+		frame:SetPoint("BOTTOMRIGHT", p, "BOTTOMRIGHT", 5, -10)
+	end
 end

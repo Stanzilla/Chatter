@@ -16,5 +16,5 @@ function mod:OnDisable()
 end
 
 function mod:Info()
-	return "Makes old text disappear rather than fade out"
+	return "Make windows not fade out when you mouse off of them."
 end

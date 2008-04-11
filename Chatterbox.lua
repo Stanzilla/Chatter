@@ -116,10 +116,8 @@ do
 end
 
 function Chatterbox:UpdateConfig()
-	self:Print("Updating config")
 	for k, v in self:IterateModules() do
 		if v:IsEnabled() then
-			self:Print("Cycling", k)
 			v:Disable()
 			v:Enable()
 		end

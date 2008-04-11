@@ -7,9 +7,12 @@ Media:Register("sound", "Loot Chime", [[Sound\interface\igLootCreature.wav]])
 Media:Register("sound", "Whisper Ping", [[Sound\interface\iTellMessage.wav]])
 Media:Register("sound", "Magic Click", [[Sound\interface\MagicClick.wav]])
 
+local player = UnitName("player")
 local defaults = {
 	profile = {
-		words = {},
+		words = {
+			[player] = player
+		},
 		sound = true,
 		soundFile = nil,
 		popup = true,
@@ -67,7 +70,6 @@ local options = {
 
 function mod:OnInitialize()
 	self.db = Chatterbox.db:RegisterNamespace("Highlight", defaults)
-	self.db.profile.words[UnitName("player"):lower()] = UnitName("player")
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	self:AddCustomChannels(GetChannelList())
 end
@@ -102,6 +104,7 @@ function mod:AddCustomChannels(...)
 				get = function() return self.db.profile.customChannels[id] or "None" end,
 				set = function(info, v)
 					self.db.profile.customChannels[id] = v
+					PlaySoundFile(Media:Fetch("sound", v))
 				end
 			}
 		end

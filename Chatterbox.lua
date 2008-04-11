@@ -36,7 +36,8 @@ local options = {
 local defaults = {
 	profile = {
 		modules = {
-			["Disable Fading"] = false
+			["Disable Fading"] = false,
+			["Chat Autolog"] = false
 		}
 	}
 }

@@ -17,6 +17,7 @@
 	<Script file="Modules\Highlight.lua" />
 	<Script file="Modules\ChatFading.lua" />
 	<Script file="Modules\Justify.lua" />
+	<Script file="Modules\AutoLogChat.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
 
 </Ui>

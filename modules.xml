@@ -19,6 +19,7 @@
 	<Script file="Modules\Justify.lua" />
 	<Script file="Modules\AutoLogChat.lua" />
 	<Script file="Modules\AltNames.lua" />
+	<Script file="Modules\TinyChat.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
 
 </Ui>

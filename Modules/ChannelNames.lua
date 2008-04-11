@@ -52,7 +52,7 @@ function mod:AddCustomChannels(...)
 	excludeChannels(EnumerateServerChannels())
 	for i = 1, select("#", ...), 2 do
 		local id, name = select(i, ...)
-		if not serverChannels[name] then
+		if not serverChannels[name] and not options[name:gsub(" ", "_")] then
 			options[name:gsub(" ", "_")] = {
 				type = "input",
 				name = name,
@@ -70,12 +70,17 @@ end
 function mod:OnEnable()
 	channels = self.db.profile.channels
 	customChannels = self.db.profile.customChannels
+	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
 		if cf ~= COMBATLOG then
 			self:RawHook(cf, "AddMessage", true)
 		end
 	end
+end
+
+function mod:CHAT_MSG_CHANNEL_NOTICE()
+	self:AddCustomChannels(GetChannelList())
 end
 
 function mod:AddMessage(frame, text, ...)

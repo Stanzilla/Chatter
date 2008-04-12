@@ -121,11 +121,15 @@ function mod:AddPlayer(name, class, level)
 		if self.db.profile.saveData then
 			self.db.realm.names[name] = self.db.realm.names[name] or {}
 			self.db.realm.names[name].class = class
-			self.db.realm.names[name].level = level
+			if level and level ~= 0 then
+				self.db.realm.names[name].level = level
+			end
 		else
 			local_names[name] = local_names[name] or {}
 			local_names[name].class = class
-			local_names[name].level = level
+			if level and level ~= 0 then
+				local_names[name].level = level
+			end
 		end
 		names[name] = nil
 	end
@@ -163,9 +167,10 @@ end
 
 function mod:RAID_ROSTER_UPDATE(evt)
 	for i = 1, GetNumRaidMembers() do
-		local n = GetRaidRosterInfo(i)
-		local _, c, _, l = UnitClass(n)
-		self:AddPlayer(n, c, l)
+		local n, _, _, l, _, c = GetRaidRosterInfo(i)
+		if n and c and l then
+			self:AddPlayer(n, c, l)
+		end
 	end
 end
 

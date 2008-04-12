@@ -7,6 +7,7 @@ local local_names, local_levels = {}, {}
 local gsub = _G.string.gsub
 local find = _G.string.find
 local pairs = _G.pairs
+local string_format = _G.string.format
 local lookup = {}
 local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shaman", "Warlock", "Warrior"}
 
@@ -15,7 +16,7 @@ local defaults = {
 		names = {},
 		levels = {},
 	},
-	profile = {	saveData = false }
+	profile = {	saveData = false, classColoring = true }
 }
 
 local names = setmetatable({}, {
@@ -26,18 +27,26 @@ local names = setmetatable({}, {
 			class = tab.class
 			level = mod.db.profile.includeLevel and tab.level or nil
 		end
-		local c = RAID_CLASS_COLORS[class]
-		if c then
-			if level then
-				t[v] = ("|cff%02x%02x%02x%s:%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, level)
+		if mod.db.profile.classColoring then
+			local c = RAID_CLASS_COLORS[class] or nil
+			if c then
+				if level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
+					t[v] = ("|cff%02x%02x%02x%s:%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, level)
+				else
+					t[v] = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v)
+				end
 			else
-				t[v] = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v)
+				if level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
+					t[v] = string_format("|cffa0a0a0%s:%s|r", v, level)
+				else
+					t[v] = string_format("|cffa0a0a0%s|r", v)
+				end
 			end
 		else
-			if level then
-				t[v] = string.format("|cffa0a0a0%s:%s|r", v, level)
+			if level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
+				t[v] = string_format("%s:%s", v, level)
 			else
-				t[v] = string.format("|cffa0a0a0%s|r", v)
+				t[v] = v
 			end
 		end
 		return t[v]
@@ -74,6 +83,30 @@ local options = {
 		get = function() return mod.db.profile.includeLevel end,
 		set = function(info, val)
 			mod.db.profile.includeLevel = val
+			for k, v in pairs(names) do
+				names[k] = nil
+			end
+		end
+	},
+	excludeSeventies = {
+		type = "toggle",
+		name = "Exclude Level 70s",
+		desc = "Exclude level display for level 70s",
+		get = function() return mod.db.profile.excludeSeventies end,
+		set = function(info, val)
+			mod.db.profile.excludeSeventies = val
+			for k, v in pairs(names) do
+				names[k] = nil
+			end
+		end
+	},
+	classColors = {
+		type = "toggle",
+		name = "Enable Class Coloring",
+		desc = "Show class colors for players",
+		get = function() return mod.db.profile.classColoring end,
+		set = function(info, val)
+			mod.db.profile.classColoring = val
 			for k, v in pairs(names) do
 				names[k] = nil
 			end

@@ -90,13 +90,15 @@ function Chatter:OnInitialize()
 end
 
 function Chatter:OpenConfig(input)
-	if input == "config" then
+	if input == "config" or not InterfaceOptionsFrame:IsResizable() then
+		options.args.aceConfig.guiHidden = true
 		InterfaceOptionsFrame:Hide()
 		AceConfigDialog:SetDefaultSize("Chatter", 500, 550)
 		AceConfigDialog:Open("Chatter")
-		return
+	else
+		options.args.aceConfig.guiHidden = false
+		InterfaceOptionsFrame_OpenToFrame(optFrame)
 	end
-	InterfaceOptionsFrame_OpenToFrame(optFrame)
 end
 
 do

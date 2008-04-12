@@ -12,7 +12,8 @@ end
 
 function mod:OnTextChanged(obj)
 	local text = obj:GetText()
-	if text:sub(1, 4) == "/tt " then
+	if text:sub(1, 4) == "/tt " and not self.slashCommandRegistered then
+		self.slashCommandRegistered = true
 		self:TellTarget(DEFAULT_CHAT_FRAME, text:sub(5))
 	end
 	self.hooks[obj].OnTextChanged(obj)

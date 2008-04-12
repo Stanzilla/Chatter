@@ -51,7 +51,7 @@ function mod:OnEnable()
 	local v = self.db.profile.scrollReminder
 	if v then
 		mod:EnableBottomButton()
-	else
+	elseif self.buttonsEnabled then
 		mod:DisableBottomButton()
 	end	
 end
@@ -70,6 +70,7 @@ function mod:OnDisable()
 		bottomButton:SetScript("OnShow", nil)
 		bottomButton:Show()
 	end
+	self:DisableBottomButton()
 end
 
 function mod:Info()
@@ -77,44 +78,52 @@ function mod:Info()
 end
 
 function mod:EnableBottomButton()
+	if self.buttonsEnabled then return end
+	self.buttonsEnabled = true
 	Chatter:Print("Enabling bottom buttons")
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
-		self:Hook(f, "ScrollUp", true)
-		self:Hook(f, "ScrollToTop", "ScrollUp", true)
-		self:Hook(f, "PageUp", "ScrollUp", true)
-					
-		self:Hook(f, "ScrollDown", true)
-		self:Hook(f, "ScrollToBottom", "ScrollDown", true)
-		self:Hook(f, "PageDown", "ScrollDown", true)
+		if f then
+			self:Hook(f, "ScrollUp", true)
+			self:Hook(f, "ScrollToTop", "ScrollUp", true)
+			self:Hook(f, "PageUp", "ScrollUp", true)
+						
+			self:Hook(f, "ScrollDown", true)
+			self:Hook(f, "ScrollToBottom", "ScrollDown", true)
+			self:Hook(f, "PageDown", "ScrollDown", true)
 
-		if f:GetCurrentScroll() == 0 then
-			local button = _G[f:GetName() .. "BottomButton"]
-			button.override = true
-			button:Show()	
-		end
-		
-		if f ~= COMBATLOG then
-			self:Hook(f, "AddMessage", true)
+			if f:GetCurrentScroll() == 0 then
+				local button = _G[f:GetName() .. "BottomButton"]
+				button.override = true
+				button:Show()	
+			end
+			
+			if f ~= COMBATLOG then
+				self:Hook(f, "AddMessage", true)
+			end
 		end
 	end
 end
 
 function mod:DisableBottomButton()
+	if not self.buttonsEnabled then return end
+	self.buttonsEnabled = false
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
-		self:Unhook(f, "ScrollUp")
-		self:Unhook(f, "ScrollToTop")
-		self:Unhook(f, "PageUp")					
-		self:Unhook(f, "ScrollDown")
-		self:Unhook(f, "ScrollToBottom")
-		self:Unhook(f, "PageDown")
-		
-		if f ~= COMBATLOG then
-			self:Unhook(f, "AddMessage")
+		if f then
+			self:Unhook(f, "ScrollUp")
+			self:Unhook(f, "ScrollToTop")
+			self:Unhook(f, "PageUp")					
+			self:Unhook(f, "ScrollDown")
+			self:Unhook(f, "ScrollToBottom")
+			self:Unhook(f, "PageDown")
+			
+			if f ~= COMBATLOG then
+				self:Unhook(f, "AddMessage")
+			end
+			local button = _G["ChatFrame" .. i .. "BottomButton"]
+			button:Hide()
 		end
-		local button = _G["ChatFrame" .. i .. "BottomButton"]
-		button:Hide()
 	end
 end
 

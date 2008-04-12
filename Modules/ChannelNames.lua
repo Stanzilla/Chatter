@@ -40,7 +40,10 @@ function mod:OnInitialize()
 			type = "input",
 			name = k,
 			desc = "Replace this channel name with...",
-			get = function() return self.db.profile.channels[k] end,
+			get = function()
+				local v = self.db.profile.channels[k]
+				return v == "" and " " or v
+			end,
 			set = function(info, v)
 				self.db.profile.channels[k] = #v > 0 and v or nil
 			end
@@ -59,7 +62,10 @@ function mod:AddCustomChannels(...)
 				name = name,
 				desc = "Replace this channel name with...",
 				order = id <= 4 and 99 or 101,
-				get = function() return self.db.profile.customChannels[id] end,
+				get = function()
+					local v = self.db.profile.customChannels[id]
+					return v == "" and " " or v
+				end,
 				set = function(info, v)
 					self.db.profile.customChannels[id] = #v > 0 and v or nil
 				end
@@ -91,10 +97,10 @@ function mod:AddMessage(frame, text, ...)
 
 	local oldText = text
 	for k, v in pairs(channels) do
-		text = gsub(text, "%[([^%]]*" .. k .. ")%]", v)
+		text = gsub(text, "%[([^%]]*" .. k .. ")%] ", v == " " and "" or v)
 	end
 	for k, v in pairs(customChannels) do
-		text = gsub(text, "%[" .. k .. "%.[^%]]*%]", v)
+		text = gsub(text, "%[" .. k .. "%.[^%]]*%] ", v == " " and "" or v)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

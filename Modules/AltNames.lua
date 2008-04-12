@@ -1,7 +1,52 @@
 local mod = Chatter:NewModule("Alt Linking", "AceHook-3.0")
 local NAMES
 
-local defaults = { realm = {} }
+local defaults = { realm = {}, profile = {colorMode = "COLOR_MOD", color = {0.6, 0.6, 0.6} } }
+local colorModes = {
+	COLOR_MOD = "Use PlayerNames coloring",
+	CUSTOM = "Use custom color",
+	CHANNEL = "Use channel color"
+}
+
+local customColorNames = setmetatable({}, {
+	__index = function(t, v)
+		local r, g, b = unpack(mod.db.profile.color)
+		t[v] = ("|cff%02x%02x%02x%s|r"):format(r * 255, g  * 255, b * 255, v)
+		return t[v]
+	end
+})
+
+local options = {
+	colorMode = {
+		type = "select",
+		name = "Name color",
+		desc = "Set the coloring mode for alt names",
+		values = colorModes,
+		get = function()
+			return mod.db.profile.colorMode
+		end,
+		set = function(info, v)
+			mod.db.profile.colorMode = v
+		end
+	},
+	color = {
+		type = "color",
+		name = "Custom color",
+		desc = "Select the custom color to use for alt names",
+		get = function()
+			return unpack(mod.db.profile.color)
+		end,
+		set = function(info, r, g, b)
+			mod.db.profile.color[1] = r
+			mod.db.profile.color[2] = g
+			mod.db.profile.color[3] = b
+			for k, v in pairs(customColorNames) do
+				customColorNames[k] = nil
+			end
+		end,
+		disabled = function() return mod.db.profile.colorMode ~= "CUSTOM" end
+	}
+}
 
 local accept = function(char)
 	local editBox = getglobal(this:GetParent():GetName().."EditBox")
@@ -105,7 +150,10 @@ function mod:AddMessage(frame, text, ...)
 	if name and type(name) == "string" then
 		local alt = NAMES[name]
 		if alt then
-			if self.colorMod and self.colorMod:IsEnabled() then
+			local mode = self.db.profile.colorMode
+			if mode == "CUSTOM" then				
+				alt = customColorNames[alt]
+			elseif mode == "COLOR_MOD" and self.colorMod and self.colorMod:IsEnabled() then
 				alt = self.colorMod.names[alt]
 			end
 			text = text:gsub("(|h%[[^%]]+"..name.."[^%]]+%]|h)", "%1[" .. alt .."]") 
@@ -116,4 +164,8 @@ end
 
 function mod:Info()
 	return "Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."
+end
+
+function mod:GetOptions()
+	return options
 end

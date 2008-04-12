@@ -135,6 +135,18 @@ local options = {
 				end
 			end
 		end
+	},
+	useAltKey = {
+		type = "toggle",
+		name = "Use Alt key for cursor movement",
+		desc = "Requires the Alt key to be held down to move the cursor in chat",
+		get = function()
+			return mod.db.profile.useAlt
+		end,
+		set = function(info, v)
+			mod.db.profile.useAlt = v
+			ChatFrameEditBox:SetAltArrowKeyMode(v)
+		end
 	}
 }
 
@@ -183,7 +195,7 @@ end
 
 function mod:OnEnable()
 	self:LibSharedMedia_Registered()
-	ChatFrameEditBox:SetAltArrowKeyMode(false)
+	ChatFrameEditBox:SetAltArrowKeyMode(mod.db.profile.useAlt)
 	local left, mid, right = select(6, ChatFrameEditBox:GetRegions())
 	left:Hide()
 	mid:Hide()

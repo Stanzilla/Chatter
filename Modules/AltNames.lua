@@ -58,7 +58,8 @@ function mod:OnEnable()
 		if cf ~= COMBATLOG then
 			self:RawHook(cf, "AddMessage", true)
 		end
-	end	
+	end
+	self.colorMod = Chatter:GetModule("Player Class Colors")
 end
 
 local types = {"SELF", "PLAYER", "FRIEND", "PARTY"}
@@ -104,7 +105,10 @@ function mod:AddMessage(frame, text, ...)
 	if name and type(name) == "string" then
 		local alt = NAMES[name]
 		if alt then
-			text = text:gsub("|h%[([^%]]+"..name.."[^%]]+)%]|h", "|h[%1 (" .. alt .. ")]|h") 
+			if self.colorMod and self.colorMod:IsEnabled() then
+				alt = self.colorMod.names[alt]
+			end
+			text = text:gsub("(|h%[[^%]]+"..name.."[^%]]+%]|h)", "%1[" .. alt .."]") 
 		end
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)

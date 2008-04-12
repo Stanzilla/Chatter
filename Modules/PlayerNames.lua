@@ -328,3 +328,5 @@ end
 function mod:GetOptions()
 	return options
 end
+
+mod.names = names

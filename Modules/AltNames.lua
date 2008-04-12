@@ -109,3 +109,7 @@ function mod:AddMessage(frame, text, ...)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
+
+function mod:Info()
+	return "Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."
+end

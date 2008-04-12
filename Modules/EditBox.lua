@@ -240,6 +240,7 @@ do
 		if not x and val == "FREE" then
 			x, y, w = ChatFrameEditBox:GetLeft(), ChatFrameEditBox:GetTop(), max(ChatFrameEditBox:GetWidth(), (ChatFrameEditBox:GetRight() or 0) - (ChatFrameEditBox:GetLeft() or 0))
 		end
+		if not w or w < 10 then w = 100 end
 		ChatFrameEditBox:ClearAllPoints()
 		if val ~= "FREE" then
 			ChatFrameEditBox:SetMovable(false)

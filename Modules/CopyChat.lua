@@ -81,35 +81,33 @@ function mod:OnInitialize()
 	end
 end
 
-local chatframes = {}
 function mod:OnEnable()
 	for i = 1, #buttons do
 		local p = buttons[i]:GetParent()
-		p.copyButton = buttons[i]
-		chatframes[p] = true
+		local tab = _G["ChatFrame" .. i .. "Tab"]
+		self:HookScript(tab, "OnShow")
+		self:HookScript(tab, "OnHide")
+		tab.copyButton = buttons[i]
 	end
-	self:SecureHook("UIFrameFadeIn")
-	self:SecureHook("UIFrameFadeOut")
 end
 
 function mod:OnDisable()
 	for i = 1, #buttons do
-		buttons[i]:Hide()
-		
+		buttons[i]:Hide()		
 	end
 end
 
-function mod:UIFrameFadeIn(cf)
-	cf = cf:GetParent()
-	if chatframes[cf] then
-		cf.copyButton:Show()
+function mod:OnShow(cft)
+	local cfn = cft:GetName():match("ChatFrame%d")
+	if cfn and _G[cfn]:IsVisible() then
+		cft.copyButton:Show()
 	end
 end
 
-function mod:UIFrameFadeOut(cf)
-	cf = cf:GetParent()
-	if chatframes[cf] then
-		cf.copyButton:Hide()
+function mod:OnHide(cft)
+	local cfn = cft:GetName():match("ChatFrame%d")
+	if cfn and _G[cfn]:IsVisible() then
+		cft.copyButton:Hide()
 	end
 end
 

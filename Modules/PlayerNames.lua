@@ -2,7 +2,7 @@ local mod = Chatter:NewModule("Player Class Colors", "AceHook-3.0", "AceEvent-3.
 mod.modName = "Player Names"
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
-local local_names = {}
+local local_names, local_levels = {}, {}
 
 local gsub = _G.string.gsub
 local find = _G.string.find
@@ -12,10 +12,37 @@ local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shama
 
 local defaults = {
 	realm = {
-		names = {}
+		names = {},
+		levels = {},
 	},
 	profile = {	saveData = false }
 }
+
+local names = setmetatable({}, {
+	__index = function(t, v)
+		local tab = (mod.db.profile.saveData and mod.db.realm.names[v]) or local_names[v]
+		local class, level
+		if tab then
+			class = tab.class
+			level = mod.db.profile.includeLevel and tab.level or nil
+		end
+		local c = RAID_CLASS_COLORS[class]
+		if c then
+			if level then
+				t[v] = ("|cff%02x%02x%02x%s:%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, level)
+			else
+				t[v] = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v)
+			end
+		else
+			if level then
+				t[v] = string.format("|cffa0a0a0%s:%s|r", v, level)
+			else
+				t[v] = string.format("|cffa0a0a0%s|r", v)
+			end
+		end
+		return t[v]
+	end
+})
 
 local options = {
 	save = {
@@ -39,21 +66,20 @@ local options = {
 				end
 			end
 		end
+	},
+	includeLevel = {
+		type = "toggle",
+		name = "Include level",
+		desc = "Include the player's level",
+		get = function() return mod.db.profile.includeLevel end,
+		set = function(info, val)
+			mod.db.profile.includeLevel = val
+			for k, v in pairs(names) do
+				names[k] = nil
+			end
+		end
 	}
 }
-
-local names = setmetatable({}, {
-	__index = function(t, v)
-		key = mod.db.profile.saveData and mod.db.realm.names[v] or local_names[v]
-		local c = RAID_CLASS_COLORS[key]
-		if c then
-			t[v] = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v)
-		else
-			t[v] = string.format("|cffa0a0a0%s|r", v)
-		end
-		return t[v]
-	end
-})
 
 function mod:OnInitialize()
 	for i = 1, #classes do
@@ -61,6 +87,12 @@ function mod:OnInitialize()
 	end
 	
 	self.db = Chatter.db:RegisterNamespace("PlayerNames", defaults)
+	for k, v in pairs(self.db.realm.names) do
+		if type(v) == "string" then
+			self.db.realm.names[k] = {class = v}
+		end
+	end
+	
 	
 	if self.db.global and self.db.global.names then
 		self.db.global.names = nil	-- get rid of old data
@@ -84,12 +116,16 @@ function mod:OnEnable()
 	end
 end
 
-function mod:AddPlayer(name, class)
+function mod:AddPlayer(name, class, level)
 	if name and class and class ~= "UNKNOWN" then
 		if self.db.profile.saveData then
-			self.db.realm.names[name] = class
+			self.db.realm.names[name] = self.db.realm.names[name] or {}
+			self.db.realm.names[name].class = class
+			self.db.realm.names[name].level = level
 		else
-			local_names[name] = class
+			local_names[name] = local_names[name] or {}
+			local_names[name].class = class
+			local_names[name].level = level
 		end
 		names[name] = nil
 	end
@@ -128,8 +164,8 @@ end
 function mod:RAID_ROSTER_UPDATE(evt)
 	for i = 1, GetNumRaidMembers() do
 		local n = GetRaidRosterInfo(i)
-		local _, c = UnitClass(n)
-		self:AddPlayer(n, c)
+		local _, c, _, l = UnitClass(n)
+		self:AddPlayer(n, c, l)
 	end
 end
 
@@ -137,34 +173,37 @@ function mod:PARTY_MEMBERS_CHANGED(evt)
 	for i = 1, GetNumPartyMembers() do
 		local n = UnitName("party" .. i)
 		local _, c = UnitClass("party" .. i)
-		self:AddPlayer(n, c)
+		local l = UnitLevel("party" .. i)
+		self:AddPlayer(n, c, l)
 	end
 end
 
 function mod:PLAYER_TARGET_CHANGED(evt)
 	if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then return end
 	local _, cls = UnitClass("target")
-	self:AddPlayer(UnitName("target"), cls)
+	local l = UnitLevel("target")
+	self:AddPlayer(UnitName("target"), cls, l)
 end
 
 function mod:UPDATE_MOUSEOVER_UNIT(evt)
 	if not UnitExists("mouseover") or not UnitIsPlayer("mouseover") or not UnitIsFriend("player", "mouseover") then return end
 	local _, cls = UnitClass("mouseover")
-	self:AddPlayer(UnitName("mouseover"), cls)
+	local l = UnitLevel("mouseover")
+	self:AddPlayer(UnitName("mouseover"), cls, l)
 end
 
 function mod:CHAT_MSG_SYSTEM(evt, msg)
-	local name, class = select(3, msg:find("^|Hplayer:%w+|h%[(%w+)%]|h: %w+ %d+ %w+ (%w+)"))
+	local name, level, class = select(3, msg:find("^|Hplayer:%w+|h%[(%w+)%]|h: %w+ (%d+) %w+ (%w+)"))
 	if name and class then
-		self:AddPlayer(name, lookup[class])
+		self:AddPlayer(name, lookup[class], level)
 	end
 end
 
 function mod:WHO_LIST_UPDATE(evt)
 	for i = 1, GetNumWhoResults() do
-		local name, _, _, _, class = GetWhoInfo(i)
+		local name, _, level, _, class = GetWhoInfo(i)
 		if class then
-			self:AddPlayer(name, lookup[class])
+			self:AddPlayer(name, lookup[class], level)
 		end
 	end
 end

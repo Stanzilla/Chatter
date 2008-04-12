@@ -37,7 +37,7 @@ local options = {
 			mod.db.profile.customFormat = v
 			SELECTED_FORMAT = v
 		end,
-		order = 101
+		order = 101		
 	},
 	color = {
 		type = "color",
@@ -51,7 +51,19 @@ local options = {
 			local c = mod.db.profile.color
 			c.r, c.g, c.b = r, g, b
 			COLOR = ("%02x%02x%02x"):format(r * 255, g * 255, b * 255)
-		end	
+		end,
+		disabled = function() return mod.db.profile.colorByChannel end
+	},
+	useChannelColor = {
+		type = "toggle",
+		name = "Use channel color",
+		desc = "Color timestamps the same as the channel they appear in.",
+		get = function()
+			return mod.db.profile.colorByChannel
+		end,
+		set = function(info, v)
+			mod.db.profile.colorByChannel = v
+		end
 	}
 }
 
@@ -75,7 +87,11 @@ function mod:AddMessage(frame, text, ...)
 	if not text then 
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
-	text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r "..text
+	if self.db.profile.colorByChannel then
+		text = date(SELECTED_FORMAT) .. " " .. text
+	else
+		text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r "..text
+	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

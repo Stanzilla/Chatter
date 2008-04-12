@@ -46,7 +46,7 @@ AceConfig:RegisterOptionsTable("Chatter", options)
 Chatter:SetDefaultModuleState(false)
 
 function Chatter:OnInitialize()
-	self.db = LibStub("AceDB-3.0"):New("ChatterDB", defaults)
+	self.db = LibStub("AceDB-3.0"):New("ChatterDB", defaults, "Default")
 	for k, v in self:IterateModules() do
 		options.args.modules.args[k:gsub(" ", "_")] = {
 			type = "group",

@@ -24,7 +24,7 @@ function mod:TellTarget(frame, msg)
 	if UnitIsPlayer("target") and (UnitCanAssist("player", "target") or UnitIsCharmed("target"))then
 		unitname, realm = UnitName("target")
 		if unitname then unitname = gsub(unitname, " ", "") end
-		if unitname and not UnitIsSameServer("target") then
+		if unitname and not UnitIsSameServer("player", "target") then
 			unitname = unitname .. "-" .. gsub(realm, " ", "")
 		end
 	end

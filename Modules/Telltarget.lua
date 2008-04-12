@@ -7,13 +7,15 @@ local gsub = _G.string.gsub
 function mod:OnEnable()
 	-- self:SecureHook("ChatEdit_ParseText")
 	self:HookScript(ChatFrameEditBox, "OnTextChanged")
-	self:RegisterChatCommand("tt", "SendChatMessage")
+	if not self.slashCommandRegistered then
+		self:RegisterChatCommand("tt", "SendChatMessage")
+		self.slashCommandRegistered = true
+	end
 end
 
 function mod:OnTextChanged(obj)
 	local text = obj:GetText()
-	if text:sub(1, 4) == "/tt " and not self.slashCommandRegistered then
-		self.slashCommandRegistered = true
+	if text:sub(1, 4) == "/tt " then
 		self:TellTarget(DEFAULT_CHAT_FRAME, text:sub(5))
 	end
 	self.hooks[obj].OnTextChanged(obj)
@@ -37,7 +39,8 @@ function mod:Info()
 end
 
 function mod:SendChatMessage(input)
-	ChatFrame1:AddMessage(input)
-	self:TellTarget(DEFAULT_CHAT_FRAME, input)
+	if UnitIsPlayer("target") and (UnitCanAssist("player", "target") or UnitIsCharmed("target"))then
+		SendChatMessage(input, "WHISPER", nil, UnitName("target"))
+	end
 end
 

@@ -60,7 +60,7 @@ do
 		local h, s, v = 1, 1, 1
 		local r, g, b
 		for i = 1, #name do
-			seed = 29 * seed + strbyte(name, n)
+			seed = 29 * seed + strbyte(name, i)
 		end
 		h = fmod(seed, 255) / 255
 		

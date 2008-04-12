@@ -77,11 +77,13 @@ end
 
 function mod:FCF_SetButtonSide(chatFrame, buttonSide)
 	local f = _G[chatFrame:GetName().."BottomButton"]
+	f:ClearAllPoints()
+	f:SetPoint("TOPRIGHT", chatFrame, "TOPRIGHT", 2, 2)
+	--[[
 	if chatFrame:GetLeft() < 50 then
-		f:SetPoint("BOTTOMLEFT", chatFrame, "BOTTOMRIGHT", 0, -4)
+		f:SetPoint("TOPLEFT", chatFrame, "TOPLEFT", 0, -4)
 	elseif GetScreenWidth() - chatFrame:GetRight() < 50 then
-		f:SetPoint("BOTTOMLEFT", chatFrame, "BOTTOMLEFT", -32, -4)
-	end
+	end]]--
 end
 
 function mod:Info()
@@ -99,7 +101,7 @@ function mod:EnableBottomButton()
 			self:Hook(f, "PageUp", "ScrollUp", true)
 						
 			self:Hook(f, "ScrollDown", true)
-			self:Hook(f, "ScrollToBottom", "ScrollDown", true)
+			self:Hook(f, "ScrollToBottom", "ScrollDownForce", true)
 			self:Hook(f, "PageDown", "ScrollDown", true)
 
 			if f:GetCurrentScroll() ~= 0 then
@@ -148,6 +150,11 @@ function mod:ScrollDown(frame)
 		local button = _G[frame:GetName() .. "BottomButton"]
 		button:Hide()	
 	end
+end
+
+function mod:ScrollDownForce(frame)
+	local button = _G[frame:GetName() .. "BottomButton"]
+	button:Hide()	
 end
 
 function mod:AddMessage(frame, text, ...)

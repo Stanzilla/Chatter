@@ -10,14 +10,65 @@ local pairs = _G.pairs
 local string_format = _G.string.format
 local lookup = {}
 local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shaman", "Warlock", "Warrior"}
+local colorMethods = {
+	CLASS = "Class",
+	NAME = "Name",
+	NONE = "None",
+}
 
 local defaults = {
 	realm = {
 		names = {},
 		levels = {},
 	},
-	profile = {	saveData = false, classColoring = true }
+	profile = {	saveData = false, nameColoring = "CLASS" }
 }
+
+local getNameColor
+do
+	local sq2 = sqrt(2)
+	local pi = _G.math.pi
+	local cos = _G.math.cos
+	local fmod = _G.math.fmod
+	local strbyte = _G.strbyte
+	local t = {}
+	
+	-- http://www.tecgraf.puc-rio.br/~mgattass/color/HSVtoRGB.htm
+	local function HSVtoRGB(h, s, v)
+		h = h * 6
+		local i = floor(h)
+		local i1 = v * (1 - s)
+		local i2 = v * (1 - s * (h - i))
+		local i3 = v * (1 - s * (1 - (h - i)))
+		if i == 0 then
+			return v, i3, i1
+		elseif i == 1 then
+			return i2, v, i1
+		elseif i == 2 then
+			return i1, v, i3
+		elseif i == 3 then
+			return i3, i2, v
+		elseif i == 4 then
+			return i3, i1, v
+		else
+			return v, i1, i2
+		end
+	end
+	
+	function getNameColor(name)
+		local seed = 5124
+		local h, s, v = 1, 1, 1
+		local r, g, b
+		for i = 1, #name do
+			seed = 29 * seed + strbyte(name, n)
+		end
+		h = fmod(seed, 255) / 255
+		
+		t.r, t.g, t.b = HSVtoRGB(h, s, v)
+		
+		return t
+	end
+end
 
 local names = setmetatable({}, {
 	__index = function(t, v)
@@ -27,8 +78,14 @@ local names = setmetatable({}, {
 			class = tab.class
 			level = mod.db.profile.includeLevel and tab.level or nil
 		end
-		if mod.db.profile.classColoring then
-			local c = RAID_CLASS_COLORS[class] or nil
+		local coloring = mod.db.profile.nameColoring
+		if coloring ~= "NONE" then
+			local c
+			if coloring == "CLASS" then
+				c = RAID_CLASS_COLORS[class] or nil
+			elseif coloring == "NAME" then
+				c = getNameColor(v)
+			end
 			if c then
 				if level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
 					t[v] = ("|cff%02x%02x%02x%s:%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, level)
@@ -100,13 +157,14 @@ local options = {
 			end
 		end
 	},
-	classColors = {
-		type = "toggle",
-		name = "Enable Class Coloring",
-		desc = "Show class colors for players",
-		get = function() return mod.db.profile.classColoring end,
+	colorBy = {
+		type = "select",
+		name = "Color Player Names By...",
+		desc = "Select a method for coloring player names",
+		values = colorMethods,
+		get = function() return mod.db.profile.nameColoring end,
 		set = function(info, val)
-			mod.db.profile.classColoring = val
+			mod.db.profile.nameColoring = val
 			for k, v in pairs(names) do
 				names[k] = nil
 			end

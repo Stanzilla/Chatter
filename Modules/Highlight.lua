@@ -88,6 +88,12 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_CHANNEL", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_WHISPER", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_YELL", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
+	self:AddCustomChannels(GetChannelList())
+end
+
+function mod:CHAT_MSG_CHANNEL_NOTICE(evt, notice)
+	self:AddCustomChannels(GetChannelList())
 end
 
 function mod:AddCustomChannels(...)

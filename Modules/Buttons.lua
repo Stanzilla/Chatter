@@ -46,6 +46,7 @@ function mod:OnEnable()
 		bottomButton = _G[fmt("%s%d%s", "ChatFrame", i, "BottomButton")]
 		bottomButton:SetScript("OnShow", hide)
 		bottomButton:Hide()
+		self:FCF_SetButtonSide(_G["ChatFrame" .. i])
 	end
 	
 	local v = self.db.profile.scrollReminder
@@ -53,7 +54,8 @@ function mod:OnEnable()
 		mod:EnableBottomButton()
 	elseif self.buttonsEnabled then
 		mod:DisableBottomButton()
-	end	
+	end
+	self:RawHook("FCF_SetButtonSide", true)
 end
 
 function mod:OnDisable()
@@ -73,6 +75,15 @@ function mod:OnDisable()
 	self:DisableBottomButton()
 end
 
+function mod:FCF_SetButtonSide(chatFrame, buttonSide)
+	local f = _G[chatFrame:GetName().."BottomButton"]
+	if chatFrame:GetLeft() < 50 then
+		f:SetPoint("BOTTOMLEFT", chatFrame, "BOTTOMRIGHT", 0, -4)
+	elseif GetScreenWidth() - chatFrame:GetRight() < 50 then
+		f:SetPoint("BOTTOMLEFT", chatFrame, "BOTTOMLEFT", -32, -4)
+	end
+end
+
 function mod:Info()
 	return "Hides the buttons attached to the chat frame"
 end
@@ -80,7 +91,6 @@ end
 function mod:EnableBottomButton()
 	if self.buttonsEnabled then return end
 	self.buttonsEnabled = true
-	Chatter:Print("Enabling bottom buttons")
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
 		if f then
@@ -92,7 +102,7 @@ function mod:EnableBottomButton()
 			self:Hook(f, "ScrollToBottom", "ScrollDown", true)
 			self:Hook(f, "PageDown", "ScrollDown", true)
 
-			if f:GetCurrentScroll() == 0 then
+			if f:GetCurrentScroll() ~= 0 then
 				local button = _G[f:GetName() .. "BottomButton"]
 				button.override = true
 				button:Show()	

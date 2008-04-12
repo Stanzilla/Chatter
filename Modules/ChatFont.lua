@@ -5,11 +5,11 @@ local fonts_and_default = {Default = "Default"}
 
 local defaults = {
 	profile = {
-		frames = {},
-		font = "Fritz Quadrata",
-		fontsize = 12
+		frames = {}
 	}
 }
+
+local outlines = {[""] = "None", ["OUTLINE"] = "Outline", ["THICKOUTLINE"] = "Thick Outline"}
 
 local options = {
 	font = {
@@ -36,7 +36,18 @@ local options = {
 			mod.db.profile.fontsize = v
 			mod:SetFont(cf, nil, v)
 		end
-	},	
+	},
+	outline = {
+		type = "select",
+		name = "Font Outline",
+		desc = "Font outlining",
+		values = outlines,
+		get = function() return mod.db.profile.outline or "" end,
+		set = function(info, v) 
+			mod.db.profile.outline = v
+			mod:SetFont(nil, nil, nil, v)
+		end
+	}
 }
 
 function mod:OnInitialize()
@@ -74,9 +85,20 @@ function mod:OnInitialize()
 					get = function() return mod.db.profile.frames["FRAME_" .. i].font or mod.db.profile.font end,
 					set = function(info, v) 
 						mod.db.profile.frames["FRAME_" .. i].font = v
-						mod:SetFont(nil, v)
+						mod:SetFont(cf, v)
 					end
-				}				
+				},
+				outline = {
+					type = "select",
+					name = "Font Outline",
+					desc = "Font outlining",
+					values = outlines,
+					get = function() return mod.db.profile.frames["FRAME_" .. i].outline or "" end,
+					set = function(info, v) 
+						mod.db.profile.frames["FRAME_" .. i].outline = v
+						mod:SetFont(cf, nil, nil, v)
+					end
+				}
 			}
 		}
 		options["frame" .. i] = t
@@ -95,30 +117,32 @@ function mod:OnEnable()
 end
 
 function mod:OnDisable()
-	self:SetFont(nil, "Fritz Quadrata", 12)
+	self:SetFont(nil, "Fritz Quadrata", 12, "")
 end
 
-function mod:SetFont(cf, font, size)
+function mod:SetFont(cf, font, size, outline)
 	if cf then		
-		self:SetFrameFont(cf, font, size)
+		self:SetFrameFont(cf, font, size, outline)
 	else
 		for i = 1, NUM_CHAT_WINDOWS do
 			cf = _G["ChatFrame" .. i]
-			self:SetFrameFont(cf, font, size)
+			self:SetFrameFont(cf, font, size, outline)
 		end
 	end
 end
 
-function mod:SetFrameFont(cf, font, size)
+function mod:SetFrameFont(cf, font, size, outline)
 	local f = "FRAME_" .. cf:GetName():match("%d+")
-	local profFont = self.db.profile.frames[f].font
+	local prof = self.db.profile.frames[f]
+	local profFont = prof.font
 	if profFont == "Default" then
 		profFont = nil
 	end
-	font = Media:Fetch("font", font or profFont or self.db.profile.font)
-	size = size or self.db.profile.frames[f].fontsize or self.db.profile.fontsize
 	local f, s, m = cf:GetFont() 
-	cf:SetFont(font, size, m)
+	font = Media:Fetch("font", font or profFont or self.db.profile.font or f)
+	size = size or prof.fontsize or self.db.profile.fontsize or s
+	outline = outline or prof.outline or self.db.profile.outline or m
+	cf:SetFont(font, size, outline)
 end
 
 function mod:GetOptions()

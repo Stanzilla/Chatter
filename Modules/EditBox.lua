@@ -323,8 +323,8 @@ do
 			self.lDrag:SetScript("OnMouseUp", stopDragging)
 			self.rDrag:SetScript("OnMouseUp", stopDragging)
 		elseif val == "LOCK" then
-			ChatFrameEditBox:SetWidth(w)
-			ChatFrameEditBox:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
+			ChatFrameEditBox:SetWidth(self.db.profile.editW or w)
+			ChatFrameEditBox:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", self.db.profile.editX or x, self.db.profile.editY or y)
 		end
 	end
 end

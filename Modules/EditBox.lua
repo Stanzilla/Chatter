@@ -1,4 +1,4 @@
-local mod = Chatter:NewModule("Edit Box Polish")
+local mod = Chatter:NewModule("Edit Box Polish", "AceHook-3.0")
 
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders = {}, {}
@@ -115,6 +115,26 @@ local options = {
 			mod.db.profile.attach = v
 			mod:SetAttach()
 		end
+	},
+	colorByChannel = {
+		type = "toggle",
+		name = "Color border by channel",
+		desc = "Sets the frame's border color to the color of your currently active channel",
+		get = function()
+			return mod.db.profile.colorByChannel
+		end,
+		set = function(info, v)
+			mod.db.profile.colorByChannel = v
+			if v then
+				mod:RawHook("ChatEdit_UpdateHeader", "SetBorderByChannel", true)
+			else
+				if mod:IsHooked("ChatEdit_UpdateHeader") then
+					mod:Unhook("ChatEdit_UpdateHeader")
+					local c = mod.db.profile.borderColor
+					mod.frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
+				end
+			end
+		end
 	}
 }
 
@@ -171,6 +191,10 @@ function mod:OnEnable()
 	self.frame:Show()
 	self:SetBackdrop()
 	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
+	
+	if self.db.profile.colorByChannel then
+		self:RawHook("ChatEdit_UpdateHeader", "SetBorderByChannel", true)
+	end
 end
 
 function mod:OnDisable()
@@ -201,6 +225,24 @@ function mod:SetBackdrop()
 	
 	local c = self.db.profile.borderColor
 	self.frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
+end
+
+function mod:SetBorderByChannel(...)
+	self.hooks.ChatEdit_UpdateHeader(...)
+	local attr = ChatFrameEditBox:GetAttribute("chatType")
+	if attr == "CHANNEL" then
+		local chan = ChatFrameEditBox:GetAttribute("channelTarget")
+		if chan == 0 then
+			local c = self.db.profile.borderColor
+			self.frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
+		else	
+			local r, g, b = GetMessageTypeColor("CHANNEL" .. chan)
+			self.frame:SetBackdropBorderColor(r, g, b, 1)
+		end
+	else
+		local r, g, b = GetMessageTypeColor(attr)
+		self.frame:SetBackdropBorderColor(r, g, b, 1)
+	end
 end
 
 do

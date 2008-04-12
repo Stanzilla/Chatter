@@ -21,6 +21,7 @@
 	<Script file="Modules\AltNames.lua" />
 	<Script file="Modules\TinyChat.lua" />
 	<Script file="Modules\GroupSay.lua" />
+	<Script file="Modules\ChannelColors.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
 
 </Ui>

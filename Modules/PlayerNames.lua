@@ -176,6 +176,18 @@ local options = {
 					updateSaveData(v)
 				end
 			},
+			resetDB = {
+				type = "execute",
+				name = "Reset Data",
+				desc = "Destroys all your saved class/level data",
+				func = function()
+					for k, v in pairs(mod.db.realm.names) do
+						mod.db.realm.names = nil
+					end
+				end,
+				order = 101,
+				confirm = function() return "Are you sure you want to delete all your saved class/level data?" end
+			}
 		}
 	},
 	includeLevel = {

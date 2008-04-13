@@ -96,12 +96,12 @@ local names = setmetatable({}, {
 				c = getNameColor(v)
 			end
 			if c then
-				t[v] = ("|cff%02x%02x%02x%s%s%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, dLevel and ":" or "", dLevel)
+				t[v] = ("|cff%02x%02x%02x%s%s%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, dLevel and ":" or "", dLevel or "")
 			else
-				t[v] = string_format("|cffa0a0a0%s%s%s|r", v, dLevel and ":" or "", dLevel)
+				t[v] = string_format("|cffa0a0a0%s%s%s|r", v, dLevel and ":" or "", dLevel or "")
 			end
 		else
-			t[v] = string_format("%s%s%s", v, dLevel and ":" or "", dLevel)
+			t[v] = string_format("%s%s%s", v, dLevel and ":" or "", dLevel or "")
 		end
 		return t[v]
 	end

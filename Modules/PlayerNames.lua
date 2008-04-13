@@ -4,6 +4,7 @@ mod.modName = "Player Names"
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 local local_names, local_levels = {}, {}
 
+local leftBracket, rightBracket, separator
 local gsub = _G.string.gsub
 local find = _G.string.find
 local pairs = _G.pairs
@@ -21,7 +22,7 @@ local defaults = {
 		names = {},
 		levels = {},
 	},
-	profile = {	saveData = false, nameColoring = "CLASS" }
+	profile = {	saveData = false, nameColoring = "CLASS", leftBracket = "[", rightBracket = "]", separator = ":" }
 }
 
 local getNameColor
@@ -190,6 +191,36 @@ local options = {
 			}
 		}
 	},
+	leftbracket = {
+		type = "input",
+		name = "Left Bracket",
+		desc = "Character to use for the left bracket",
+		get = function() return mod.db.profile.leftBracket end,
+		set = function(i, v)
+			mod.db.profile.leftBracket = v
+			leftBracket = v
+		end
+	},
+	rightbracket = {
+		type = "input",
+		name = "Right Bracket",
+		desc = "Character to use for the right bracket",
+		get = function() return mod.db.profile.rightBracket end,
+		set = function(i, v)
+			mod.db.profile.rightBracket = v
+			rightBracket = v
+		end
+	},	
+	separator = {
+		type = "input",
+		name = "Separator",
+		desc = "Character to use for the separator",
+		get = function() return mod.db.profile.separator end,
+		set = function(i, v)
+			mod.db.profile.separator = v
+			separator = v
+		end
+	},	
 	includeLevel = {
 		type = "toggle",
 		name = "Include level",
@@ -255,6 +286,7 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_SYSTEM")
 	self:RegisterEvent("FRIENDLIST_UPDATE")
 	self:RegisterEvent("GUILD_ROSTER_UPDATE")
+	leftBracket, rightBracket, separator = self.db.profile.leftBracket, self.db.profile.rightBracket, self.db.profile.separator
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
@@ -361,8 +393,8 @@ function mod:WHO_LIST_UPDATE(evt)
 	end
 end
 
-local function changeName(name, name2)
-	return "|h[" .. names[name2] .. "]|h"
+local function changeName(name, name2, sep)
+	return "|h" .. leftBracket .. names[name2] .. rightBracket .. "|h" .. (sep and #sep > 0 and separator or "")
 end
 
 function mod:AddMessage(frame, text, ...)
@@ -373,7 +405,7 @@ function mod:AddMessage(frame, text, ...)
 	local name = arg2
 	if event == "CHAT_MSG_SYSTEM" then name = text:match("|h%[([^%]]+)%]|h") end
 	if name and type(name) == "string" then
-		text = text:gsub("|h(%[("..name..")%])|h", changeName)
+		text = text:gsub("|h(%[("..name..")%])|h(:?)", changeName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

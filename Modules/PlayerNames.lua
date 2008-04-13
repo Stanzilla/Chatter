@@ -72,7 +72,7 @@ end
 
 local names = setmetatable({}, {
 	__index = function(t, v)
-		local tab = (mod.db.profile.saveData and mod.db.realm.names[v]) or local_names[v]
+		local tab = mod.db.realm.names[v] or local_names[v]
 		local class, level
 		if tab then
 			class = tab.class
@@ -110,28 +110,73 @@ local names = setmetatable({}, {
 	end
 })
 
+local function updateSaveData(v)
+	if v then
+		for k, v in pairs(local_names) do
+			mod.db.realm.names[k] = v
+		end
+	else
+		for k, v in pairs(mod.db.realm.names) do
+			local_names[k] = v
+		end
+	end
+end
+
 local options = {
 	save = {
-		type = "toggle",
-		name = "Save data",
-		desc = "Save class data between sessions. Will increase memory usage.",
-		get = function()
-			return mod.db.profile.saveData
-		end,
-		set = function(info, v)
-			mod.db.profile.saveData = v
-			if v then
-				for k, v in pairs(local_names) do
-					mod.db.realm.names[k] = v
-					local_names[k] = nil
+		type = "group",
+		name = "Save Data",
+		desc = "Save data between sessions. Will increase memory usage",
+		args = {
+			guild = {
+				type = "toggle",
+				name = "Guild",
+				desc = "Save class data from guild between sessions.",
+				get = function()
+					return mod.db.profile.saveGuild
+				end,
+				set = function(info, v)
+					mod.db.profile.saveGuild = v
+					updateSaveData(v)
 				end
-			else
-				for k, v in pairs(mod.db.realm.names) do
-					local_names[k] = v
-					mod.db.realm.names[k] = nil
+			},
+			group = {
+				type = "toggle",
+				name = "Group",
+				desc = "Save class data from groups between sessions.",
+				get = function()
+					return mod.db.profile.saveGroup
+				end,
+				set = function(info, v)
+					mod.db.profile.saveGroup = v
+					updateSaveData(v)
 				end
-			end
-		end
+			},
+			target = {
+				type = "toggle",
+				name = "Target/Mouseover",
+				desc = "Save class data from target/mouseover between sessions.",
+				get = function()
+					return mod.db.profile.saveTarget
+				end,
+				set = function(info, v)
+					mod.db.profile.saveTarget = v
+					updateSaveData(v)
+				end
+			},
+			who = {
+				type = "toggle",
+				name = "Who",
+				desc = "Save class data from /who queries between sessions.",
+				get = function()
+					return mod.db.profile.saveWho
+				end,
+				set = function(info, v)
+					mod.db.profile.saveWho = v
+					updateSaveData(v)
+				end
+			},
+		}
 	},
 	includeLevel = {
 		type = "toggle",
@@ -207,9 +252,9 @@ function mod:OnEnable()
 	end
 end
 
-function mod:AddPlayer(name, class, level)
+function mod:AddPlayer(name, class, level, save)
 	if name and class and class ~= "UNKNOWN" then
-		if self.db.profile.saveData then
+		if save then
 			self.db.realm.names[name] = self.db.realm.names[name] or {}
 			self.db.realm.names[name].class = class
 			if level and level ~= 0 then
@@ -228,9 +273,9 @@ end
 
 function mod:FRIENDLIST_UPDATE(evt)
 	for i = 1, GetNumFriends() do
-		local name, _, class = GetFriendInfo(i)
+		local name, level, class = GetFriendInfo(i)
 		if class then
-			self:AddPlayer(name, lookup[class])
+			self:AddPlayer(name, lookup[class], level, self.db.profile.saveFriends)
 		end
 	end
 end
@@ -248,8 +293,8 @@ function mod:GUILD_ROSTER_UPDATE(evt)
 	GetGuildRosterInfo(0)
 	n = GetNumGuildMembers()
 	for i = 1, n do
-		local name, _, _, _, _, _, _, _, _, _, class = GetGuildRosterInfo(i)
-		self:AddPlayer(name, class)
+		local name, _, _, level, _, _, _, _, _, _, class = GetGuildRosterInfo(i)
+		self:AddPlayer(name, class, level, self.db.profile.saveGuild)
 	end
 	SetGuildRosterShowOffline(offline)
 	SetGuildRosterSelection(selection)
@@ -260,7 +305,7 @@ function mod:RAID_ROSTER_UPDATE(evt)
 	for i = 1, GetNumRaidMembers() do
 		local n, _, _, l, _, c = GetRaidRosterInfo(i)
 		if n and c and l then
-			self:AddPlayer(n, c, l)
+			self:AddPlayer(n, c, l, self.db.profile.saveParty)
 		end
 	end
 end
@@ -270,7 +315,7 @@ function mod:PARTY_MEMBERS_CHANGED(evt)
 		local n = UnitName("party" .. i)
 		local _, c = UnitClass("party" .. i)
 		local l = UnitLevel("party" .. i)
-		self:AddPlayer(n, c, l)
+		self:AddPlayer(n, c, l, self.db.profile.saveParty)
 	end
 end
 
@@ -278,14 +323,14 @@ function mod:PLAYER_TARGET_CHANGED(evt)
 	if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then return end
 	local _, cls = UnitClass("target")
 	local l = UnitLevel("target")
-	self:AddPlayer(UnitName("target"), cls, l)
+	self:AddPlayer(UnitName("target"), cls, l, self.db.profile.saveTarget)
 end
 
 function mod:UPDATE_MOUSEOVER_UNIT(evt)
 	if not UnitExists("mouseover") or not UnitIsPlayer("mouseover") or not UnitIsFriend("player", "mouseover") then return end
 	local _, cls = UnitClass("mouseover")
 	local l = UnitLevel("mouseover")
-	self:AddPlayer(UnitName("mouseover"), cls, l)
+	self:AddPlayer(UnitName("mouseover"), cls, l, self.db.profile.saveTarget)
 end
 
 function mod:CHAT_MSG_SYSTEM(evt, msg)
@@ -299,7 +344,7 @@ function mod:WHO_LIST_UPDATE(evt)
 	for i = 1, GetNumWhoResults() do
 		local name, _, level, _, class = GetWhoInfo(i)
 		if class then
-			self:AddPlayer(name, lookup[class], level)
+			self:AddPlayer(name, lookup[class], level, self.db.profile.saveWho)
 		end
 	end
 end
@@ -314,7 +359,7 @@ function mod:AddMessage(frame, text, ...)
 	end
 
 	local name = arg2
-	if event == "CHAT_MSG_SYSTEM" then name = select(3, text:find("|h%[([^%] ]+)|h")) end
+	if event == "CHAT_MSG_SYSTEM" then name = text:match("|h%[([^%]]+)%]|h") end
 	if name and type(name) == "string" then
 		text = text:gsub("|h(%[("..name..")%])|h", changeName)
 	end

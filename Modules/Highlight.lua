@@ -110,7 +110,8 @@ function mod:OnEnable()
 		"RAID_WARNING", "Raid Warning",
 		"SAY", "Say",
 		"BATTLEGROUND", "Battleground",
-		"BATTLEGROUND_LEADER", "Battleground"
+		"BATTLEGROUND_LEADER", "Battleground",
+		"WHISPER", "Whisper"
 	)
 end
 

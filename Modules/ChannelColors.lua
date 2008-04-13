@@ -8,6 +8,11 @@ local defaults = {
 }
 
 local options = {
+	splitter = {
+		type = "header",
+		name = "Other Channels",
+		order = 49
+	}
 }
 
 function mod:OnInitialize()
@@ -18,6 +23,18 @@ function mod:OnEnable()
 	self:RegisterEvent("UPDATE_CHAT_COLOR")
 	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	self:AddChannels(GetChannelList())
+	self:AddChannels(
+		"YELL", "Yell",
+		"GUILD", "Guild", 
+		"OFFICER", "Officer", 
+		"RAID", "Raid", 
+		"PARTY", "Party", 
+		"RAID_WARNING", "Raid Warning",
+		"SAY", "Say",
+		"BATTLEGROUND", "Battleground",
+		"BATTLEGROUND_LEADER", "Battleground",
+		"WHISPER", "Whisper"
+	)
 end
 
 function mod:AddChannels(...)
@@ -25,7 +42,7 @@ function mod:AddChannels(...)
 		local id, name = select(i, ...)
 		self.db.profile.colors[name] = self.db.profile.colors[name] or {}
 		if not self.db.profile.colors[name].r then
-			local r, g, b = GetMessageTypeColor("CHANNEL" .. id)
+			local r, g, b = GetMessageTypeColor(type(id) == "number" and ("CHANNEL" .. id) or id)
 			self.db.profile.colors[name].r = r
 			self.db.profile.colors[name].g = g
 			self.db.profile.colors[name].b = b
@@ -35,12 +52,13 @@ function mod:AddChannels(...)
 				type = "color",
 				name = name,
 				desc = "Select a color for this channel",
+				order = type(id) == "number" and (50 + id) or 48,
 				get = function()
 					local c = self.db.profile.colors[name]
 					if c then
 						return c.r, c.g, c.b
 					else
-						return GetMessageTypeColor("CHANNEL" .. id)
+						return GetMessageTypeColor(type(id) == "number" and ("CHANNEL" .. id) or id)
 					end
 				end,
 				set = function(info, r, g, b)
@@ -48,7 +66,7 @@ function mod:AddChannels(...)
 					self.db.profile.colors[name].r = r
 					self.db.profile.colors[name].g = g
 					self.db.profile.colors[name].b = b
-					ChangeChatColor("CHANNEL" .. id, r, g, b);
+					ChangeChatColor(type(id) == "number" and ("CHANNEL" .. id) or id, r, g, b);
 				end
 			}
 		end
@@ -68,8 +86,8 @@ end
 
 function mod:UPDATE_CHAT_COLOR(evt, chan, r, g, b)
 	if chan then
-		local num = chan:match("(%d+)$")
-		local name = select(2, GetChannelName(tonumber(num))):match("^(%w+)")
+		local num = tonumber(chan:match("(%d+)$"))
+		local name = num and select(2, GetChannelName(num)):match("^(%w+)") or chan
 		self.db.profile.colors[name] = self.db.profile.colors[name] or {}
 		self.db.profile.colors[name].r = r
 		self.db.profile.colors[name].g = g

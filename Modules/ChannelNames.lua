@@ -39,6 +39,7 @@ local function excludeChannels(...)
 		serverChannels[name] = true
 	end
 end
+local functions = {}
 
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("ChannelNames", defaults)
@@ -61,9 +62,18 @@ function mod:OnInitialize()
 		}
 	end
 	self:AddCustomChannels(GetChannelList())
-end
 
-local functions = {}
+	for k, v in pairs(self.db.profile.channels) do
+		if v:match("^function%(") then
+			functions[k] = loadstring("return " .. v)()
+		end
+	end
+	for k, v in pairs(self.db.profile.customChannels) do
+		if v:match("^function%(") then
+			functions[k] = loadstring("return " .. v)()
+		end
+	end	
+end
 
 function mod:AddCustomChannels(...)
 	-- excludeChannels(EnumerateServerChannels())
@@ -98,16 +108,6 @@ function mod:OnEnable()
 		local cf = _G["ChatFrame" .. i]
 		if cf ~= COMBATLOG then
 			self:RawHook(cf, "AddMessage", true)
-		end
-	end
-	for k, v in pairs(self.db.profile.channels) do
-		if v:match("^function%(") then
-			functions[k] = loadstring("return " .. v)()
-		end
-	end
-	for k, v in pairs(self.db.profile.customChannels) do
-		if v:match("^function%(") then
-			functions[k] = loadstring("return " .. v)()
 		end
 	end
 end

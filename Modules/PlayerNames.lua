@@ -9,6 +9,7 @@ local gsub = _G.string.gsub
 local find = _G.string.find
 local pairs = _G.pairs
 local string_format = _G.string.format
+local GetDifficultyColor = _G.GetDifficultyColor
 local lookup = {}
 local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shaman", "Warlock", "Warrior"}
 local colorMethods = {
@@ -80,6 +81,13 @@ local names = setmetatable({}, {
 			level = mod.db.profile.includeLevel and tab.level or nil
 		end
 		local coloring = mod.db.profile.nameColoring
+		local dLevel
+		if mod.db.profile.levelByDiff and level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
+			local c = GetDifficultyColor(level)
+			dLevel = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, level)
+		elseif level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
+			dLevel = level
+		end
 		if coloring ~= "NONE" then
 			local c
 			if coloring == "CLASS" then
@@ -88,24 +96,12 @@ local names = setmetatable({}, {
 				c = getNameColor(v)
 			end
 			if c then
-				if level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
-					t[v] = ("|cff%02x%02x%02x%s:%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, level)
-				else
-					t[v] = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v)
-				end
+				t[v] = ("|cff%02x%02x%02x%s%s%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, dLevel and ":" or "", dLevel)
 			else
-				if level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
-					t[v] = string_format("|cffa0a0a0%s:%s|r", v, level)
-				else
-					t[v] = string_format("|cffa0a0a0%s|r", v)
-				end
+				t[v] = string_format("|cffa0a0a0%s%s%s|r", v, dLevel and ":" or "", dLevel)
 			end
 		else
-			if level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
-				t[v] = string_format("%s:%s", v, level)
-			else
-				t[v] = v
-			end
+			t[v] = string_format("%s%s%s", v, dLevel and ":" or "", dLevel)
 		end
 		return t[v]
 	end
@@ -220,11 +216,17 @@ local options = {
 			mod.db.profile.separator = v
 			separator = v
 		end
-	},	
+	},
+	levelHeader = {
+		type = "header",
+		name = "Level Options",
+		order = 104
+	},
 	includeLevel = {
 		type = "toggle",
 		name = "Include level",
 		desc = "Include the player's level",
+		order = 105,
 		get = function() return mod.db.profile.includeLevel end,
 		set = function(info, val)
 			mod.db.profile.includeLevel = val
@@ -237,9 +239,25 @@ local options = {
 		type = "toggle",
 		name = "Exclude Level 70s",
 		desc = "Exclude level display for level 70s",
+		order = 105,
 		get = function() return mod.db.profile.excludeSeventies end,
 		set = function(info, val)
 			mod.db.profile.excludeSeventies = val
+			for k, v in pairs(names) do
+				names[k] = nil
+			end
+		end
+	},
+	colorLevelByDifficulty = {
+		type = "toggle",
+		name = "Color level by difficulty",
+		desc = "Color level by difficulty",
+		order = 105,
+		get = function()
+			return mod.db.profile.levelByDiff
+		end,
+		set = function(info, v)
+			mod.db.profile.levelByDiff = v
 			for k, v in pairs(names) do
 				names[k] = nil
 			end
@@ -294,6 +312,8 @@ function mod:OnEnable()
 			self:RawHook(cf, "AddMessage", true)
 		end
 	end
+	self:RAID_ROSTER_UPDATE()
+	self:PARTY_MEMBERS_CHANGED()
 end
 
 function mod:AddPlayer(name, class, level, save)

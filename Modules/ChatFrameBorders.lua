@@ -7,7 +7,11 @@ local options = {
 
 local defaults = {
 	profile = {
-		frames = {}
+		frames = {
+			FRAME_2 = {
+				combatLogFix = true
+			}
+		}
 	}
 }
 

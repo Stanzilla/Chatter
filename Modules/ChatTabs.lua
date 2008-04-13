@@ -60,7 +60,7 @@ function mod:OnEnable()
 		-- self:RawHook(tab, "SetAlpha", true)
 		-- self:RawHook(tab, "Hide", true)
 		
-		tab:GetTextFontObject():SetJustifyV("BOTTOM")
+		-- tab:GetTextFontObject():SetJustifyV("BOTTOM")
 		tab:SetTextColor(1, 1, 1)
 		tab:GetHighlightTexture():SetTexture(nil)
 		--[[
@@ -83,7 +83,7 @@ function mod:OnDisable()
 		_G["ChatFrame"..i.."TabMiddle"]:Show()
 		_G["ChatFrame"..i.."TabRight"]:Show()
 		
-		tab:GetTextFontObject():SetJustifyV("MIDDLE")
+		-- tab:GetTextFontObject():SetJustifyV("MIDDLE")
 		local f, s, m = font:GetFont()
 		tab:SetFont(f, s, m)
 

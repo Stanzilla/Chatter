@@ -1,9 +1,10 @@
 local mod = Chatter:NewModule("Player Class Colors", "AceHook-3.0", "AceEvent-3.0")
+local AceTab = LibStub("AceTab-3.0")
+
 mod.modName = "Player Names"
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 local local_names, local_levels = {}, {}
-
 local leftBracket, rightBracket, separator
 local gsub = _G.string.gsub
 local find = _G.string.find
@@ -12,6 +13,11 @@ local string_format = _G.string.format
 local GetDifficultyColor = _G.GetDifficultyColor
 local lookup = {}
 local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shaman", "Warlock", "Warrior"}
+local channels = {
+	GUILD = {},
+	PARTY = {},
+	RAID = {}
+}
 local colorMethods = {
 	CLASS = "Class",
 	NAME = "Name",
@@ -23,8 +29,39 @@ local defaults = {
 		names = {},
 		levels = {},
 	},
-	profile = {	saveData = false, nameColoring = "CLASS", leftBracket = "[", rightBracket = "]", separator = ":" }
+	profile = {
+		saveData = false, 
+		nameColoring = "CLASS", 
+		leftBracket = "[", 
+		rightBracket = "]", 
+		separator = ":",
+		useTabComplete = true
+	}
 }
+
+local tabComplete
+do
+	function tabComplete(t, text, pos)
+		local word = text:sub(pos)
+		if #word == 0 then return end
+		local channel = ChatFrameEditBox:GetAttribute("chatType")
+		if channel == "CHANNEL" then
+			channel = select(2, GetChannelName(ChatFrameEditBox:GetAttribute("channelTarget"))):lower()
+		elseif channel == "OFFICER" then
+			channel = "GUILD"
+		elseif channel == "RAID_WARNING" or channel == "RAID_LEADER" or channel == "BATTLEGROUND" or channel == "BATTLEGROUND_LEADER" then
+			channel = "RAID"
+		end
+		if channels[channel] then
+			for k, v in pairs(channels[channel]) do
+				if k:lower():match("^" .. word:lower()) then
+					tinsert(t, k)
+				end
+			end
+		end
+		return t
+	end
+end
 
 local getNameColor
 do
@@ -217,6 +254,20 @@ local options = {
 			separator = v
 		end
 	},
+	useTabComplete = {
+		type = "toggle",
+		name = "Use Tab Complete",
+		desc = "Use tab key to automatically complete character names.",
+		get = function() return mod.db.profile.useTabComplete end,
+		set = function(info, v)
+			mod.db.profile.useTabComplete = v
+			if v and not AceTab:IsTabCompletionRegistered("Chatter") then
+				AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
+			elseif not v and AceTab:IsTabCompletionRegistered("Chatter") then
+				AceTab:UnregisterTabCompletion("Chatter")
+			end
+		end
+	},
 	levelHeader = {
 		type = "header",
 		name = "Level Options",
@@ -304,7 +355,12 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_SYSTEM")
 	self:RegisterEvent("FRIENDLIST_UPDATE")
 	self:RegisterEvent("GUILD_ROSTER_UPDATE")
+	self:RegisterEvent("CHAT_MSG_CHANNEL_JOIN")
+	self:RegisterEvent("CHAT_MSG_CHANNEL_LEAVE")
+	self:RegisterEvent("CHAT_MSG_CHANNEL", "CHAT_MSG_CHANNEL_JOIN")
+	
 	leftBracket, rightBracket, separator = self.db.profile.leftBracket, self.db.profile.rightBracket, self.db.profile.separator
+	GuildRoster()
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
@@ -314,6 +370,15 @@ function mod:OnEnable()
 	end
 	self:RAID_ROSTER_UPDATE()
 	self:PARTY_MEMBERS_CHANGED()
+	if self.db.profile.useTabComplete then
+		AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
+	end
+end
+
+function mod:OnDisable()
+	if AceTab:IsTabCompletionRegistered("Chatter") then
+		AceTab:UnregisterTabCompletion("Chatter")
+	end
 end
 
 function mod:AddPlayer(name, class, level, save)
@@ -349,36 +414,56 @@ function mod:GUILD_ROSTER_UPDATE(evt)
 	if not n or n == 0 then
 		return
 	end
-	self:UnregisterEvent("GUILD_ROSTER_UPDATE")
+
 	local offline = GetGuildRosterShowOffline()
 	local selection = GetGuildRosterSelection()
+	self:UnregisterEvent("GUILD_ROSTER_UPDATE")
+	
 	SetGuildRosterShowOffline(true)
 	SetGuildRosterSelection(0)
 	GetGuildRosterInfo(0)
 	n = GetNumGuildMembers()
+	for k, v in pairs(channels.GUILD) do
+		channels.GUILD[k] = nil
+	end
 	for i = 1, n do
-		local name, _, _, level, _, _, _, _, _, _, class = GetGuildRosterInfo(i)
+		local name, _, _, level, _, _, _, _, online, _, class = GetGuildRosterInfo(i)
+		if online then
+			channels.GUILD[name] = name
+		end
 		self:AddPlayer(name, class, level, self.db.profile.saveGuild)
 	end
 	SetGuildRosterShowOffline(offline)
 	SetGuildRosterSelection(selection)
+	
+	self:RegisterEvent("GUILD_ROSTER_UPDATE")
 end
 
 
 function mod:RAID_ROSTER_UPDATE(evt)
+	for k, v in pairs(channels.RAID) do
+		channels.RAID[k] = nil
+	end
+
 	for i = 1, GetNumRaidMembers() do
 		local n, _, _, l, _, c = GetRaidRosterInfo(i)
 		if n and c and l then
+			channels.RAID[n] = true
 			self:AddPlayer(n, c, l, self.db.profile.saveParty)
 		end
 	end
 end
 
 function mod:PARTY_MEMBERS_CHANGED(evt)
+	for k, v in pairs(channels.PARTY) do
+		channels.PARTY[k] = nil
+	end
+	
 	for i = 1, GetNumPartyMembers() do
 		local n = UnitName("party" .. i)
 		local _, c = UnitClass("party" .. i)
 		local l = UnitLevel("party" .. i)
+		channels.PARTY[n] = true
 		self:AddPlayer(n, c, l, self.db.profile.saveParty)
 	end
 end
@@ -413,6 +498,16 @@ function mod:WHO_LIST_UPDATE(evt)
 	end
 end
 
+function mod:CHAT_MSG_CHANNEL_JOIN(evt, _, name, _, _, _, _, _, _, chan)
+	channels[chan:lower()] = channels[chan:lower()] or {}
+	channels[chan:lower()][name] = true
+end
+
+function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
+	if not channels[chan:lower()] then return end
+	channels[chan:lower()][name] = nil
+end
+
 local function changeName(name, name2, sep)
 	return "|h" .. leftBracket .. names[name2] .. rightBracket .. "|h" .. (sep and #sep > 0 and separator or "")
 end
@@ -431,7 +526,7 @@ function mod:AddMessage(frame, text, ...)
 end
 
 function mod:Info()
-	return "Colors player names according to their class."
+	return "Provides options to color player names, add player levels, and add tab completion of player names."
 end
 
 function mod:GetOptions()

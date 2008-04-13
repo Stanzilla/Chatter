@@ -3,6 +3,8 @@ local mod = Chatter:NewModule("Channel Names", "AceHook-3.0", "AceEvent-3.0")
 local gsub = _G.string.gsub
 local find = _G.string.find
 local pairs = _G.pairs
+local loadstring = _G.loadstring
+local tostring = _G.tostring
 
 local defaults = {
 	profile = {
@@ -52,11 +54,16 @@ function mod:OnInitialize()
 			end,
 			set = function(info, v)
 				self.db.profile.channels[k] = #v > 0 and v or nil
+				if v:match("^function%(") then
+					functions[k] = loadstring("return " .. v)()
+				end
 			end
 		}
 	end
 	self:AddCustomChannels(GetChannelList())
 end
+
+local functions = {}
 
 function mod:AddCustomChannels(...)
 	-- excludeChannels(EnumerateServerChannels())
@@ -74,6 +81,9 @@ function mod:AddCustomChannels(...)
 				end,
 				set = function(info, v)
 					self.db.profile.customChannels[id] = #v > 0 and v or nil
+					if v:match("^function%(") then
+						functions[id] = loadstring("return " .. v)()
+					end
 				end
 			}
 		end
@@ -90,6 +100,16 @@ function mod:OnEnable()
 			self:RawHook(cf, "AddMessage", true)
 		end
 	end
+	for k, v in pairs(self.db.profile.channels) do
+		if v:match("^function%(") then
+			functions[k] = loadstring("return " .. v)()
+		end
+	end
+	for k, v in pairs(self.db.profile.customChannels) do
+		if v:match("^function%(") then
+			functions[k] = loadstring("return " .. v)()
+		end
+	end
 end
 
 function mod:CHAT_MSG_CHANNEL_NOTICE()
@@ -103,10 +123,10 @@ function mod:AddMessage(frame, text, ...)
 
 	local oldText = text
 	for k, v in pairs(channels) do
-		text = gsub(text, "%[([^%]]*" .. k .. ")%] ", v == " " and "" or v .. " ")
+		text = gsub(text, "%[[^%]]*(" .. k .. ")%] ", (v == " " and "") or functions[k] or (v .. " "))
 	end
 	for k, v in pairs(customChannels) do
-		text = gsub(text, "%[" .. k .. "%.[^%]]*%] ", v == " " and "" or v .. " ")
+		text = gsub(text, "%[(" .. k .. "%.[^%]]*)%] ", (v == " " and "") or functions[k] or (v .. " "))
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
@@ -118,3 +138,5 @@ end
 function mod:Info()
 	return "Enables you to replace channel names with your own names"
 end
+
+mod.funcs = functions

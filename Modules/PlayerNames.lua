@@ -5,7 +5,7 @@ mod.modName = "Player Names"
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 local local_names, local_levels = {}, {}
-local leftBracket, rightBracket, separator
+local leftBracket, rightBracket
 local gsub = _G.string.gsub
 local find = _G.string.find
 local pairs = _G.pairs
@@ -62,7 +62,6 @@ local defaults = {
 		nameColoring = "CLASS", 
 		leftBracket = "[", 
 		rightBracket = "]", 
-		separator = ":",
 		useTabComplete = true
 	}
 }
@@ -272,16 +271,6 @@ local options = {
 			rightBracket = v
 		end
 	},	
-	separator = {
-		type = "input",
-		name = "Separator",
-		desc = "Character to use for the separator",
-		get = function() return mod.db.profile.separator end,
-		set = function(i, v)
-			mod.db.profile.separator = v
-			separator = v
-		end
-	},
 	useTabComplete = {
 		type = "toggle",
 		name = "Use Tab Complete",
@@ -325,7 +314,8 @@ local options = {
 			for k, v in pairs(names) do
 				names[k] = nil
 			end
-		end
+		end,
+		hidden = function() return not mod.db.profile.includeLevel end
 	},
 	colorLevelByDifficulty = {
 		type = "toggle",
@@ -340,7 +330,8 @@ local options = {
 			for k, v in pairs(names) do
 				names[k] = nil
 			end
-		end
+		end,
+		hidden = function() return not mod.db.profile.includeLevel end
 	},
 	colorBy = {
 		type = "select",
@@ -536,19 +527,14 @@ function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 	channels[chan:lower()][name] = nil
 end
 
-local function changeName(name, name2, sep)
-	return "|h" .. leftBracket .. names[name2] .. rightBracket .. "|h" .. (sep and #sep > 0 and separator or "")
+local function changeName(msg, name, msgCnt, displayName)
+	return ("|Hplayer:%s:%s|h%s%s%s|h"):format(name, msgCnt, leftBracket, names[name], rightBracket)
 end
 
 function mod:AddMessage(frame, text, ...)
-	if not text then 
-		return self.hooks[frame].AddMessage(frame, text, ...)
-	end
-
-	local name = arg2
-	if event == "CHAT_MSG_SYSTEM" then name = text:match("|h%[([^%]]+)%]|h") end
-	if name and type(name) == "string" then
-		text = text:gsub("|h(%[("..name..")%])|h(:?)", changeName)
+	if text then 
+		text = text:gsub("(|Hplayer:(.-)([:%d+]*)|h%[(.-)%]|h)", changeName)
+		-- text = text:gsub("(|Hplayer:(.-)|h%[(.-)%]|h)", changeName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

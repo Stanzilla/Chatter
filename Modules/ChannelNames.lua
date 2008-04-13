@@ -19,7 +19,9 @@ local defaults = {
 			Officer = "[O]",
 			LookingForGroup = "[LFG]",
 			Battleground = "[BG]",
-			["Battleground Leader"] = "[BL]"	
+			["Battleground Leader"] = "[BL]",
+			["Whisper From"] = "[W:From]",
+			["Whisper To"] = "[W:To]"
 		},
 		customChannels = {}
 	}
@@ -125,11 +127,13 @@ function mod:AddMessage(frame, text, ...)
 
 	local oldText = text
 	for k, v in pairs(channels) do
-		text = gsub(text, "%[[^%]]*(" .. k .. ")%] ", (v == " " and "") or functions[k] or (v .. " "))
+		text = gsub(text, "%[[^%]]*(" .. k .. ")%] ", (v == " " and "") or functions[k] or (v))
 	end
 	for k, v in pairs(customChannels) do
-		text = gsub(text, "%[(" .. k .. "%.[^%]]*)%] ", (v == " " and "") or functions[k] or (v .. " "))
+		text = gsub(text, "%[(" .. k .. "%.[^%]]*)%] ", (v == " " and "") or functions[k] or (v))
 	end
+	text = gsub(text, "^To ", channels["Whisper To"])
+	text = gsub(text, "^(.-|h) whispers:", channels["Whisper From"] .. "%1:")
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

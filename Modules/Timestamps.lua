@@ -14,7 +14,7 @@ local FORMATS = {
 }
 
 local defaults = {
-	profile = { format = "%X", color = { r = 0.45, g = 0.45, b = 0.45 }, addSpace = true }
+	profile = { format = "%X", color = { r = 0.45, g = 0.45, b = 0.45 } }
 }
 
 local options = {
@@ -66,17 +66,6 @@ local options = {
 		set = function(info, v)
 			mod.db.profile.colorByChannel = v
 		end
-	},
-	addSpace = {
-		type = "toggle",
-		name = "Add space after",
-		desc = "Add a space after the timestamp",
-		get = function()
-			return mod.db.profile.addSpace
-		end,
-		set = function(i, v)
-			mod.db.profile.addSpace = v
-		end
 	}
 }
 
@@ -100,11 +89,10 @@ function mod:AddMessage(frame, text, ...)
 	if not text then 
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
-	local space = self.db.profile.addSpace
 	if self.db.profile.colorByChannel then
-		text = date(SELECTED_FORMAT) .. (space and " " or "") .. text
+		text = date(SELECTED_FORMAT) .. text
 	else
-		text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r".. (space and " " or "") .. text
+		text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r".. text
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

@@ -147,24 +147,25 @@ function mod:AddAlt(alt, main)
 	self.db.realm[alt] = main	
 end
 
-function mod:AddMessage(frame, text, ...)
-	if not text then 
-		return self.hooks[frame].AddMessage(frame, text, ...)
-	end
-
-	local name = arg2
-	if event == "CHAT_MSG_SYSTEM" then name = select(3, text:find("|h%[(.+)%]|h")) end
-	if name and type(name) == "string" then
+local function pName(msg, name, msgCount, dispName)
+	if name and #name > 0 then
 		local alt = NAMES[name]
 		if alt then
-			local mode = self.db.profile.colorMode
+			local mode = mod.db.profile.colorMode
 			if mode == "CUSTOM" then				
 				alt = customColorNames[alt]
-			elseif mode == "COLOR_MOD" and self.colorMod and self.colorMod:IsEnabled() then
-				alt = self.colorMod.names[alt]
+			elseif mode == "COLOR_MOD" and mod.colorMod and mod.colorMod:IsEnabled() then
+				alt = mod.colorMod.names[alt]
 			end
-			text = text:gsub("(|h%[[^%]]+"..name.."[^%]]+%]|h)", "%1[" .. alt .."]") 
+			return msg .. "[" .. alt .. "]"
 		end
+	end
+	return msg
+end
+
+function mod:AddMessage(frame, text, ...)
+	if text then 
+		text = text:gsub("(|Hplayer:(.-):(%d+)|h(.-)|h)", pName) 
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

@@ -94,7 +94,8 @@ end
 function mod:UPDATE_CHAT_COLOR(evt, chan, r, g, b)
 	if chan then
 		local num = tonumber(chan:match("(%d+)$"))
-		local name = num and select(2, GetChannelName(num)):match("^(%w+)") or chan
+		local channelNum = num and select(2, GetChannelName(num))
+		local name = channelNum and channelNum:match("^(%w+)") or chan
 		self.db.profile.colors[name] = self.db.profile.colors[name] or {}
 		self.db.profile.colors[name].r = r
 		self.db.profile.colors[name].g = g

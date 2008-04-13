@@ -48,3 +48,7 @@ end
 function mod:GetOptions()
 	return options
 end
+
+function mod:Info()
+	return "Lets you set the justification of text in your chat frames."
+end

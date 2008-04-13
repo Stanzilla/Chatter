@@ -37,3 +37,7 @@ function mod:GetGroupDistribution(slash)
 	end
 	return slash and "/s " or "SAY"
 end
+
+function mod:Info()
+	return "Provides a /gr slash command to let you speak in your group (raid, party, or battleground) automatically."
+end

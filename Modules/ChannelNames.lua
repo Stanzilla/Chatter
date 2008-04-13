@@ -23,7 +23,12 @@ local defaults = {
 
 local channels, customChannels
 
-local options = {}
+local options = {
+	splitter = {
+		type = "header",
+		name = "Custom Channels"
+	}
+}
 
 local serverChannels = {}
 local function excludeChannels(...)
@@ -40,6 +45,7 @@ function mod:OnInitialize()
 			type = "input",
 			name = k,
 			desc = "Replace this channel name with...",
+			order = 98,
 			get = function()
 				local v = self.db.profile.channels[k]
 				return v == "" and " " or v
@@ -61,7 +67,7 @@ function mod:AddCustomChannels(...)
 				type = "input",
 				name = name,
 				desc = "Replace this channel name with...",
-				order = id <= 4 and 99 or 101,
+				order = id <= 4 and 98 or 101,
 				get = function()
 					local v = self.db.profile.customChannels[id]
 					return v == "" and " " or v

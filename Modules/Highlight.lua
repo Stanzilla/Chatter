@@ -84,12 +84,34 @@ local words
 function mod:OnEnable()
 	words = self.db.profile.words
 	self:RegisterEvent("CHAT_MSG_SAY", "ParseChat")
+	
 	self:RegisterEvent("CHAT_MSG_GUILD", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_BATTLEGROUND", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_BATTLEGROUND_LEADER", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_OFFICER", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_PARTY", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_RAID_LEADER", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_RAID", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_RAID_WARNING", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_SAY", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_WHISPER", "ParseChat")
+	
 	self:RegisterEvent("CHAT_MSG_CHANNEL", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_WHISPER", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_YELL", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	self:AddCustomChannels(GetChannelList())
+	self:AddCustomChannels(
+		"YELL", "Yell",
+		"GUILD", "Guild", 
+		"OFFICER", "Officer", 
+		"RAID", "Raid", 
+		"PARTY", "Party", 
+		"RAID_WARNING", "Raid Warning",
+		"SAY", "Say",
+		"BATTLEGROUND", "Battleground",
+		"BATTLEGROUND_LEADER", "Battleground"
+	)
 end
 
 function mod:CHAT_MSG_CHANNEL_NOTICE(evt, notice)
@@ -106,7 +128,7 @@ function mod:AddCustomChannels(...)
 				name = name,
 				values = sounds,
 				desc = "Play a sound when a message is received in this channel",
-				order = 101,
+				order = type(id) == "number" and 102 or 101,
 				get = function() return self.db.profile.customChannels[id] or "None" end,
 				set = function(info, v)
 					self.db.profile.customChannels[id] = v
@@ -118,6 +140,14 @@ function mod:AddCustomChannels(...)
 end
 
 function mod:ParseChat(evt, msg, sender, ...)
+	local msg = msg:lower()
+	for k, v in pairs(words) do
+		if msg:find(k) then
+			self:Highlight()
+			return
+		end
+	end
+
 	if evt == "CHAT_MSG_CHANNEL" then
 		local num = select(6, ...)
 		local snd = self.db.profile.customChannels[num]
@@ -125,12 +155,12 @@ function mod:ParseChat(evt, msg, sender, ...)
 			PlaySoundFile(Media:Fetch("sound", snd))
 			return
 		end
-	end
-	
-	local msg = msg:lower()
-	for k, v in pairs(words) do
-		if msg:find(k) then
-			self:Highlight()
+	else
+		local e = evt:gsub("^CHAT_MSG_", "")
+		local snd = self.db.profile.customChannels[e]
+		if snd then
+			PlaySoundFile(Media:Fetch("sound", snd))
+			return
 		end
 	end
 end
@@ -142,7 +172,7 @@ function mod:Highlight()
 end
 
 function mod:Info()
-	return "Alerts you when someone says a keyword."
+	return "Alerts you when someone says a keyword or speaks in a specified channel."
 end
 
 function mod:GetOptions()

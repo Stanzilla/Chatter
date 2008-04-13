@@ -56,13 +56,18 @@ function Chatter:OnInitialize()
 		local t
 		if v.GetOptions then
 			t = v:GetOptions()
+			t.settingsHeader = {
+				type = "header",
+				name = "Settings",
+				order = 12
+			}		
 		end
 		t = t or {}
 		t.toggle = {
 			type = "toggle", 
 			name = v.toggleLabel or ("Enable " .. (v.modName or k)), 
 			desc = v.Info and v:Info() or ("Enable " .. (v.modName or k)), 
-			order = 1,
+			order = 11,
 			get = function()
 				return Chatter.db.profile.modules[k] ~= false or false
 			end,
@@ -77,6 +82,18 @@ function Chatter:OnInitialize()
 				end
 			end
 		}
+		t.header = {
+			type = "header",
+			name = v.modName or k,
+			order = 9
+		}
+		if v.Info then
+			t.description = {
+				type = "description",
+				name = v:Info() .. "\n\n",
+				order = 10
+			}
+		end
 		options.args.modules.args[k:gsub(" ", "_")].args = t
 	end	
 	optFrame = AceConfigDialog:AddToBlizOptions("Chatter", "Chatter")

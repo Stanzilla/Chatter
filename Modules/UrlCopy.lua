@@ -5,13 +5,23 @@ local ipairs = _G.ipairs
 local fmt = _G.string.format
 local sub = _G.string.sub
 
+local replacements = {
+	-- web
+	"%1://%2",
+	"%1http://%2%3",
+	"http://%1%2",
+	
+	-- email
+	"%1@%2.%3"
+}
 local patterns = {
-	{ " www%.([_A-Za-z0-9-]+)%.([_A-Za-z0-9-%.&/]+)%s?", "http://www.%1.%2"},
-	{ " (%a+)://(%S+)%s?", "%1://%2"},
-	{ " ([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", "%1@%2%3%4"},
-	{ " ([_A-Za-z0-9-]+)%.([_A-Za-z0-9-]+)%.(%S+)%s?", "%1.%2.%3"},
-	{ " ([_A-Za-z0-9-]+)%.([_A-Za-z0-9-]+)%.(%S+)%:([_0-9-]+)%s?", "%1.%2.%3:%4"},
-	{ " ([_A-Za-z0-9-]+)%.(%a%a%a)%s?", "%1.%2"},
+	-- web
+	"(%w+)://([^ ]+)",
+	"(%s)(www%.)([^ ]+)",
+	"^(www%.)([^ ]+)",
+	
+	-- email
+	"^([^@ ]+)@([^@ ]+)%.([^@ ]+)"
 }
 
 --[[		Popup Box		]]--
@@ -58,8 +68,9 @@ function mod:AddMessage(frame, text, ...)
 	if not text then 
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
-	for i, v in ipairs(patterns) do
-		text = gsub(text, v[1], fmt(style, v[2], v[2]))
+	local ot = text
+	for i = 1, #patterns do
+		text = gsub(text, patterns[i], fmt(style, replacements[i], replacements[i]))
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

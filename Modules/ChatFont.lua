@@ -2,6 +2,7 @@ local mod = Chatter:NewModule("Chat Font")
 local Media = LibStub("LibSharedMedia-3.0")
 local fonts = {}
 local fonts_and_default = {Default = "Default"}
+local pairs = _G.pairs
 
 local defaults = {
 	profile = {
@@ -34,7 +35,7 @@ local options = {
 		get = function() return mod.db.profile.fontsize end,
 		set = function(info, v)
 			mod.db.profile.fontsize = v
-			mod:SetFont(cf, nil, v)
+			mod:SetFont(nil, nil, v)
 		end
 	},
 	outline = {

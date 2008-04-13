@@ -2,6 +2,10 @@ local mod = Chatter:NewModule("Edit Box Polish", "AceHook-3.0")
 
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders = {}, {}
+local CreateFrame = _G.CreateFrame
+local max = _G.max
+local pairs = _G.pairs
+local select = _G.select
 
 local VALID_ATTACH_POINTS = {
 	TOP = "Top",

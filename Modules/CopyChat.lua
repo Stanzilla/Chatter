@@ -2,6 +2,11 @@ local mod = Chatter:NewModule("Chat Copy", "AceHook-3.0")
 
 local lines = {}
 local table_concat = _G.table.concat
+local CreateFrame = _G.CreateFrame
+local GetSpellInfo = _G.GetSpellInfo
+local select = _G.select
+local tinsert = _G.tinsert
+local tostring = _G.tostring
 
 local PaneBackdrop  = {
 	bgFile = [[Interface\DialogFrame\UI-DialogBox-Background]],

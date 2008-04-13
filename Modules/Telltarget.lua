@@ -2,6 +2,10 @@ local mod = Chatter:NewModule("Tell Target (/tt)", "AceHook-3.0", "AceEvent-3.0"
 local UnitIsPlayer = _G.UnitIsPlayer
 local UnitCanAssist = _G.UnitCanAssist
 local UnitIsCharmed = _G.UnitIsCharmed
+local SendChatMessage = _G.SendChatMessage
+local UnitIsSameServer = _G.UnitIsSameServer
+local UnitName = _G.UnitName
+
 local gsub = _G.string.gsub
 
 function mod:OnEnable()

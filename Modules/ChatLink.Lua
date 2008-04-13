@@ -3,6 +3,7 @@ local gsub = _G.string.gsub
 local find = _G.string.find
 local GetChannelName = _G.GetChannelName
 local EnumerateServerChannels = _G.EnumerateServerChannels
+local select = _G.select
 
 local serverChannels = {}
 local function excludeChannels(...)

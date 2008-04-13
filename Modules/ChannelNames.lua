@@ -5,6 +5,8 @@ local find = _G.string.find
 local pairs = _G.pairs
 local loadstring = _G.loadstring
 local tostring = _G.tostring
+local GetChannelList = _G.GetChannelList
+local select = _G.select
 
 local defaults = {
 	profile = {

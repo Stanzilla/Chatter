@@ -1,4 +1,11 @@
 local mod = Chatter:NewModule("Channel Colors", "AceEvent-3.0")
+local GetChannelList = _G.GetChannelList
+local GetChannelName = _G.GetChannelName
+local GetMessageTypeColor = _G.GetMessageTypeColor
+local select = _G.select
+local tonumber = _G.tonumber
+local type = _G.type
+
 function mod:Info()
 	return "Keeps your channel colors by name rather than by number."
 end

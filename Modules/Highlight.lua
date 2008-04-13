@@ -2,6 +2,11 @@ local mod = Chatter:NewModule("Highlights", "AceHook-3.0", "AceEvent-3.0")
 
 local Media = LibStub("LibSharedMedia-3.0")
 local sounds = {}
+local PlaySoundFile = _G.PlaySoundFile
+local UnitName = _G.UnitName
+local pairs = _G.pairs
+local select = _G.select
+local type = _G.type
 
 Media:Register("sound", "Loot Chime", [[Sound\interface\igLootCreature.wav]])
 Media:Register("sound", "Whisper Ping", [[Sound\interface\iTellMessage.wav]])

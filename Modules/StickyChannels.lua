@@ -1,5 +1,7 @@
 local mod = Chatter:NewModule("Sticky Channels")
 
+local pairs = _G.pairs
+
 local channels = {
 	SAY = "Say",
 	EMOTE = "Emote",

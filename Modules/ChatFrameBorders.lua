@@ -1,6 +1,10 @@
 local mod = Chatter:NewModule("Borders/Background")
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders = {}, {}
+local CreateFrame = _G.CreateFrame
+local pairs = _G.pairs
+local tinsert = _G.tinsert
+local type = _G.type
 
 local options = {
 }
@@ -228,10 +232,10 @@ do
 			edgeSize = profile.edgeSize,
 			insets = {left = profile.inset, right = profile.inset, top = profile.inset, bottom = profile.inset}
 		})
-		local c = profile.backgroundColor or bgdefault
+		local c = profile.backgroundColor
 		frame:SetBackdropColor(c.r, c.g, c.b, c.a)
 		
-		local c = profile.borderColor or borderdefault
+		local c = profile.borderColor
 		frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
 	end
 end

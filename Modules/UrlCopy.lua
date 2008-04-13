@@ -25,6 +25,8 @@ local patterns = {
 }
 
 --[[		Popup Box		]]--
+local currentLink
+
 StaticPopupDialogs["ChatterUrlCopyDialog"] = {
 	text = "URL",
 	button2 = TEXT(CLOSE),

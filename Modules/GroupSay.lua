@@ -2,6 +2,8 @@ local mod = Chatter:NewModule("Group Say (/gr)", "AceHook-3.0", "AceConsole-3.0"
 local GetNumPartyMembers = _G.GetNumPartyMembers
 local IsInInstance = _G.IsInInstance
 local GetNumPartyMembers = _G.GetNumPartyMembers
+local GetNumRaidMembers = _G.GetNumRaidMembers
+local SendChatMessage = _G.SendChatMessage
 
 function mod:OnEnable()
 	self:HookScript(ChatFrameEditBox, "OnTextChanged")

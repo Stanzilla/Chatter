@@ -1,6 +1,8 @@
 Chatter = LibStub("AceAddon-3.0"):NewAddon("Chatter", "AceConsole-3.0") 	--, "AceHook-3.0", "AceTimer-3.0", "AceConsole-3.0", "AceEvent-3.0", "LibSink-2.0")
 local AceConfig = LibStub("AceConfig-3.0")
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
+local CreateFrame = _G.CreateFrame
+local UIParent = _G.UIParent
 
 local optFrame
 
@@ -120,7 +122,7 @@ end
 
 do
 	local timer, t = nil, 0
-	function update()
+	local function update()
 		t = t + arg1
 		if t > 0.5 then
 			timer:SetScript("OnUpdate", nil)

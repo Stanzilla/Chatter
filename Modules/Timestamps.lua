@@ -1,5 +1,7 @@
 local mod = Chatter:NewModule("Timestamps", "AceHook-3.0")
 
+local date = _G.date
+
 local SELECTED_FORMAT
 local COLOR
 local FORMATS = {

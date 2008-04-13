@@ -4,6 +4,9 @@ local gsub = _G.string.gsub
 local ipairs = _G.ipairs
 local fmt = _G.string.format
 local sub = _G.string.sub
+local InviteUnit = _G.InviteUnit
+local next = _G.next
+local type = _G.type
 
 local options = {
 	addWord = {
@@ -65,7 +68,7 @@ local valid_events = {
 	CHAT_MSG_GUILD = true
 }
 
-function addLinks(t)
+local function addLinks(t)
 	if words[t:lower()] then
 		t = fmt(style, arg2, t)
 	end

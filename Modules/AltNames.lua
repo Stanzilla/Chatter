@@ -1,5 +1,12 @@
 local mod = Chatter:NewModule("Alt Linking", "AceHook-3.0")
 local NAMES
+local pairs = _G.pairs
+local select = _G.select
+local setmetatable = _G.setmetatable
+local tinsert = _G.tinsert
+local tremove = _G.tremove
+local type = _G.type
+local unpack = _G.unpack
 
 local defaults = { realm = {}, profile = {colorMode = "COLOR_MOD", color = {0.6, 0.6, 0.6} } }
 local colorModes = {
@@ -49,7 +56,7 @@ local options = {
 }
 
 local accept = function(char)
-	local editBox = getglobal(this:GetParent():GetName().."EditBox")
+	local editBox = _G[this:GetParent():GetName().."EditBox"]
 	local main = editBox:GetText()
 	mod:AddAlt(char, main)
 	this:GetParent():Hide()
@@ -128,7 +135,7 @@ end
 
 function mod:UnitPopup_ShowMenu(dropdownMenu, which, unit, name, userData, ...)
 	for i=1, UIDROPDOWNMENU_MAXBUTTONS do
-		button = _G["DropDownList"..UIDROPDOWNMENU_MENU_LEVEL.."Button"..i];
+		local button = _G["DropDownList"..UIDROPDOWNMENU_MENU_LEVEL.."Button"..i];
 		if button.value == "SET_MAIN" then
 		    button.func = UnitPopupButtons["SET_MAIN"].func
 		end

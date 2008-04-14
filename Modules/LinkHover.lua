@@ -8,7 +8,7 @@ local linkTypes = {
 	enchant = true,
 	spell = true,
 	quest = true,
-	player = true
+	-- player = true
 }
 
 function mod:OnEnable()

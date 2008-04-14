@@ -1,4 +1,6 @@
 local mod = Chatter:NewModule("Chat Autolog")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Chat Autolog"]
 
 function mod:OnEnable()
 	self.isLogging = LoggingChat()
@@ -10,5 +12,5 @@ function mod:OnDisable()
 end
 
 function mod:Info()
-	return "Automatically turns on chat logging."
+	return L["Automatically turns on chat logging."]
 end

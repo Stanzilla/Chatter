@@ -1,15 +1,17 @@
 local mod = Chatter:NewModule("Sticky Channels")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Sticky Channels"]
 
 local pairs = _G.pairs
 
 local channels = {
-	SAY = "Say",
-	EMOTE = "Emote",
-	YELL = "Yell",
-	OFFICER = "Officer",
-	RAID_WARNING = "Raid warning",
-	WHISPER = "Whisper",
-	CHANNEL = "Custom channels"
+	SAY = L["Say"],
+	EMOTE = L["Emote"],
+	YELL = L["Yell"],
+	OFFICER = L["Officer"],
+	RAID_WARNING = L["Raid warning"],
+	WHISPER = L["Whisper"],
+	CHANNEL = L["Custom channels"]
 }
 local options = {}
 local defaults = {profile = {}}
@@ -21,7 +23,7 @@ function mod:OnInitialize()
 		options[k] = {
 			type = "toggle",
 			name = v,
-			desc = "Make " .. v .. " sticky",
+			desc = (L["Make %s sticky"]):format(v),
 			get = function() return mod.db.profile[k] end,
 			set = function(info, v)
 				mod.db.profile[k] = v
@@ -51,5 +53,5 @@ function mod:GetOptions()
 end
 
 function mod:Info()
-	return "Makes channels you select sticky."
+	return L["Makes channels you select sticky."]
 end

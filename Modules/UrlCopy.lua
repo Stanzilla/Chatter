@@ -1,4 +1,6 @@
 local mod = Chatter:NewModule("URL Copy", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["URL Copy"]
 
 local gsub = _G.string.gsub
 local ipairs = _G.ipairs
@@ -87,5 +89,5 @@ function mod:SetItemRef(link, text, button)
 end
 
 function mod:Info()
-	return "Lets you copy URLs out of chat."
+	return L["Lets you copy URLs out of chat."]
 end

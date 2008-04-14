@@ -1,4 +1,7 @@
 local mod = Chatter:NewModule("Borders/Background")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Borders/Background"]
+
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders = {}, {}
 local CreateFrame = _G.CreateFrame
@@ -67,8 +70,8 @@ function mod:OnInitialize()
 			args = {
 				enable = {
 					type = "toggle",
-					name = "Enable",
-					desc = "Enable borders on this frame",
+					name = L["Enable"],
+					desc = L["Enable borders on this frame"],
 					order = 1,
 					get = function()
 						return mod.db.profile.frames[frame.id].enable
@@ -84,8 +87,8 @@ function mod:OnInitialize()
 				},
 				combatLogFix = {
 					type = "toggle",
-					name = "Combat Log Fix",
-					desc = "Resize this border to fit the new combat log",
+					name = L["Combat Log Fix"],
+					desc = L["Resize this border to fit the new combat log"],
 					get = function() return mod.db.profile.frames[frame.id].combatLogFix end,
 					set = function(info, v)
 						mod.db.profile.frames[frame.id].combatLogFix = v
@@ -94,8 +97,8 @@ function mod:OnInitialize()
 				},
 				background = {
 					type = "select",
-					name = "Background texture",
-					desc = "Background texture",
+					name = L["Background texture"],
+					desc = L["Background texture"],
 					values = backgrounds,
 					get = function() return mod.db.profile.frames[frame.id].background end,
 					set = function(info, v)
@@ -105,8 +108,8 @@ function mod:OnInitialize()
 				},
 				border = {
 					type = "select",
-					name = "Border texture",
-					desc = "Border texture",
+					name = L["Border texture"],
+					desc = L["Border texture"],
 					values = borders,
 					get = function() return mod.db.profile.frames[frame.id].border end,
 					set = function(info, v)
@@ -116,8 +119,8 @@ function mod:OnInitialize()
 				},
 				backgroundColor = {
 					type = "color",
-					name = "Background color",
-					desc = "Background color",
+					name = L["Background color"],
+					desc = L["Background color"],
 					hasAlpha = true,
 					get = function()
 						local c = mod.db.profile.frames[frame.id].backgroundColor
@@ -131,8 +134,8 @@ function mod:OnInitialize()
 				},
 				borderColor = {
 					type = "color",
-					name = "Border color",
-					desc = "Border color",
+					name = L["Border color"],
+					desc = L["Border color"],
 					hasAlpha = true,
 					get = function()
 						local c = mod.db.profile.frames[frame.id].borderColor
@@ -146,8 +149,8 @@ function mod:OnInitialize()
 				},
 				inset = {
 					type = "range",
-					name = "Background Inset",
-					desc = "Background Inset",
+					name = L["Background Inset"],
+					desc = L["Background Inset"],
 					min = 1,
 					max = 64,
 					step = 1,
@@ -160,8 +163,8 @@ function mod:OnInitialize()
 				},
 				tileSize = {
 					type = "range",
-					name = "Tile Size",
-					desc = "Tile Size",
+					name = L["Tile Size"],
+					desc = L["Tile Size"],
 					min = 1,
 					max = 64,
 					step = 1,
@@ -174,8 +177,8 @@ function mod:OnInitialize()
 				},
 				edgeSize = {
 					type = "range",
-					name = "Edge Size",
-					desc = "Edge Size",
+					name = L["Edge Size"],
+					desc = L["Edge Size"],
 					min = 1,
 					max = 64,
 					step = 1,
@@ -261,5 +264,5 @@ function mod:SetAnchors(frame, fix)
 end
 
 function mod:Info()
-	return "Gives you finer control over the chat frame's background and border colors"
+	return L["Gives you finer control over the chat frame's background and border colors"]
 end

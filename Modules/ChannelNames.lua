@@ -1,4 +1,6 @@
 local mod = Chatter:NewModule("Channel Names", "AceHook-3.0", "AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Channel Names"]
 
 local gsub = _G.string.gsub
 local find = _G.string.find
@@ -11,15 +13,17 @@ local select = _G.select
 local defaults = {
 	profile = {
 		channels = {
-			Guild = "[G]",
-			Party = "[P]",
-			Raid = "[R]",
-			["Raid Leader"] = "[RL]",
-			["Raid Warning"] = "[RW]",
-			Officer = "[O]",
-			LookingForGroup = "[LFG]",
-			Battleground = "[BG]",
-			["Battleground Leader"] = "[BL]",
+			[L["Guild"]] = "[G]",
+			[L["Party"]] = "[P]",
+			[L["Raid"]] = "[R]",
+			[L["Raid Leader"]] = "[RL]",
+			[L["Raid Warning"]] = "[RW]",
+			[L["Officer"]] = "[O]",
+			[L["LookingForGroup"]] = "[LFG]",
+			[L["Battleground"]] = "[BG]",
+			[L["Battleground Leader"]] = "[BL]",
+			
+			-- Not localized here intentionally
 			["Whisper From"] = "[W:From]",
 			["Whisper To"] = "[W:To]"
 		},
@@ -32,7 +36,7 @@ local channels, customChannels
 local options = {
 	splitter = {
 		type = "header",
-		name = "Custom Channels"
+		name = L["Custom Channels"]
 	}
 }
 
@@ -51,7 +55,7 @@ function mod:OnInitialize()
 		options[k:gsub(" ", "_")] = {
 			type = "input",
 			name = k,
-			desc = "Replace this channel name with...",
+			desc = L["Replace this channel name with..."],
 			order = 98,
 			get = function()
 				local v = self.db.profile.channels[k]
@@ -87,7 +91,7 @@ function mod:AddCustomChannels(...)
 			options[name:gsub(" ", "_")] = {
 				type = "input",
 				name = name,
-				desc = "Replace this channel name with...",
+				desc = L["Replace this channel name with..."],
 				order = id <= 4 and 98 or 101,
 				get = function()
 					local v = self.db.profile.customChannels[id]
@@ -132,8 +136,8 @@ function mod:AddMessage(frame, text, ...)
 	for k, v in pairs(customChannels) do
 		text = gsub(text, "%[(" .. k .. "%.[^%]]*)%] ", (v == " " and "") or functions[k] or (v))
 	end
-	text = gsub(text, "^To ", channels["Whisper To"])
-	text = gsub(text, "^(.-|h) whispers:", channels["Whisper From"] .. "%1:")
+	text = gsub(text, L["^To "], channels["Whisper To"])
+	text = gsub(text, L["^(.-|h) whispers:"], channels["Whisper From"] .. "%1:")
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 
@@ -142,7 +146,7 @@ function mod:GetOptions()
 end
 
 function mod:Info()
-	return "Enables you to replace channel names with your own names"
+	return L["Enables you to replace channel names with your own names"]
 end
 
 mod.funcs = functions

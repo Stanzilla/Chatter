@@ -1,4 +1,6 @@
 local mod = Chatter:NewModule("Highlights", "AceHook-3.0", "AceEvent-3.0", "LibSink-2.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Highlights"]
 
 local Media = LibStub("LibSharedMedia-3.0")
 local sounds = {}
@@ -29,8 +31,8 @@ local defaults = {
 local options = {
 	sound = {
 		type = "toggle",
-		name = "Use sound",
-		desc = "Play a soundfile when one of your keywords is said.",
+		name = L["Use sound"],
+		desc = L["Play a soundfile when one of your keywords is said."],
 		get = function()
 			return mod.db.profile.sound
 		end,
@@ -40,8 +42,8 @@ local options = {
 	},
 	sink = {
 		type = "toggle",
-		name = "Show SCT message",
-		desc = "Show highlights in your SCT mod",
+		name = L["Show SCT message"],
+		desc = L["Show highlights in your SCT mod"],
 		get = function()
 			return mod.db.profile.useSink
 		end,
@@ -51,8 +53,8 @@ local options = {
 	},
 	soundFile = {
 		type = "select",
-		name = "Sound File",
-		desc = "Sound file to play",
+		name = L["Sound File"],
+		desc = L["Sound file to play"],
 		get = function()
 			return mod.db.profile.soundFile
 		end,
@@ -65,8 +67,8 @@ local options = {
 	},
 	addWord = {
 		type = "input",
-		name = "Add Word",
-		desc = "Add word to your highlight list",
+		name = L["Add Word"],
+		desc = L["Add word to your highlight list"],
 		get = function() end,
 		set = function(info, v)
 			mod.db.profile.words[v:lower()] = v
@@ -74,18 +76,18 @@ local options = {
 	},
 	removeWord = {
 		type = "select",
-		name = "Remove Word",
-		desc = "Remove a word from your highlight list",
+		name = L["Remove Word"],
+		desc = L["Remove a word from your highlight list"],
 		get = function() end,
 		set = function(info, v)
 			mod.db.profile.words[v:lower()] = nil
 		end,
 		values = function() return mod.db.profile.words end,
-		confirm = function(info, v) return ("Remove this word from your highlights?") end
+		confirm = function(info, v) return (L["Remove this word from your highlights?"]) end
 	},
 	customSplitter = {
 		type = "header",
-		name = "Custom Channel Sounds",
+		name = L["Custom Channel Sounds"],
 		order= 101
 	}
 }
@@ -126,16 +128,16 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	self:AddCustomChannels(GetChannelList())
 	self:AddCustomChannels(
-		"YELL", "Yell",
-		"GUILD", "Guild", 
-		"OFFICER", "Officer", 
-		"RAID", "Raid", 
-		"PARTY", "Party", 
-		"RAID_WARNING", "Raid Warning",
-		"SAY", "Say",
-		"BATTLEGROUND", "Battleground",
-		"BATTLEGROUND_LEADER", "Battleground",
-		"WHISPER", "Whisper"
+		"YELL", L["Yell"],
+		"GUILD", L["Guild"], 
+		"OFFICER", L["Officer"],
+		"RAID", L["Raid"],
+		"PARTY", L["Party"],
+		"RAID_WARNING", L["Raid Warning"],
+		"SAY", L["Say"],
+		"BATTLEGROUND", L["Battleground"],
+		"BATTLEGROUND_LEADER", L["Battleground"],
+		"WHISPER", L["Whisper"]
 	)
 end
 
@@ -152,7 +154,7 @@ function mod:AddCustomChannels(...)
 				type = "select",
 				name = name,
 				values = sounds,
-				desc = "Play a sound when a message is received in this channel",
+				desc = L["Play a sound when a message is received in this channel"],
 				order = type(id) == "number" and 103 or 102,
 				get = function() return self.db.profile.customChannels[id] or "None" end,
 				set = function(info, v)
@@ -198,12 +200,12 @@ function mod:Highlight(who, what, where, event)
 		PlaySoundFile(Media:Fetch("sound", self.db.profile.soundFile))
 	end
 	if self.db.profile.useSink then
-		self:Pour(("%s said '%s' in %s"):format(who, what, where), 1, 1, 0, nil, 24, "OUTLINE", false)
+		self:Pour((L["%s said '%s' in %s"]):format(who, what, where), 1, 1, 0, nil, 24, "OUTLINE", false)
 	end
 end
 
 function mod:Info()
-	return "Alerts you when someone says a keyword or speaks in a specified channel."
+	return L["Alerts you when someone says a keyword or speaks in a specified channel."]
 end
 
 function mod:GetOptions()

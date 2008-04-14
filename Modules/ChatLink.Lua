@@ -1,4 +1,7 @@
 local mod = Chatter:NewModule("ChatLink", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Chat Link"]
+
 local gsub = _G.string.gsub
 local find = _G.string.find
 local GetChannelName = _G.GetChannelName
@@ -61,5 +64,5 @@ function mod:AddMessage(frame, text, ...)
 end
 
 function mod:Info()
-	return "Lets you link items, enchants, spells, and quests in custom channels."
+	return L["Lets you link items, enchants, spells, and quests in custom channels."]
 end

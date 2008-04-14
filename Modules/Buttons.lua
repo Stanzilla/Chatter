@@ -1,5 +1,7 @@
 local mod = Chatter:NewModule("Disable Buttons", "AceHook-3.0")
-mod.toggleLabel = "Disable Buttons"
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+
+mod.toggleLabel = L["Disable Buttons"]
 
 local fmt = _G.string.format
 local function hide(self)
@@ -12,8 +14,8 @@ end
 local options = {
 	bottomButton = {
 		type = "toggle",
-		name = "Show bottom when scrolled",
-		desc = "Show bottom button when scrolled up",
+		name = L["Show bottom when scrolled"],
+		desc = L["Show bottom button when scrolled up"],
 		get = function()
 			return mod.db.profile.scrollReminder
 		end,
@@ -89,7 +91,7 @@ function mod:FCF_SetButtonSide(chatFrame, buttonSide)
 end
 
 function mod:Info()
-	return "Hides the buttons attached to the chat frame"
+	return L["Hides the buttons attached to the chat frame"]
 end
 
 function mod:EnableBottomButton()

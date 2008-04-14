@@ -1,4 +1,7 @@
 local mod = Chatter:NewModule("Tell Target (/tt)", "AceHook-3.0", "AceEvent-3.0", "AceConsole-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Tell Target (/tt)"]
+
 local UnitIsPlayer = _G.UnitIsPlayer
 local UnitCanAssist = _G.UnitCanAssist
 local UnitIsCharmed = _G.UnitIsCharmed
@@ -39,7 +42,7 @@ function mod:TellTarget(frame, msg)
 end
 
 function mod:Info()
-	return "Enables the /tt command to send a tell to your target."
+	return L["Enables the /tt command to send a tell to your target."]
 end
 
 function mod:SendChatMessage(input)

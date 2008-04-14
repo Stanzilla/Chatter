@@ -1,4 +1,7 @@
 local mod = Chatter:NewModule("Alt Linking", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Alt Linking"]
+
 local NAMES
 local pairs = _G.pairs
 local select = _G.select
@@ -10,9 +13,9 @@ local unpack = _G.unpack
 
 local defaults = { realm = {}, profile = {colorMode = "COLOR_MOD", color = {0.6, 0.6, 0.6} } }
 local colorModes = {
-	COLOR_MOD = "Use PlayerNames coloring",
-	CUSTOM = "Use custom color",
-	CHANNEL = "Use channel color"
+	COLOR_MOD = L["Use PlayerNames coloring"],
+	CUSTOM = L["Use custom color"],
+	CHANNEL = L["Use channel color"]
 }
 
 local customColorNames = setmetatable({}, {
@@ -26,8 +29,8 @@ local customColorNames = setmetatable({}, {
 local options = {
 	colorMode = {
 		type = "select",
-		name = "Name color",
-		desc = "Set the coloring mode for alt names",
+		name = L["Name color"],
+		desc = L["Set the coloring mode for alt names"],
 		values = colorModes,
 		get = function()
 			return mod.db.profile.colorMode
@@ -38,8 +41,8 @@ local options = {
 	},
 	color = {
 		type = "color",
-		name = "Custom color",
-		desc = "Select the custom color to use for alt names",
+		name = L["Custom color"],
+		desc = L["Select the custom color to use for alt names"],
 		get = function()
 			return unpack(mod.db.profile.color)
 		end,
@@ -63,7 +66,7 @@ local accept = function(char)
 end
 
 StaticPopupDialogs['MENUITEM_SET_MAIN'] = {
-	text		= "Who is %s's main?",
+	text		= L["Who is %s's main?"],
 	button1		= TEXT(ACCEPT),
 	button2		= TEXT(CANCEL),
 	hasEditBox	= 1,
@@ -171,7 +174,7 @@ function mod:AddMessage(frame, text, ...)
 end
 
 function mod:Info()
-	return "Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."
+	return L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."]
 end
 
 function mod:GetOptions()

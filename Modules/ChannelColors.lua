@@ -1,4 +1,5 @@
 local mod = Chatter:NewModule("Channel Colors", "AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 local GetChannelList = _G.GetChannelList
 local GetChannelName = _G.GetChannelName
 local GetMessageTypeColor = _G.GetMessageTypeColor
@@ -7,7 +8,7 @@ local tonumber = _G.tonumber
 local type = _G.type
 
 function mod:Info()
-	return "Keeps your channel colors by name rather than by number."
+	return L["Keeps your channel colors by name rather than by number."]
 end
 
 local defaults = {
@@ -17,7 +18,7 @@ local defaults = {
 local options = {
 	splitter = {
 		type = "header",
-		name = "Other Channels",
+		name = L["Other Channels"],
 		order = 49
 	}
 }
@@ -31,16 +32,16 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	self:AddChannels(GetChannelList())
 	self:AddChannels(
-		"YELL", "Yell",
-		"GUILD", "Guild", 
-		"OFFICER", "Officer", 
-		"RAID", "Raid", 
-		"PARTY", "Party", 
-		"RAID_WARNING", "Raid Warning",
-		"SAY", "Say",
-		"BATTLEGROUND", "Battleground",
-		"BATTLEGROUND_LEADER", "Battleground",
-		"WHISPER", "Whisper"
+		"YELL", L["Yell"],
+		"GUILD", L["Guild"], 
+		"OFFICER", L["Officer"], 
+		"RAID", L["Raid"], 
+		"PARTY", L["Party"], 
+		"RAID_WARNING", L["Raid Warning"],
+		"SAY", L["Say"],
+		"BATTLEGROUND", L["Battleground"],
+		"BATTLEGROUND_LEADER", L["Battleground"],
+		"WHISPER", L["Whisper"]
 	)
 end
 
@@ -58,7 +59,7 @@ function mod:AddChannels(...)
 			options[name:gsub(" ", "_")] = {
 				type = "color",
 				name = name,
-				desc = "Select a color for this channel",
+				desc = L["Select a color for this channel"],
 				order = type(id) == "number" and (50 + id) or 48,
 				get = function()
 					local c = self.db.profile.colors[name]

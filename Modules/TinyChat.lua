@@ -1,7 +1,9 @@
 local mod = Chatter:NewModule("Tiny Chat")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Tiny Chat"]
 
 function mod:Info()
-	return "Allows you to make the chat frames much smaller than usual."
+	return L["Allows you to make the chat frames much smaller than usual."]
 end
 
 function mod:OnEnable()
@@ -19,12 +21,3 @@ function mod:OnDisable()
 		cf:SetMaxResize(608, 400)
 	end
 end
-
---[[
-<minResize>
-	<AbsDimension x="296" y="75"/>
-</minResize>
-<maxResize>
-	<AbsDimension x="608" y="400"/>
-</maxResize>
-]]--

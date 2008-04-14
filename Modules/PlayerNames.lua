@@ -1,9 +1,22 @@
 local mod = Chatter:NewModule("Player Class Colors", "AceHook-3.0", "AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 local AceTab = LibStub("AceTab-3.0")
 
-mod.modName = "Player Names"
+mod.modName = L["Player Names"]
 
-local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+--[[
+-- for autolocalization
+L["Warlock"]
+L["Warrior"]
+L["Hunter"]
+L["Mage"]
+L["Priest"]
+L["Druid"]
+L["Paladin"]
+L["Shaman"]
+L["Rogue"]
+]]--
+
 local local_names, local_levels = {}, {}
 local leftBracket, rightBracket
 local gsub = _G.string.gsub
@@ -186,13 +199,13 @@ end
 local options = {
 	save = {
 		type = "group",
-		name = "Save Data",
-		desc = "Save data between sessions. Will increase memory usage",
+		name = L["Save Data"],
+		desc = L["Save data between sessions. Will increase memory usage"],
 		args = {
 			guild = {
 				type = "toggle",
-				name = "Guild",
-				desc = "Save class data from guild between sessions.",
+				name = L["Guild"],
+				desc = L["Save class data from guild between sessions."],
 				get = function()
 					return mod.db.profile.saveGuild
 				end,
@@ -203,8 +216,8 @@ local options = {
 			},
 			group = {
 				type = "toggle",
-				name = "Group",
-				desc = "Save class data from groups between sessions.",
+				name = L["Group"],
+				desc = L["Save class data from groups between sessions."],
 				get = function()
 					return mod.db.profile.saveGroup
 				end,
@@ -215,8 +228,8 @@ local options = {
 			},
 			target = {
 				type = "toggle",
-				name = "Target/Mouseover",
-				desc = "Save class data from target/mouseover between sessions.",
+				name = L["Target/Mouseover"],
+				desc = L["Save class data from target/mouseover between sessions."],
 				get = function()
 					return mod.db.profile.saveTarget
 				end,
@@ -227,8 +240,8 @@ local options = {
 			},
 			who = {
 				type = "toggle",
-				name = "Who",
-				desc = "Save class data from /who queries between sessions.",
+				name = L["Who"],
+				desc = L["Save class data from /who queries between sessions."],
 				get = function()
 					return mod.db.profile.saveWho
 				end,
@@ -239,22 +252,22 @@ local options = {
 			},
 			resetDB = {
 				type = "execute",
-				name = "Reset Data",
-				desc = "Destroys all your saved class/level data",
+				name = L["Reset Data"],
+				desc = L["Destroys all your saved class/level data"],
 				func = function()
 					for k, v in pairs(mod.db.realm.names) do
 						mod.db.realm.names = nil
 					end
 				end,
 				order = 101,
-				confirm = function() return "Are you sure you want to delete all your saved class/level data?" end
+				confirm = function() return L["Are you sure you want to delete all your saved class/level data?"] end
 			}
 		}
 	},
 	leftbracket = {
 		type = "input",
-		name = "Left Bracket",
-		desc = "Character to use for the left bracket",
+		name = L["Left Bracket"],
+		desc = L["Character to use for the left bracket"],
 		get = function() return mod.db.profile.leftBracket end,
 		set = function(i, v)
 			mod.db.profile.leftBracket = v
@@ -263,8 +276,8 @@ local options = {
 	},
 	rightbracket = {
 		type = "input",
-		name = "Right Bracket",
-		desc = "Character to use for the right bracket",
+		name = L["Right Bracket"],
+		desc = L["Character to use for the right bracket"],
 		get = function() return mod.db.profile.rightBracket end,
 		set = function(i, v)
 			mod.db.profile.rightBracket = v
@@ -273,8 +286,8 @@ local options = {
 	},	
 	useTabComplete = {
 		type = "toggle",
-		name = "Use Tab Complete",
-		desc = "Use tab key to automatically complete character names.",
+		name = L["Use Tab Complete"],
+		desc = L["Use tab key to automatically complete character names."],
 		get = function() return mod.db.profile.useTabComplete end,
 		set = function(info, v)
 			mod.db.profile.useTabComplete = v
@@ -287,13 +300,13 @@ local options = {
 	},
 	levelHeader = {
 		type = "header",
-		name = "Level Options",
+		name = L["Level Options"],
 		order = 104
 	},
 	includeLevel = {
 		type = "toggle",
-		name = "Include level",
-		desc = "Include the player's level",
+		name = L["Include level"],
+		desc = L["Include the player's level"],
 		order = 105,
 		get = function() return mod.db.profile.includeLevel end,
 		set = function(info, val)
@@ -305,8 +318,8 @@ local options = {
 	},
 	excludeSeventies = {
 		type = "toggle",
-		name = "Exclude Level 70s",
-		desc = "Exclude level display for level 70s",
+		name = L["Exclude Level 70s"],
+		desc = L["Exclude level display for level 70s"],
 		order = 105,
 		get = function() return mod.db.profile.excludeSeventies end,
 		set = function(info, val)
@@ -319,8 +332,8 @@ local options = {
 	},
 	colorLevelByDifficulty = {
 		type = "toggle",
-		name = "Color level by difficulty",
-		desc = "Color level by difficulty",
+		name = L["Color level by difficulty"],
+		desc = L["Color level by difficulty"],
 		order = 105,
 		get = function()
 			return mod.db.profile.levelByDiff
@@ -335,8 +348,8 @@ local options = {
 	},
 	colorBy = {
 		type = "select",
-		name = "Color Player Names By...",
-		desc = "Select a method for coloring player names",
+		name = L["Color Player Names By..."],
+		desc = L["Select a method for coloring player names"],
 		values = colorMethods,
 		get = function() return mod.db.profile.nameColoring end,
 		set = function(info, val)
@@ -540,7 +553,7 @@ function mod:AddMessage(frame, text, ...)
 end
 
 function mod:Info()
-	return "Provides options to color player names, add player levels, and add tab completion of player names."
+	return L["Provides options to color player names, add player levels, and add tab completion of player names."]
 end
 
 function mod:GetOptions()

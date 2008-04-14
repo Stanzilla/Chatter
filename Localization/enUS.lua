@@ -1,7 +1,171 @@
+-- This file is script-generated and should not be manually edited.
+-- Localizers may copy this file to edit as necessary.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("Chatter", "enUS", true)
 if not L then return end
 
+-- ./Chatter.lua
+L["Standalone Config"] = true
+L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."] = true
+L["Configure"] = true
+L["Modules"] = true
+L["Settings"] = true
+L["Enable "] = true
+L["Enabled"] = true
+L["Disabled"] = true
+L["Chatter Settings"] = true
+L["Welcome to Chatter! Type /chatter to configure."] = true
+
+-- ./Modules/AltNames.lua
+L["Alt Linking"] = true
+L["Use PlayerNames coloring"] = true
+L["Use custom color"] = true
+L["Use channel color"] = true
+L["Name color"] = true
+L["Set the coloring mode for alt names"] = true
+L["Custom color"] = true
+L["Select the custom color to use for alt names"] = true
+L["Who is %s's main?"] = true
+L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."] = true
+
+-- ./Modules/AutoLogChat.lua
+L["Chat Autolog"] = true
+L["Automatically turns on chat logging."] = true
+
+-- ./Modules/Buttons.lua
+L["Disable Buttons"] = true
+L["Show bottom when scrolled"] = true
+L["Show bottom button when scrolled up"] = true
+L["Hides the buttons attached to the chat frame"] = true
+
+-- ./Modules/ChannelColors.lua
+L["Keeps your channel colors by name rather than by number."] = true
+L["Other Channels"] = true
+L["Yell"] = true
+L["Guild"] = true
+L["Officer"] = true
+L["Raid"] = true
+L["Party"] = true
+L["Raid Warning"] = true
+L["Say"] = true
+L["Battleground"] = true
+L["Whisper"] = true
+L["Select a color for this channel"] = true
+
+-- ./Modules/ChannelNames.lua
+L["Channel Names"] = true
+L["Raid Leader"] = true
+L["LookingForGroup"] = true
+L["Battleground Leader"] = true
+L["Custom Channels"] = true
+L["Replace this channel name with..."] = true
+L["^To "] = true
+L["^(.-|h) whispers:"] = true
+L["Enables you to replace channel names with your own names"] = true
+
+-- ./Modules/ChatFading.lua
+L["Disable Fading"] = true
+L["Makes old text disappear rather than fade out"] = true
+
+-- ./Modules/ChatFont.lua
+L["Chat Font"] = true
+L["Font"] = true
+L["Font size"] = true
+L["Font Outline"] = true
+L["Font outlining"] = true
+L["Chat Frame "] = true
+L["Enables you to set a custom font and font size for your chat frames"] = true
+
+-- ./Modules/ChatFrameBorders.lua
+L["Borders/Background"] = true
+L["Enable"] = true
+L["Enable borders on this frame"] = true
+L["Combat Log Fix"] = true
+L["Resize this border to fit the new combat log"] = true
+L["Background texture"] = true
+L["Border texture"] = true
+L["Background color"] = true
+L["Border color"] = true
+L["Background Inset"] = true
+L["Tile Size"] = true
+L["Edge Size"] = true
+L["Gives you finer control over the chat frame's background and border colors"] = true
+
+-- ./Modules/ChatLink.Lua
+L["Chat Link"] = true
+L["Lets you link items, enchants, spells, and quests in custom channels."] = true
+
+-- ./Modules/ChatScroll.lua
+L["Mousewheel Scroll"] = true
+L["Scroll lines"] = true
+L["How many lines to scroll per mouse wheel click"] = true
+L["Lets you use the mousewheel to page up and down chat."] = true
+
+-- ./Modules/ChatTabs.lua
+L["Chat Tabs"] = true
+L["Button Height"] = true
+L["Button's height, and text offset from the frame"] = true
+
+-- ./Modules/ClickInvite.lua
+L["Invite Links"] = true
+L["Add Word"] = true
+L["Add word to your invite trigger list"] = true
+L["Remove Word"] = true
+L["Remove a word from your invite trigger list"] = true
+L["Remove this word from your trigger list?"] = true
+L["invite"] = true
+L["inv"] = true
+L["Lets you click the word 'invite' in chat to invite people to your party."] = true
+
+-- ./Modules/CopyChat.lua
+L["Copy Chat"] = true
+L["Lets you copy text out of your chat frames."] = true
+
+-- ./Modules/EditBox.lua
+L["Edit Box Polish"] = true
+L["Top"] = true
+L["Bottom"] = true
+L["Free-floating"] = true
+L["Free-floating, Locked"] = true
+L["Attach to..."] = true
+L["Attach edit box to..."] = true
+L["Color border by channel"] = true
+L["Sets the frame's border color to the color of your currently active channel"] = true
+L["Use Alt key for cursor movement"] = true
+L["Requires the Alt key to be held down to move the cursor in chat"] = true
+L["Select the font to use for the edit box"] = true
+L["Lets you customize the position and look of the edit box"] = true
+
+-- ./Modules/GroupSay.lua
+L["Group Say (/gr)"] = true
+L["Provides a /gr slash command to let you speak in your group (raid, party, or battleground) automatically."] = true
+
+-- ./Modules/Highlight.lua
+L["Highlights"] = true
+L["Use sound"] = true
+L["Play a soundfile when one of your keywords is said."] = true
+L["Show SCT message"] = true
+L["Show highlights in your SCT mod"] = true
+L["Sound File"] = true
+L["Sound file to play"] = true
+L["Add word to your highlight list"] = true
+L["Remove a word from your highlight list"] = true
+L["Remove this word from your highlights?"] = true
+L["Custom Channel Sounds"] = true
+L["Play a sound when a message is received in this channel"] = true
+L["%s said '%s' in %s"] = true
+L["Alerts you when someone says a keyword or speaks in a specified channel."] = true
+
+-- ./Modules/Justify.lua
+L["Text Justification"] = true
+L["Enable text justification"] = true
+L["Left"] = true
+L["Right"] = true
+L["Center"] = true
+L["Lets you set the justification of text in your chat frames."] = true
+
+-- ./Modules/PlayerNames.lua
+L["Player Names"] = true
 L["Warlock"] = true
 L["Warrior"] = true
 L["Hunter"] = true
@@ -11,3 +175,65 @@ L["Druid"] = true
 L["Paladin"] = true
 L["Shaman"] = true
 L["Rogue"] = true
+L["Save Data"] = true
+L["Save data between sessions. Will increase memory usage"] = true
+L["Save class data from guild between sessions."] = true
+L["Group"] = true
+L["Save class data from groups between sessions."] = true
+L["Target/Mouseover"] = true
+L["Save class data from target/mouseover between sessions."] = true
+L["Who"] = true
+L["Save class data from /who queries between sessions."] = true
+L["Reset Data"] = true
+L["Destroys all your saved class/level data"] = true
+L["Are you sure you want to delete all your saved class/level data?"] = true
+L["Left Bracket"] = true
+L["Character to use for the left bracket"] = true
+L["Right Bracket"] = true
+L["Character to use for the right bracket"] = true
+L["Use Tab Complete"] = true
+L["Use tab key to automatically complete character names."] = true
+L["Level Options"] = true
+L["Include level"] = true
+L["Include the player's level"] = true
+L["Exclude Level 70s"] = true
+L["Exclude level display for level 70s"] = true
+L["Color level by difficulty"] = true
+L["Color Player Names By..."] = true
+L["Select a method for coloring player names"] = true
+L["Provides options to color player names, add player levels, and add tab completion of player names."] = true
+
+-- ./Modules/StickyChannels.lua
+L["Sticky Channels"] = true
+L["Emote"] = true
+L["Raid warning"] = true
+L["Custom channels"] = true
+L["Make %s sticky"] = true
+L["Makes channels you select sticky."] = true
+
+-- ./Modules/Telltarget.lua
+L["Tell Target (/tt)"] = true
+L["Enables the /tt command to send a tell to your target."] = true
+
+-- ./Modules/Timestamps.lua
+L["Timestamps"] = true
+L["HH:MM:SS AM (12-hour)"] = true
+L["HH:MM (12-hour)"] = true
+L["HH:MM:SS (24-hour)"] = true
+L["HH:MM (24-hour)"] = true
+L["MM:SS"] = true
+L["Timestamp format"] = true
+L["Custom format (advanced)"] = true
+L["Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list of valid formatting symbols."] = true
+L["Timestamp color"] = true
+L["Color timestamps the same as the channel they appear in."] = true
+L["Adds timestamps to chat."] = true
+
+-- ./Modules/TinyChat.lua
+L["Tiny Chat"] = true
+L["Allows you to make the chat frames much smaller than usual."] = true
+
+-- ./Modules/UrlCopy.lua
+L["URL Copy"] = true
+L["Lets you copy URLs out of chat."] = true
+

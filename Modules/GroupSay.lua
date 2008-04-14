@@ -1,4 +1,7 @@
 local mod = Chatter:NewModule("Group Say (/gr)", "AceHook-3.0", "AceConsole-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Group Say (/gr)"]
+
 local GetNumPartyMembers = _G.GetNumPartyMembers
 local IsInInstance = _G.IsInInstance
 local GetNumPartyMembers = _G.GetNumPartyMembers
@@ -41,5 +44,5 @@ function mod:GetGroupDistribution(slash)
 end
 
 function mod:Info()
-	return "Provides a /gr slash command to let you speak in your group (raid, party, or battleground) automatically."
+	return L["Provides a /gr slash command to let you speak in your group (raid, party, or battleground) automatically."]
 end

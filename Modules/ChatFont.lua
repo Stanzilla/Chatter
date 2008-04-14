@@ -1,4 +1,7 @@
 local mod = Chatter:NewModule("Chat Font")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Chat Font"]
+
 local Media = LibStub("LibSharedMedia-3.0")
 local fonts = {}
 local fonts_and_default = {Default = "Default"}
@@ -15,8 +18,8 @@ local outlines = {[""] = "None", ["OUTLINE"] = "Outline", ["THICKOUTLINE"] = "Th
 local options = {
 	font = {
 		type = "select",
-		name = "Font",
-		desc = "Font",
+		name = L["Font"],
+		desc = L["Font"],
 		values = fonts,
 		get = function() return mod.db.profile.font end,
 		set = function(info, v) 
@@ -26,8 +29,8 @@ local options = {
 	},
 	fontsize = {
 		type = "range",
-		name = "Font size",
-		desc = "Font size",
+		name = L["Font size"],
+		desc = L["Font size"],
 		min = 4,
 		max = 30,
 		step = 1,
@@ -40,8 +43,8 @@ local options = {
 	},
 	outline = {
 		type = "select",
-		name = "Font Outline",
-		desc = "Font outlining",
+		name = L["Font Outline"],
+		desc = L["Font outlining"],
 		values = outlines,
 		get = function() return mod.db.profile.outline or "" end,
 		set = function(info, v) 
@@ -61,13 +64,13 @@ function mod:OnInitialize()
 		local cf = _G["ChatFrame" .. i]
 		local t = {
 			type = "group",
-			name = "Chat Frame " .. i,
-			desc = "Chat Frame " .. i,
+			name = L["Chat Frame "] .. i,
+			desc = L["Chat Frame "] .. i,
 			args = {
 				fontsize = {
 					type = "range",
-					name = "Font size",
-					desc = "Font size",
+					name = L["Font size"],
+					desc = L["Font size"],
 					min = 4,
 					max = 30,
 					step = 1,
@@ -80,8 +83,8 @@ function mod:OnInitialize()
 				},
 				font = {
 					type = "select",
-					name = "Font",
-					desc = "Font",
+					name = L["Font"],
+					desc = L["Font"],
 					values = fonts_and_default,
 					get = function() return mod.db.profile.frames["FRAME_" .. i].font or mod.db.profile.font end,
 					set = function(info, v) 
@@ -91,8 +94,8 @@ function mod:OnInitialize()
 				},
 				outline = {
 					type = "select",
-					name = "Font Outline",
-					desc = "Font outlining",
+					name = L["Font Outline"],
+					desc = L["Font outlining"],
 					values = outlines,
 					get = function() return mod.db.profile.frames["FRAME_" .. i].outline or "" end,
 					set = function(info, v) 
@@ -118,7 +121,7 @@ function mod:OnEnable()
 end
 
 function mod:OnDisable()
-	self:SetFont(nil, "Fritz Quadrata", 12, "")
+	self:SetFont(nil, "Arial Narrow", 12, "")
 end
 
 function mod:SetFont(cf, font, size, outline)
@@ -151,5 +154,5 @@ function mod:GetOptions()
 end
 
 function mod:Info()
-	return "Enables you to set a custom font and font size for your chat frames"
+	return L["Enables you to set a custom font and font size for your chat frames"]
 end

@@ -1,4 +1,6 @@
 local mod = Chatter:NewModule("Edit Box Polish", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Edit Box Polish"]
 
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders, fonts = {}, {}, {}
@@ -8,17 +10,17 @@ local pairs = _G.pairs
 local select = _G.select
 
 local VALID_ATTACH_POINTS = {
-	TOP = "Top",
-	BOTTOM = "Bottom",
-	FREE = "Free-floating",
-	LOCK = "Free-floating, Locked"
+	TOP = L["Top"],
+	BOTTOM = L["Bottom"],
+	FREE = L["Free-floating"],
+	LOCK = L["Free-floating, Locked"]
 }
 
 local options = {
 	background = {
 		type = "select",
-		name = "Background texture",
-		desc = "Background texture",
+		name = L["Background texture"],
+		desc = L["Background texture"],
 		values = backgrounds,
 		get = function() return mod.db.profile.background end,
 		set = function(info, v)
@@ -28,8 +30,8 @@ local options = {
 	},
 	border = {
 		type = "select",
-		name = "Border texture",
-		desc = "Border texture",
+		name = L["Border texture"],
+		desc = L["Border texture"],
 		values = borders,
 		get = function() return mod.db.profile.border end,
 		set = function(info, v)
@@ -39,8 +41,8 @@ local options = {
 	},
 	backgroundColor = {
 		type = "color",
-		name = "Background color",
-		desc = "Background color",
+		name = L["Background color"],
+		desc = L["Background color"],
 		hasAlpha = true,
 		get = function()
 			local c = mod.db.profile.backgroundColor
@@ -54,8 +56,8 @@ local options = {
 	},
 	borderColor = {
 		type = "color",
-		name = "Border color",
-		desc = "Border color",
+		name = L["Border color"],
+		desc = L["Border color"],
 		hasAlpha = true,
 		get = function()
 			local c = mod.db.profile.borderColor
@@ -69,8 +71,8 @@ local options = {
 	},
 	inset = {
 		type = "range",
-		name = "Background Inset",
-		desc = "Background Inset",
+		name = L["Background Inset"],
+		desc = L["Background Inset"],
 		min = 1,
 		max = 64,
 		step = 1,
@@ -83,8 +85,8 @@ local options = {
 	},
 	tileSize = {
 		type = "range",
-		name = "Tile Size",
-		desc = "Tile Size",
+		name = L["Tile Size"],
+		desc = L["Tile Size"],
 		min = 1,
 		max = 64,
 		step = 1,
@@ -97,8 +99,8 @@ local options = {
 	},
 	edgeSize = {
 		type = "range",
-		name = "Edge Size",
-		desc = "Edge Size",
+		name = L["Edge Size"],
+		desc = L["Edge Size"],
 		min = 1,
 		max = 64,
 		step = 1,
@@ -111,8 +113,8 @@ local options = {
 	},
 	attach = {
 		type = "select",
-		name = "Attach to...",
-		desc = "Attach edit box to...",
+		name = L["Attach to..."],
+		desc = L["Attach edit box to..."],
 		get = function() return mod.db.profile.attach end,
 		values = VALID_ATTACH_POINTS,
 		set = function(info, v)
@@ -122,8 +124,8 @@ local options = {
 	},
 	colorByChannel = {
 		type = "toggle",
-		name = "Color border by channel",
-		desc = "Sets the frame's border color to the color of your currently active channel",
+		name = L["Color border by channel"],
+		desc = L["Sets the frame's border color to the color of your currently active channel"],
 		get = function()
 			return mod.db.profile.colorByChannel
 		end,
@@ -142,8 +144,8 @@ local options = {
 	},
 	useAltKey = {
 		type = "toggle",
-		name = "Use Alt key for cursor movement",
-		desc = "Requires the Alt key to be held down to move the cursor in chat",
+		name = L["Use Alt key for cursor movement"],
+		desc = L["Requires the Alt key to be held down to move the cursor in chat"],
 		get = function()
 			return mod.db.profile.useAlt
 		end,
@@ -154,8 +156,8 @@ local options = {
 	},
 	font = {
 		type = "select",
-		name = "Font",
-		desc = "Select the font to use for the edit box",
+		name = L["Font"],
+		desc = L["Select the font to use for the edit box"],
 		values = fonts,
 		get = function() return mod.db.profile.font end,
 		set = function(i, v)
@@ -365,5 +367,5 @@ do
 end
 
 function mod:Info()
-	return "Lets you customize the position and look of the edit box"
+	return L["Lets you customize the position and look of the edit box"]
 end

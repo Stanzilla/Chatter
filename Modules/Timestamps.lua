@@ -1,16 +1,18 @@
 local mod = Chatter:NewModule("Timestamps", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Timestamps"]
 
 local date = _G.date
 
 local SELECTED_FORMAT
 local COLOR
 local FORMATS = {
-	["%I:%M:%S %p"] = "HH:MM:SS AM (12-hour)",
-	["%I:%M:S"] = "HH:MM (12-hour)",
-	["%X"] = "HH:MM:SS (24-hour)",
-	["%I:%M"] = "HH:MM (12-hour)",
-	["%H:%M"] = "HH:MM (24-hour)",
-	["%M:%S"] = "MM:SS",
+	["%I:%M:%S %p"] = L["HH:MM:SS AM (12-hour)"],
+	["%I:%M:S"] = L["HH:MM (12-hour)"],
+	["%X"] = L["HH:MM:SS (24-hour)"],
+	["%I:%M"] = L["HH:MM (12-hour)"],
+	["%H:%M"] = L["HH:MM (24-hour)"],
+	["%M:%S"] = L["MM:SS"],
 }
 
 local defaults = {
@@ -20,8 +22,8 @@ local defaults = {
 local options = {
 	format = {
 		type = "select",
-		name = "Timestamp format",
-		desc = "Timestamp format",
+		name = L["Timestamp format"],
+		desc = L["Timestamp format"],
 		values = FORMATS,
 		get = function() return mod.db.profile.format end,
 		set = function(info, v)
@@ -31,8 +33,8 @@ local options = {
 	},
 	customFormat = {
 		type = "input",
-		name = "Custom format (advanced)",
-		desc = "Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list of valid formatting symbols.",
+		name = L["Custom format (advanced)"],
+		desc = L["Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list of valid formatting symbols."],
 		get = function() return mod.db.profile.customFormat end,
 		set = function(info, v)
 			if #v == 0 then v = nil end
@@ -43,8 +45,8 @@ local options = {
 	},
 	color = {
 		type = "color",
-		name = "Timestamp color",
-		desc = "Timestamp color",
+		name = L["Timestamp color"],
+		desc = L["Timestamp color"],
 		get = function()
 			local c = mod.db.profile.color
 			return c.r, c.g, c.b
@@ -58,8 +60,8 @@ local options = {
 	},
 	useChannelColor = {
 		type = "toggle",
-		name = "Use channel color",
-		desc = "Color timestamps the same as the channel they appear in.",
+		name = L["Use channel color"],
+		desc = L["Color timestamps the same as the channel they appear in."],
 		get = function()
 			return mod.db.profile.colorByChannel
 		end,
@@ -98,7 +100,7 @@ function mod:AddMessage(frame, text, ...)
 end
 
 function mod:Info()
-	return "Adds timestamps to chat."
+	return L["Adds timestamps to chat."]
 end
 
 function mod:GetOptions()

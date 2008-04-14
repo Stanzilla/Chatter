@@ -1,5 +1,7 @@
 local mod = Chatter:NewModule("Disable Fading")
-mod.toggleLabel = "Disable Fading"
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Disable Fading"]
+mod.toggleLabel = L["Disable Fading"]
 
 function mod:OnEnable()
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -16,5 +18,5 @@ function mod:OnDisable()
 end
 
 function mod:Info()
-	return "Makes old text disappear rather than fade out"
+	return L["Makes old text disappear rather than fade out"]
 end

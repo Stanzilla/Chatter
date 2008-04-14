@@ -1,4 +1,6 @@
 local mod = Chatter:NewModule("Chat Copy", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Copy Chat"]
 
 local lines = {}
 local table_concat = _G.table.concat
@@ -140,5 +142,5 @@ function mod:GetLines(...)
 end
 
 function mod:Info()
-	return "Lets you copy text out of your chat frames."
+	return L["Lets you copy text out of your chat frames."]
 end

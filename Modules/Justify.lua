@@ -1,14 +1,16 @@
 local mod = Chatter:NewModule("Justify Text")
-mod.toggleLabel = "Enable text justification"
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+mod.modName = L["Text Justification"]
+mod.toggleLabel = L["Enable text justification"]
 
 local defaults = {
 	profile = {}
 }
 
 local VALID_JUSTIFICATIONS = {
-	LEFT = "Left",
-	RIGHT = "Right",
-	CENTER = "Center"
+	LEFT = L["Left"],
+	RIGHT = L["Right"],
+	CENTER = L["Center"]
 }
 
 local options = {}
@@ -50,5 +52,5 @@ function mod:GetOptions()
 end
 
 function mod:Info()
-	return "Lets you set the justification of text in your chat frames."
+	return L["Lets you set the justification of text in your chat frames."]
 end

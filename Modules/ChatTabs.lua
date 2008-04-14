@@ -1,6 +1,7 @@
 local mod = Chatter:NewModule("ChatTabs", "AceHook-3.0", "AceEvent-3.0")
-
+local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 local font = GameFontNormalSmall
+mod.modName = L["Chat Tabs"]
 
 local defaults = {
 	profile = {
@@ -11,8 +12,8 @@ local defaults = {
 local options = {
 	height = {
 		type = "range",
-		name = "Button Offset",
-		desc = "Button's height, and text offset from the frame",
+		name = L["Button Height"],
+		desc = L["Button's height, and text offset from the frame"],
 		step = 1,
 		bigStep = 1,
 		get = function() return mod.db.profile.height end,

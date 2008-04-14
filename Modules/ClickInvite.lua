@@ -9,6 +9,8 @@ local sub = _G.string.sub
 local InviteUnit = _G.InviteUnit
 local next = _G.next
 local type = _G.type
+local IsAltKeyDown = _G.IsAltKeyDown
+local match = _G.string.match
 
 local options = {
 	addWord = {
@@ -30,12 +32,20 @@ local options = {
 		end,
 		values = function() return mod.db.profile.words end,
 		confirm = function(info, v) return (L["Remove this word from your trigger list?"]) end
+	},
+	altClick = {
+		type = "toggle",
+		name = L["Alt-click name to invite"],
+		desc = L["Lets you alt-click player names to invite them to your party."],
+		get = function() return mod.db.profile.altClickToinvite end,
+		set = function(i, v) mod.db.profile.altClickToinvite = v end
 	}
 }
 
 local defaults = {
 	profile = {
-		words = {}
+		words = {},
+		altClickToInvite = true
 	}
 }
 
@@ -90,16 +100,22 @@ function mod:AddMessage(frame, text, ...)
 end
 
 function mod:SetItemRef(link, text, button)
-	if sub(link, 1, 6) == "invite" then
+	local linkType = sub(link, 1, 6)
+	-- Chatter:Print(IsAltKeyDown(), linkType, self.db.profile.altClickToInvite)
+	if IsAltKeyDown() and linkType == "player" and self.db.profile.altClickToInvite then
+		local name = match(link, "player:(%w+)")
+		InviteUnit(name)
+		return nil
+	elseif linkType == "invite" then
 		local name = sub(link, 8)
 		InviteUnit(name)
-		return
+		return nil
 	end
 	return self.hooks.SetItemRef(link, text, button)
 end
 
 function mod:Info()
-	return L["Lets you click the word 'invite' in chat to invite people to your party."]
+	return L["Gives you more flexibility in how you invite people to your group."]
 end
 
 function mod:GetOptions()

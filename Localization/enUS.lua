@@ -114,9 +114,11 @@ L["Add word to your invite trigger list"] = true
 L["Remove Word"] = true
 L["Remove a word from your invite trigger list"] = true
 L["Remove this word from your trigger list?"] = true
+L["Alt-click name to invite"] = true
+L["Lets you alt-click player names to invite them to your party."] = true
 L["invite"] = true
 L["inv"] = true
-L["Lets you click the word 'invite' in chat to invite people to your party."] = true
+L["Gives you more flexibility in how you invite people to your group."] = true
 
 -- ./Modules/CopyChat.lua
 L["Copy Chat"] = true

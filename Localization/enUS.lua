@@ -164,6 +164,10 @@ L["Right"] = true
 L["Center"] = true
 L["Lets you set the justification of text in your chat frames."] = true
 
+-- ./Modules/LinkHover.lua
+L["Link Hover"] = true
+L["Makes link tooltips show when you hover them in chat."] = true
+
 -- ./Modules/PlayerNames.lua
 L["Player Names"] = true
 L["Warlock"] = true

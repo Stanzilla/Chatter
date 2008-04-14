@@ -528,7 +528,7 @@ function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 end
 
 local function changeName(msg, name, msgCnt, displayName)
-	return ("|Hplayer:%s:%s|h%s%s%s|h"):format(name, msgCnt, leftBracket, names[name], rightBracket)
+	return ("|Hplayer:%s%s|h%s%s%s|h"):format(name, msgCnt, leftBracket, names[name], rightBracket)
 end
 
 function mod:AddMessage(frame, text, ...)

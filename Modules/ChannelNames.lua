@@ -56,27 +56,35 @@ local function excludeChannels(...)
 end
 local functions = {}
 
+local function addChannel(name)
+	options[name:gsub(" ", "_")] = {
+		type = "input",
+		name = name,
+		desc = L["Replace this channel name with..."],
+		order = name:lower() == name and 101 or 98,
+		get = function()
+			local v = mod.db.profile.channels[name]
+			return v == "" and " " or v
+		end,
+		set = function(info, v)
+			mod.db.profile.channels[name] = #v > 0 and v or nil
+			if v:match("^function%(") then
+				functions[name] = loadstring("return " .. v)()
+			end
+		end
+	}
+end
+
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("ChannelNames", defaults)
 	self.db.profile.customChannels = nil
 	for k, _ in pairs(self.db.profile.channels) do
-		options[k:gsub(" ", "_")] = {
-			type = "input",
-			name = k,
-			desc = L["Replace this channel name with..."],
-			order = k:lower() == k and 101 or 98,
-			get = function()
-				local v = self.db.profile.channels[k]
-				return v == "" and " " or v
-			end,
-			set = function(info, v)
-				self.db.profile.channels[k] = #v > 0 and v or nil
-				if v:match("^function%(") then
-					functions[k] = loadstring("return " .. v)()
-				end
-			end
-		}
+		addChannel(k)
 	end
+	excludeChannels(EnumerateServerChannels())
+	for k, v in pairs(serverChannels) do
+		addChannel(k)
+	end	
 	self:AddCustomChannels(GetChannelList())
 
 	for k, v in pairs(self.db.profile.channels) do
@@ -87,7 +95,6 @@ function mod:OnInitialize()
 end
 
 function mod:AddCustomChannels(...)
-	-- excludeChannels(EnumerateServerChannels())
 	for i = 1, select("#", ...), 2 do
 		local id, name = select(i, ...)
 		if not serverChannels[name] and not options[name:gsub(" ", "_")] then
@@ -127,10 +134,9 @@ function mod:CHAT_MSG_CHANNEL_NOTICE()
 end
 
 local function replaceChannel(msg, num, channel)
-	channel = channel:lower()
-	if channels[channel] then
-		local v = channels[channel]
-		return (v == " " and "") or ((functions[channel] or v) .. (mod.db.profile.addSpace and " " or ""))
+	local v = channels[channel] or channels[channel:lower()]
+	if v then
+		return (v == " " and "") or ((functions[channel] or functions[channel:lower()] or v) .. (mod.db.profile.addSpace and " " or ""))
 	end
 end
 

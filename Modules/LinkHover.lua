@@ -21,12 +21,12 @@ function mod:OnEnable()
 	end
 end
 
-function mod:OnHyperlinkEnter(f, link, b, c)
+function mod:OnHyperlinkEnter(f, link)
 	local t = strmatch(link, "^(.-):")
 	if linkTypes[t] then
 		ShowUIPanel(GameTooltip)
 		GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR")
-		GameTooltip:SetHyperlink(link, b, c)
+		GameTooltip:SetHyperlink(link)
 		GameTooltip:Show()
 	end			
 end

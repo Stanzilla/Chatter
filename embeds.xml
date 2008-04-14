@@ -14,5 +14,6 @@
 <Include file="Libs\AceConfig-3.0\AceConfig-3.0.xml"/>
 <Include file="Libs\AceTab-3.0\AceTab-3.0.xml"/>
 <Include file="Libs\LibSharedMedia-3.0\lib.xml"/>
+<Include file="Libs\LibSink-2.0\lib.xml"/>
 
 </Ui>

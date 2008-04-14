@@ -1,4 +1,4 @@
-local mod = Chatter:NewModule("Highlights", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatter:NewModule("Highlights", "AceHook-3.0", "AceEvent-3.0", "LibSink-2.0")
 
 local Media = LibStub("LibSharedMedia-3.0")
 local sounds = {}
@@ -21,7 +21,8 @@ local defaults = {
 		sound = true,
 		soundFile = nil,
 		popup = true,
-		customChannels = {}
+		customChannels = {},
+		sinkOptions = {}
 	}
 }
 
@@ -35,6 +36,17 @@ local options = {
 		end,
 		set = function(info, v)
 			mod.db.profile.sound = v
+		end
+	},
+	sink = {
+		type = "toggle",
+		name = "Show SCT message",
+		desc = "Show highlights in your SCT mod",
+		get = function()
+			return mod.db.profile.useSink
+		end,
+		set = function(info, v)
+			mod.db.profile.useSink = v
 		end
 	},
 	soundFile = {
@@ -77,6 +89,8 @@ function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("Highlight", defaults)
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	self:AddCustomChannels(GetChannelList())
+	self:SetSinkStorage(self.db.profile.sinkOptions)
+	options.output = self:GetSinkAce3OptionsDataTable()
 end
 
 function mod:LibSharedMedia_Registered()
@@ -149,7 +163,7 @@ function mod:ParseChat(evt, msg, sender, ...)
 	local msg = msg:lower()
 	for k, v in pairs(words) do
 		if msg:find(k) then
-			self:Highlight()
+			self:Highlight(sender, k, select(7, ...), evt)
 			return
 		end
 	end
@@ -171,9 +185,15 @@ function mod:ParseChat(evt, msg, sender, ...)
 	end
 end
 
-function mod:Highlight()
+function mod:Highlight(who, what, where, event)
+	if not where or #where == 0 then
+		where = _G[event] or event:gsub("CHAT_MSG_", "")
+	end
 	if self.db.profile.sound then
 		PlaySoundFile(Media:Fetch("sound", self.db.profile.soundFile))
+	end
+	if self.db.profile.useSink then
+		self:Pour(("%s said '%s' in %s"):format(who, what, where), 1, 1, 0, nil, 24, "OUTLINE", false)
 	end
 end
 

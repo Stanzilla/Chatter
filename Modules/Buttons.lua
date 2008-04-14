@@ -59,8 +59,10 @@ function mod:OnEnable()
 end
 
 function mod:OnDisable()
+	self:Unhook("FCF_SetButtonSide")
 	ChatFrameMenuButton:Show()
 	local upButton, downButton, bottomButton
+	self:DisableBottomButton()
 	for i = 1, NUM_CHAT_WINDOWS do
 		upButton = _G[fmt("%s%d%s", "ChatFrame", i, "UpButton")]
 		upButton:SetScript("OnShow", nil)
@@ -71,19 +73,19 @@ function mod:OnDisable()
 		bottomButton = _G[fmt("%s%d%s", "ChatFrame", i, "BottomButton")]
 		bottomButton:SetScript("OnShow", nil)
 		bottomButton:Show()
+		
+		local f = _G["ChatFrame" .. i]
+		f.buttonSide = nil
+		bottomButton:ClearAllPoints()
+		bottomButton:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", -32, -4);
+		FCF_UpdateButtonSide(f)
 	end
-	self:DisableBottomButton()
 end
 
 function mod:FCF_SetButtonSide(chatFrame, buttonSide)
 	local f = _G[chatFrame:GetName().."BottomButton"]
 	f:ClearAllPoints()
 	f:SetPoint("TOPRIGHT", chatFrame, "TOPRIGHT", 2, 2)
-	--[[
-	if chatFrame:GetLeft() < 50 then
-		f:SetPoint("TOPLEFT", chatFrame, "TOPLEFT", 0, -4)
-	elseif GetScreenWidth() - chatFrame:GetRight() < 50 then
-	end]]--
 end
 
 function mod:Info()

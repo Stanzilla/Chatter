@@ -1,4 +1,4 @@
-Chatter = LibStub("AceAddon-3.0"):NewAddon("Chatter", "AceConsole-3.0") 	--, "AceHook-3.0", "AceTimer-3.0", "AceConsole-3.0", "AceEvent-3.0", "LibSink-2.0")
+Chatter = LibStub("AceAddon-3.0"):NewAddon("Chatter", "AceConsole-3.0", "AceHook-3.0") 	--, "AceHook-3.0", "AceTimer-3.0", "AceConsole-3.0", "AceEvent-3.0", "LibSink-2.0")
 local AceConfig = LibStub("AceConfig-3.0")
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local CreateFrame = _G.CreateFrame
@@ -106,6 +106,20 @@ function Chatter:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileChanged", "SetUpdateConfig")
 	self.db.RegisterCallback(self, "OnProfileCopied", "SetUpdateConfig")
 	self.db.RegisterCallback(self, "OnProfileReset", "SetUpdateConfig")
+	
+	self:RawHook("FCF_Tab_OnClick", true)
+end
+
+do
+	local info
+	function Chatter:FCF_Tab_OnClick(button)
+		self.hooks.FCF_Tab_OnClick(button)
+		info = info or UIDropDownMenu_CreateInfo();
+		info.text = "Chatter Settings"
+		info.func = Chatter.OpenConfig
+		info.notCheckable = 1;
+		UIDropDownMenu_AddButton(info);	
+	end
 end
 
 function Chatter:OpenConfig(input)

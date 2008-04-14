@@ -27,16 +27,23 @@ local defaults = {
 			["Whisper From"] = "[W:From]",
 			["Whisper To"] = "[W:To]"
 		},
-		customChannels = {}
-	}
+		addSpace = true
+	}	
 }
 
-local channels, customChannels
+local channels
 
 local options = {
 	splitter = {
 		type = "header",
 		name = L["Custom Channels"]
+	},
+	addSpace = {
+		type = "toggle",
+		name = L["Add space after channels"],
+		desc = L["Add space after channels"],
+		get = function() return mod.db.profile.addSpace end,
+		set = function(info, v) mod.db.profile.addSpace = v end
 	}
 }
 
@@ -51,12 +58,13 @@ local functions = {}
 
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("ChannelNames", defaults)
+	self.db.profile.customChannels = nil
 	for k, _ in pairs(self.db.profile.channels) do
 		options[k:gsub(" ", "_")] = {
 			type = "input",
 			name = k,
 			desc = L["Replace this channel name with..."],
-			order = 98,
+			order = k:lower() == k and 101 or 98,
 			get = function()
 				local v = self.db.profile.channels[k]
 				return v == "" and " " or v
@@ -76,11 +84,6 @@ function mod:OnInitialize()
 			functions[k] = loadstring("return " .. v)()
 		end
 	end
-	for k, v in pairs(self.db.profile.customChannels) do
-		if v:match("^function%(") then
-			functions[k] = loadstring("return " .. v)()
-		end
-	end	
 end
 
 function mod:AddCustomChannels(...)
@@ -94,13 +97,13 @@ function mod:AddCustomChannels(...)
 				desc = L["Replace this channel name with..."],
 				order = id <= 4 and 98 or 101,
 				get = function()
-					local v = self.db.profile.customChannels[id]
+					local v = self.db.profile.channels[name:lower()]
 					return v == "" and " " or v
 				end,
 				set = function(info, v)
-					self.db.profile.customChannels[id] = #v > 0 and v or nil
+					self.db.profile.channels[name:lower()] = #v > 0 and v or nil
 					if v:match("^function%(") then
-						functions[id] = loadstring("return " .. v)()
+						functions[name:lower()] = loadstring("return " .. v)()
 					end
 				end
 			}
@@ -110,7 +113,6 @@ end
 
 function mod:OnEnable()
 	channels = self.db.profile.channels
-	customChannels = self.db.profile.customChannels
 	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
@@ -124,18 +126,21 @@ function mod:CHAT_MSG_CHANNEL_NOTICE()
 	self:AddCustomChannels(GetChannelList())
 end
 
+local function replaceChannel(msg, num, channel)
+	channel = channel:lower()
+	if channels[channel] then
+		local v = channels[channel]
+		return (v == " " and "") or ((functions[channel] or v) .. (mod.db.profile.addSpace and " " or ""))
+	end
+end
+
 function mod:AddMessage(frame, text, ...)
 	if not text then 
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
 
 	local oldText = text
-	for k, v in pairs(channels) do
-		text = gsub(text, "%[[^%]]*(" .. k .. ")%] ", (v == " " and "") or functions[k] or (v))
-	end
-	for k, v in pairs(customChannels) do
-		text = gsub(text, "%[(" .. k .. "%.[^%]]*)%] ", (v == " " and "") or functions[k] or (v))
-	end
+	text = gsub(text, "(%[([%d. ]+)([^%]]-)%]) ", replaceChannel)
 	text = gsub(text, L["^To "], channels["Whisper To"])
 	text = gsub(text, L["^(.-|h) whispers:"], channels["Whisper From"] .. "%1:")
 	return self.hooks[frame].AddMessage(frame, text, ...)

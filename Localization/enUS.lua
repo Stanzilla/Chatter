@@ -58,6 +58,7 @@ L["Raid Leader"] = true
 L["LookingForGroup"] = true
 L["Battleground Leader"] = true
 L["Custom Channels"] = true
+L["Add space after channels"] = true
 L["Replace this channel name with..."] = true
 L["^To "] = true
 L["^(.-|h) whispers:"] = true

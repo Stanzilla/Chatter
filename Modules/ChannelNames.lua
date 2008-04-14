@@ -146,9 +146,9 @@ function mod:AddMessage(frame, text, ...)
 	end
 
 	local oldText = text
-	text = gsub(text, "(%[([%d. ]+)([^%]]-)%]) ", replaceChannel)
-	text = gsub(text, L["^To "], channels["Whisper To"])
-	text = gsub(text, L["^(.-|h) whispers:"], channels["Whisper From"] .. "%1:")
+	text = gsub(text, "(%[([%d. ]*)([^%]]-)%]) ", replaceChannel)
+	text = gsub(text, L["^To "], channels["Whisper To"] .. (mod.db.profile.addSpace and " " or ""))
+	text = gsub(text, L["^(.-|h) whispers:"], channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

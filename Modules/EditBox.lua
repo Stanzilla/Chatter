@@ -1,7 +1,7 @@
 local mod = Chatter:NewModule("Edit Box Polish", "AceHook-3.0")
 
 local Media = LibStub("LibSharedMedia-3.0")
-local backgrounds, borders = {}, {}
+local backgrounds, borders, fonts = {}, {}, {}
 local CreateFrame = _G.CreateFrame
 local max = _G.max
 local pairs = _G.pairs
@@ -151,6 +151,18 @@ local options = {
 			mod.db.profile.useAlt = v
 			ChatFrameEditBox:SetAltArrowKeyMode(v)
 		end
+	},
+	font = {
+		type = "select",
+		name = "Font",
+		desc = "Select the font to use for the edit box",
+		values = fonts,
+		get = function() return mod.db.profile.font end,
+		set = function(i, v)
+			mod.db.profile.font = v
+			local f, s, m = ChatFrameEditBox:GetFont()
+			ChatFrameEditBox:SetFont(Media:Fetch("font", v), s, m)
+		end
 	}
 }
 
@@ -174,6 +186,9 @@ function mod:LibSharedMedia_Registered()
 	end
 	for k, v in pairs(Media:List("border")) do
 		borders[v] = v
+	end
+	for k, v in pairs(Media:List("font")) do
+		fonts[v] = v
 	end
 end
 
@@ -208,6 +223,9 @@ function mod:OnEnable()
 	self:SetBackdrop()
 	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	
+	local f, s, m = ChatFrameEditBox:GetFont()
+	ChatFrameEditBox:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
+	
 	if self.db.profile.colorByChannel then
 		self:RawHook("ChatEdit_UpdateHeader", "SetBorderByChannel", true)
 	end
@@ -221,6 +239,7 @@ function mod:OnDisable()
 	right:Show()
 	self.frame:Hide()
 	self:SetAttach("BOTTOM")
+	ChatFrameEditBox:SetFont("Fonts\\ARIALN.TTF", 14)
 end
 
 function mod:GetOptions()

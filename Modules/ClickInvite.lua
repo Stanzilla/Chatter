@@ -68,11 +68,12 @@ local valid_events = {
 	CHAT_MSG_GUILD = true
 }
 
-local function addLinks(t)
-	if words[t:lower()] then
+local function addLinks(m, t, p)
+	if words[t:lower()] and p ~= "_" then
 		t = fmt(style, arg2, t)
+		return t .. p
 	end
-	return t
+	return m
 end
 
 function mod:AddMessage(frame, text, ...)
@@ -81,7 +82,7 @@ function mod:AddMessage(frame, text, ...)
 	end
 
 	if valid_events[event] and type(arg2) == "string" then
-		text = gsub(text, "%w+", addLinks)
+		text = gsub(text, "((%w+)(.?))", addLinks)
 	end
 		
 	return self.hooks[frame].AddMessage(frame, text, ...)

@@ -16,7 +16,7 @@ local player = UnitName("player")
 local defaults = {
 	profile = {
 		words = {
-			[player] = player:lower()
+			[player:lower()] = player
 		},
 		sound = true,
 		soundFile = nil,
@@ -82,7 +82,12 @@ local options = {
 		end,
 		values = function() return mod.db.profile.words end,
 		confirm = function(info, v) return ("Remove this word from your highlights?") end
-	}	
+	},
+	customSplitter = {
+		type = "header",
+		name = "Custom Channel Sounds",
+		order= 101
+	}
 }
 
 function mod:OnInitialize()
@@ -148,7 +153,7 @@ function mod:AddCustomChannels(...)
 				name = name,
 				values = sounds,
 				desc = "Play a sound when a message is received in this channel",
-				order = type(id) == "number" and 102 or 101,
+				order = type(id) == "number" and 103 or 102,
 				get = function() return self.db.profile.customChannels[id] or "None" end,
 				set = function(info, v)
 					self.db.profile.customChannels[id] = v

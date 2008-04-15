@@ -62,7 +62,7 @@ L["Font size"] = "폰트 크기"
 L["Font Outline"] = "폰트 외곽선"
 L["Font outlining"] = "폰트 외곽선을 사용합니다."
 L["Chat Frame "] = "대화창 "
-L["Enables you to set a custom font and font size for your chat frames"] = "대화창에 사용자 폰트 및 크기를 적용할 수 있습니다.
+L["Enables you to set a custom font and font size for your chat frames"] = "대화창에 사용자 폰트 및 크기를 적용할 수 있습니다."
 
 
 -- ./Modules/ChatLink.Lua

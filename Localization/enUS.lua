@@ -1,4 +1,4 @@
--- This file is script-generated and should not be manually edited.
+﻿-- This file is script-generated and should not be manually edited.
 -- Localizers may copy this file to edit as necessary.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("Chatter", "enUS", true)
@@ -39,6 +39,7 @@ L["Show bottom button when scrolled up"] = true
 L["Hides the buttons attached to the chat frame"] = true
 
 -- ./Modules/ChannelColors.lua
+L["Channel Colors"] = true
 L["Keeps your channel colors by name rather than by number."] = true
 L["Other Channels"] = true
 L["Yell"] = true

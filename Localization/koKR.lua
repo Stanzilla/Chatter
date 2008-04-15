@@ -37,6 +37,7 @@ L["Show bottom button when scrolled up"] = "마우스로 대화창을 스크롤 
 L["Hides the buttons attached to the chat frame"] = "대화창에 표시되는 버튼을 숨깁니다."
 
 -- ./Modules/ChannelColors.lua
+L["Channel Colors"] = "채널 색상"
 L["Keeps your channel colors by name rather than by number."] = "대화채널을 이름으로 표시합니다."
 L["Other Channels"] = "다른 채널"
 L["Yell"] = "외치기"

@@ -136,7 +136,7 @@ end
 local function replaceChannel(msg, num, channel)
 	local v = channels[channel] or channels[channel:lower()]
 	if v then
-		return (v == " " and "") or ((functions[channel] or functions[channel:lower()] or v) .. (mod.db.profile.addSpace and " " or ""))
+		return (v == " " and (mod.db.profile.addSpace and " " or "")) or ((functions[channel] or functions[channel:lower()] or v) .. (mod.db.profile.addSpace and " " or ""))
 	end
 end
 

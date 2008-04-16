@@ -545,7 +545,7 @@ local function changeName(msg, name, msgCnt, displayName)
 end
 
 function mod:AddMessage(frame, text, ...)
-	if text then 
+	if text and type(text) == "string" then 
 		text = text:gsub("(|Hplayer:(.-)([:%d+]*)|h%[(.-)%]|h)", changeName)
 		-- text = text:gsub("(|Hplayer:(.-)|h%[(.-)%]|h)", changeName)
 	end

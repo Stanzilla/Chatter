@@ -1,7 +1,8 @@
 ## Interface: 20400
 ## Title: Chatter
 ## Notes: Lightweight Chat Improvements
-## Notes-zhCN: Ò»¸öÇáÁ¿¼¶µÄÁÄÌìÔöÇ¿²å¼ş
+## Notes-zhTW: ä¸€å€‹è¼•é‡ç´šçš„èŠå¤©å¢å¼·æ’ä»¶
+## Notes-zhCN: ä¸€ä¸ªè½»é‡çº§çš„èŠå¤©å¢å¼ºæ’ä»¶
 ## Author: Antiarc
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, LibSink-2.0
 ## X-Embeds: Ace3, LibSharedMedia-3.0, LibSink-2.0

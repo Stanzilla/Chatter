@@ -1,4 +1,4 @@
-﻿local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("Chatter", "koKR")
 if not L then return end
 
@@ -157,7 +157,7 @@ L["Custom Channel Sounds"] = "사용자 채널 소리"
 L["Play a sound when a message is received in this channel"] = "현재 채널에 나오는 대화시 소리로 알립니다."
 L["%s said '%s' in %s"] = "%1$s 는 %3$s 에서 '%2$s' 라고 말합니다."
 L["Alerts you when someone says a keyword or speaks in a specified channel."] = "저장된 단어가 대화창에 입력되거나 원하는 채널의 모든 대화시 소리로 알립니다."
-L["Reroute whole message to SCT"] = "SCT 메시지로 다시 보냄
+L["Reroute whole message to SCT"] = "SCT 메시지로 다시 보냄"
 L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"] = "채널의 키워드를 표시하는데 SCT 메시지로 다시 보냅니다."
 L["[%s] %s: %s"] = true
 

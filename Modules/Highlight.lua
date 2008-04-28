@@ -183,7 +183,7 @@ function mod:AddCustomChannels(...)
 end
 
 function mod:ParseChat(evt, msg, sender, ...)
-	--if sender == playerName then return end
+	if sender == playerName then return end
 	local msg = msg:lower()
 	for k, v in pairs(words) do
 		if msg:find(k) then

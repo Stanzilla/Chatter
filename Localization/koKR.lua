@@ -157,6 +157,9 @@ L["Custom Channel Sounds"] = "사용자 채널 소리"
 L["Play a sound when a message is received in this channel"] = "현재 채널에 나오는 대화시 소리로 알립니다."
 L["%s said '%s' in %s"] = "%1$s 는 %3$s 에서 '%2$s' 라고 말합니다."
 L["Alerts you when someone says a keyword or speaks in a specified channel."] = "저장된 단어가 대화창에 입력되거나 원하는 채널의 모든 대화시 소리로 알립니다."
+L["Reroute whole message to SCT"] = "SCT 메시지로 다시 보냄
+L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"] = "채널의 키워드를 표시하는데 SCT 메시지로 다시 보냅니다."
+L["[%s] %s: %s"] = true
 
 -- ./Modules/Justify.lua
 L["Text Justification"] = "대화 위치"
@@ -208,6 +211,10 @@ L["Color level by difficulty"] = "레벨에 따른 색상"
 L["Color Player Names By..."] = "플레이어 이름의 색상"
 L["Select a method for coloring player names"] = "플레이어 이름의 표시방법을 선택합니다."
 L["Provides options to color player names, add player levels, and add tab completion of player names."] = "플레이어 이름 및 레벨에 따른 색상을 표시하고, 탭키를 이용해 플레이어 이름을 자동으로 입력합니다."
+L["Color self in messages"] = "자신을 표시하는 메시지 색상
+L["Color own charname in messages."] = "자신을 표시하는 메시지의 색상을 변경합니다."
+L["Emphasize self in messages"] = "대화창에서 자신 강조"
+L["Add surrounding brackets to own charname in messages."] = "대화창에 자신의 캐릭터 이름이 표시될 경우 강조합니다."
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = "채널 고정"

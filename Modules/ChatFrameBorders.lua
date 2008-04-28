@@ -57,7 +57,7 @@ function mod:OnInitialize()
 		local cf = _G["ChatFrame" .. i]
 		local frame = CreateFrame("Frame", nil, cf, "ChatFrameBorderTemplate")
 		frame:EnableMouse(false)
-		cf:SetFrameStrata("LOW")
+		cf:SetFrameStrata("BACKGROUND")
 		frame:SetFrameStrata("BACKGROUND")
 		frame:SetFrameLevel(1)
 		frame:Hide()

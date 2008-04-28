@@ -1,3 +1,5 @@
+-- This file is script-generated and should not be manually edited.
+-- Localizers may copy this file to edit as necessary.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("Chatter", "frFR")
 if not L then return end
@@ -146,7 +148,7 @@ L["Provides a /gr slash command to let you speak in your group (raid, party, or 
 L["Highlights"] = "Surbrillance"
 L["Use sound"] = "Utiliser un son"
 L["Play a soundfile when one of your keywords is said."] = "Jouer un son quand un de vos mot-cl\195\169s est utilis\195\169."
-L["Show SCT message"] = "Afficher dans le SCT"
+L["Show SCT message"] = "Afficher dans SCT"
 L["Show highlights in your SCT mod"] = "Affiche les mot-cl\195\169s dans votre SCT"
 L["Sound File"] = "Fichier sonore"
 L["Sound file to play"] = "Fichier sonore \195\160 jouer"
@@ -157,6 +159,9 @@ L["Custom Channel Sounds"] = "Sons de canal personnalis\195\169s"
 L["Play a sound when a message is received in this channel"] = "Joue un son quand un message est re\195\167u dans ce canal"
 L["%s said '%s' in %s"] = "%s a dit '%s' dans %s"
 L["Alerts you when someone says a keyword or speaks in a specified channel."] = "Vous alerte quand quelqu'un dit un mot ou parle dans le canal sp\195\169cifi\195\169."
+L["Reroute whole message to SCT"] = "Rediriger tout vers SCT"
+L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"] = "Redirige tout le message vers SCT au lieu de simplement afficher que quelqu'un a utilis\195\169 un mot-cl\195\169 dans le canal"
+L["[%s] %s: %s"] = "[%s] %s: %s"
 
 -- ./Modules/Justify.lua
 L["Text Justification"] = "Justification du Texte"
@@ -205,9 +210,13 @@ L["Include the player's level"] = "Inclut le niveau du joueur"
 L["Exclude Level 70s"] = "Exclure les niveaux 70"
 L["Exclude level display for level 70s"] = "Exclut l'affichage du niveau pour les joueurs de niveau 70"
 L["Color level by difficulty"] = "Coloration du niveau selon la difficult\195\169"
-L["Color Player Names By..."] = "Colorer les noms selon par..."
+L["Color Player Names By..."] = "Colorer les noms par..."
 L["Select a method for coloring player names"] = "Vous permet de choisir la m\195\169thode pour colorer les noms de joueurs."
 L["Provides options to color player names, add player levels, and add tab completion of player names."] = "Vous offre des options pour colorer les noms de joueurs, inclure leurs niveaux, et utiliser la touche Tab pour compl\195\169ter leur noms."
+L["Color self in messages"] = "Colorer votre nom"
+L["Color own charname in messages."] = "Colore votre nom dans les messages"
+L["Emphasize self in messages"] = "Mettre en \195\169vidence"
+L["Add surrounding brackets to own charname in messages."] = "Ajoute des crochets \195\160 votre nom dans les messages"
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = "Canaux Persistants"

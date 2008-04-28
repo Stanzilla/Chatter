@@ -19,6 +19,7 @@ L["Rogue"]
 
 local local_names, local_levels = {}, {}
 local leftBracket, rightBracket
+local colorSelfInText, emphasizeSelfInText
 local gsub = _G.string.gsub
 local find = _G.string.find
 local pairs = _G.pairs
@@ -53,6 +54,7 @@ local tinsert = _G.tinsert
 local type = _G.type
 
 local lookup = {}
+local player = UnitName("player")
 local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shaman", "Warlock", "Warrior"}
 local channels = {
 	GUILD = {},
@@ -75,7 +77,9 @@ local defaults = {
 		nameColoring = "CLASS", 
 		leftBracket = "[", 
 		rightBracket = "]", 
-		useTabComplete = true
+		useTabComplete = true,
+		colorSelfInText = true,
+		emphasizeSelfInText = true,
 	}
 }
 
@@ -298,6 +302,26 @@ local options = {
 			end
 		end
 	},
+	colorSelfInText = {
+		type = "toggle",
+		name = L["Color self in messages"],
+		desc = L["Color own charname in messages."],
+		get = function() return mod.db.profile.colorSelfInText end,
+		set = function(i, v)
+			mod.db.profile.colorSelfInText = v
+			colorSelfInText = v
+		end
+	},
+	emphasizeSelfInText = {
+		type = "toggle",
+		name = L["Emphasize self in messages"],
+		desc = L["Add surrounding brackets to own charname in messages."],
+		get = function() return mod.db.profile.emphasizeSelfInText end,
+		set = function(i, v)
+			mod.db.profile.emphasizeSelfInText = v
+			emphasizeSelfInText = v
+		end
+	},
 	levelHeader = {
 		type = "header",
 		name = L["Level Options"],
@@ -392,6 +416,7 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_CHANNEL", "CHAT_MSG_CHANNEL_JOIN")
 	
 	leftBracket, rightBracket, separator = self.db.profile.leftBracket, self.db.profile.rightBracket, self.db.profile.separator
+	colorSelfInText, emphasizeSelfInText = self.db.profile.colorSelfInText, self.db.profile.emphasizeSelfInText
 	GuildRoster()
 
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -540,13 +565,19 @@ function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 	channels[chan:lower()][name] = nil
 end
 
-local function changeName(msg, name, msgCnt, displayName)
-	return ("|Hplayer:%s%s|h%s%s%s|h"):format(name, msgCnt, leftBracket, names[name], rightBracket)
+local function changeName(msgHeader, name, msgCnt, displayName, msgBody)
+	if emphasizeSelfInText then
+		msgBody = msgBody:gsub("("..player..")" , "|cffffff00>|r%1|cffffff00<|r"):gsub("("..player:lower()..")" , "|cffffff00>|r%1|cffffff00<|r")
+	end
+	if colorSelfInText then
+		msgBody = msgBody:gsub("("..player..")" , "|cffff0000%1|r"):gsub("("..player:lower()..")" , "|cffff0000%1|r")
+	end
+	return ("|Hplayer:%s%s|h%s%s%s|h%s"):format(name, msgCnt, leftBracket, names[name], rightBracket, msgBody)
 end
 
 function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then 
-		text = text:gsub("(|Hplayer:(.-)([:%d+]*)|h%[(.-)%]|h)", changeName)
+		text = text:gsub("(|Hplayer:(.-)([:%d+]*)|h%[(.-)%]|h)(.-)$", changeName)
 		-- text = text:gsub("(|Hplayer:(.-)|h%[(.-)%]|h)", changeName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)

@@ -22,7 +22,8 @@ local defaults = {
 		},
 		sound = true,
 		soundFile = nil,
-		popup = true,
+		useSink = true,
+		rerouteMessage = true,
 		customChannels = {},
 		sinkOptions = {}
 	}
@@ -44,12 +45,26 @@ local options = {
 		type = "toggle",
 		name = L["Show SCT message"],
 		desc = L["Show highlights in your SCT mod"],
+		order = 21,
 		get = function()
 			return mod.db.profile.useSink
 		end,
 		set = function(info, v)
 			mod.db.profile.useSink = v
 		end
+	},
+	rerouteMessage = {
+		type = "toggle",
+		name = L["Reroute whole message to SCT"],
+		desc = L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"],
+		order = 22,
+		get = function()
+			return mod.db.profile.rerouteMessage
+		end,
+		set = function(info, v)
+			mod.db.profile.rerouteMessage = v
+		end,
+		disabled = function() return not mod.db.profile.useSink end
 	},
 	soundFile = {
 		type = "select",
@@ -168,11 +183,11 @@ function mod:AddCustomChannels(...)
 end
 
 function mod:ParseChat(evt, msg, sender, ...)
-	if sender == playerName then return end
+	--if sender == playerName then return end
 	local msg = msg:lower()
 	for k, v in pairs(words) do
 		if msg:find(k) then
-			self:Highlight(sender, k, select(7, ...), evt)
+			self:Highlight(msg, sender, k, select(7, ...), evt)
 			return
 		end
 	end
@@ -194,7 +209,7 @@ function mod:ParseChat(evt, msg, sender, ...)
 	end
 end
 
-function mod:Highlight(who, what, where, event)
+function mod:Highlight(msg, who, what, where, event)
 	if not where or #where == 0 then
 		where = _G[event] or event:gsub("CHAT_MSG_", "")
 	end
@@ -202,7 +217,11 @@ function mod:Highlight(who, what, where, event)
 		PlaySoundFile(Media:Fetch("sound", self.db.profile.soundFile))
 	end
 	if self.db.profile.useSink then
-		self:Pour((L["%s said '%s' in %s"]):format(who, what, where), 1, 1, 0, nil, 24, "OUTLINE", false)
+		if mod.db.profile.rerouteMessage then
+			self:Pour((L["[%s] %s: %s"]):format(where, who, msg), 1, 1, 0, nil, 24, "OUTLINE", false)
+		else
+			self:Pour((L["%s said '%s' in %s"]):format(who, what, where), 1, 1, 0, nil, 24, "OUTLINE", false)
+		end
 	end
 end
 

@@ -159,6 +159,9 @@ L["Custom Channel Sounds"] = true
 L["Play a sound when a message is received in this channel"] = true
 L["%s said '%s' in %s"] = true
 L["Alerts you when someone says a keyword or speaks in a specified channel."] = true
+L["Reroute whole message to SCT"] = true
+L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"] = true
+L["[%s] %s: %s"] = true
 
 -- ./Modules/Justify.lua
 L["Text Justification"] = true
@@ -210,6 +213,10 @@ L["Color level by difficulty"] = true
 L["Color Player Names By..."] = true
 L["Select a method for coloring player names"] = true
 L["Provides options to color player names, add player levels, and add tab completion of player names."] = true
+L["Color self in messages"] = true
+L["Color own charname in messages."] = true
+L["Emphasize self in messages"] = true
+L["Add surrounding brackets to own charname in messages."] = true
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = true

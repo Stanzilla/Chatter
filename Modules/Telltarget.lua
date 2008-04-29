@@ -30,7 +30,7 @@ end
 	
 function mod:TellTarget(frame, msg)	
 	local unitname, realm
-	if UnitIsPlayer("target") and (UnitCanAssist("player", "target") or UnitIsCharmed("target"))then
+	if UnitIsPlayer("target") and (UnitIsFriend("player", "target") or UnitIsCharmed("target"))  then
 		unitname, realm = UnitName("target")
 		if unitname then unitname = gsub(unitname, " ", "") end
 		if unitname and not UnitIsSameServer("player", "target") then

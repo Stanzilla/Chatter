@@ -157,6 +157,9 @@ L["Custom Channel Sounds"] = "自定義頻道聲音"
 L["Play a sound when a message is received in this channel"] = "當這個頻道有新消息時播放一個聲音"
 L["%s said '%s' in %s"] = "%s說「%s」(於%s)"
 L["Alerts you when someone says a keyword or speaks in a specified channel."] = "當某人說了一個關鍵字或者指定的頻道有人說話時發出警報。"
+L["Reroute whole message to SCT"] = "將對話顯示至SCT"
+L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"] = "將'誰在頻道中說了關鍵字'改為顯示整句對話至SCT"
+L["[%s] %s: %s"] = "[%s] %s: %s"
 
 -- ./Modules/Justify.lua
 L["Text Justification"] = "文字對齊"
@@ -208,6 +211,10 @@ L["Color level by difficulty"] = "按照等級難度著色等級"
 L["Color Player Names By..."] = "用……著色玩家名字"
 L["Select a method for coloring player names"] = "選擇為玩家名字著色的方式"
 L["Provides options to color player names, add player levels, and add tab completion of player names."] = "提供為玩家名字著色的選項，添加玩家的等級，以及Tab自動完成玩家名字輸入。"
+L["Color self in messages"] = "彩色的自我訊息"
+L["Color own charname in messages."] = "彩色自己的角色名稱在訊息中"
+L["Emphasize self in messages"] = "在訊息中強調自己"
+L["Add surrounding brackets to own charname in messages."] = "在訊息中自己的角色名稱加上括號"
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = "固定頻道"

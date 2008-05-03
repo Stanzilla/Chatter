@@ -466,6 +466,7 @@ function mod:FRIENDLIST_UPDATE(evt)
 	end
 end
 
+--[[
 function mod:GUILD_ROSTER_UPDATE(evt)
 	local n = GetNumGuildMembers()
 	if not n or n == 0 then
@@ -495,6 +496,20 @@ function mod:GUILD_ROSTER_UPDATE(evt)
 	
 	self:RegisterEvent("GUILD_ROSTER_UPDATE")
 end
+]]
+
+function mod:GUILD_ROSTER_UPDATE(evt) 
+	for k, v in pairs(channels.GUILD) do 
+		channels.GUILD[k] = nil 
+	end 
+	for i = 1, GetNumGuildMembers() do 
+		local name, _, _, level, _, _, _, _, online, _, class = GetGuildRosterInfo(i) 
+		if online then 
+			channels.GUILD[name] = name 
+		end 
+		self:AddPlayer(name, class, level, self.db.profile.saveGuild) 
+	end 
+end 
 
 
 function mod:RAID_ROSTER_UPDATE(evt)

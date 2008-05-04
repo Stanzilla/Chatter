@@ -3,10 +3,10 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["URL Copy"]
 
 local gsub = _G.string.gsub
-local ipairs = _G.ipairs
 local pairs = _G.pairs
 local fmt = _G.string.format
 local sub = _G.string.sub
+local COMBATLOG
 
 local tlds
 local style = "|cffffffff|Hurl:%s|h[%s]|h|r"
@@ -76,13 +76,16 @@ do
 		"CHAT_MSG_WHISPER_INFORM", "CHAT_MSG_YELL"
 	}
 	function mod:OnEnable()
-		for _,event in ipairs(events) do
+		COMBATLOG = _G.COMBATLOG
+		for i = 1, #events do
+			local event = events[i]
 			ChatFrame_AddMessageEventFilter(event, self.filterFunc)
 		end
 		self:RawHook("SetItemRef", true)
 	end
 	function mod:OnDisable()
-		for _,event in ipairs(events) do
+		for i = 1, #events do
+			local event = events[i]
 			ChatFrame_RemoveMessageEventFilter(event, self.filterFunc)
 		end
 	end
@@ -91,8 +94,9 @@ end
 do
 	local tokennum, matchTable = 1, {}
 	mod.filterFunc = function(arg1)
-		if not arg1 then return false, nil end
-		for i, v in ipairs(patterns) do
+		if not arg1 or this == COMBATLOG then return false, nil end
+		for i = 1, #patterns do
+			local v = patterns[i]
 			arg1 = gsub(arg1, v.pattern, v.matchfunc)
 		end
 		for k,v in pairs(matchTable) do

@@ -14,10 +14,8 @@ local linkTypes = {
 function mod:OnEnable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G["ChatFrame"..i]
-		if frame:IsVisible() then
-			self:HookScript(frame, "OnHyperlinkEnter", enter)
-			self:HookScript(frame, "OnHyperlinkLeave", leave)
-		end
+		self:HookScript(frame, "OnHyperlinkEnter", enter)
+		self:HookScript(frame, "OnHyperlinkLeave", leave)
 	end
 end
 

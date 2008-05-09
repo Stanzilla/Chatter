@@ -417,7 +417,9 @@ function mod:OnEnable()
 	
 	leftBracket, rightBracket, separator = self.db.profile.leftBracket, self.db.profile.rightBracket, self.db.profile.separator
 	colorSelfInText, emphasizeSelfInText = self.db.profile.colorSelfInText, self.db.profile.emphasizeSelfInText
-	GuildRoster()
+	if IsInGuild()
+		GuildRoster()
+	end
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
@@ -498,7 +500,8 @@ function mod:GUILD_ROSTER_UPDATE(evt)
 end
 ]]
 
-function mod:GUILD_ROSTER_UPDATE(evt) 
+function mod:GUILD_ROSTER_UPDATE(evt)
+	if not IsInGuild() then return end
 	for k, v in pairs(channels.GUILD) do 
 		channels.GUILD[k] = nil 
 	end 

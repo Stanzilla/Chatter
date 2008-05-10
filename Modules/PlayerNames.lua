@@ -417,7 +417,7 @@ function mod:OnEnable()
 	
 	leftBracket, rightBracket, separator = self.db.profile.leftBracket, self.db.profile.rightBracket, self.db.profile.separator
 	colorSelfInText, emphasizeSelfInText = self.db.profile.colorSelfInText, self.db.profile.emphasizeSelfInText
-	if IsInGuild()
+	if IsInGuild() then
 		GuildRoster()
 	end
 

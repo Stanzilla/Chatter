@@ -117,6 +117,7 @@ function mod:LibSharedMedia_Registered()
 end
 
 function mod:OnEnable()
+	self:LibSharedMedia_Registered()
 	self:SetFont()
 end
 

@@ -1,4 +1,4 @@
-﻿local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("Chatter", "zhCN")
 if not L then return end
 
@@ -43,8 +43,8 @@ L["Yell"] = "大喊"
 L["Guild"] = "公会"
 L["Officer"] = "官员"
 L["Raid"] = "团队"
-L["Party"] = "队伍"
-L["Raid Warning"] = "团队警报"
+L["Party"] = "小队"
+L["Raid Warning"] = "团队通知"
 L["Say"] = "说"
 L["Battleground"] = "战场"
 L["Whisper"] = "密语"
@@ -58,7 +58,7 @@ L["Battleground Leader"] = "战场领袖"
 L["Custom Channels"] = "自定义频道"
 L["Replace this channel name with..."] = "将频道名字替换为……"
 L["^To "] = "^发送给"
-L["^(.-|h)悄悄地说："] = true
+L["^(.-|h) whispers:"]= "^(.-|h)悄悄地说："
 L["Enables you to replace channel names with your own names"] = "允许你用自己的名称替换掉默认的频道名称"
 
 -- ./Modules/ChatFading.lua

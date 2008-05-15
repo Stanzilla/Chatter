@@ -25,6 +25,7 @@ L["Custom color"] = "사용자 색상"
 L["Select the custom color to use for alt names"] = "사용자 정보의 사용자 색상을 선택합니다."
 L["Who is %s's main?"] = true
 L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."] = "대화창에서 캐릭터 이름의 오른쪽 클릭으로 사용 가능합니다."
+L["Set Main"] = "메인 설정"
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = "대화 자동저장"
@@ -215,6 +216,9 @@ L["Color self in messages"] = "자신을 표시하는 메시지 색상"
 L["Color own charname in messages."] = "자신을 표시하는 메시지의 색상을 변경합니다."
 L["Emphasize self in messages"] = "대화창에서 자신 강조"
 L["Add surrounding brackets to own charname in messages."] = "대화창에 자신의 캐릭터 이름이 표시될 경우 강조합니다."
+L["Class"] = "직업"
+L["Name"] = "이름"
+L["None"] = "없음"
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = "채널 고정"

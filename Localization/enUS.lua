@@ -27,6 +27,7 @@ L["Custom color"] = true
 L["Select the custom color to use for alt names"] = true
 L["Who is %s's main?"] = true
 L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."] = true
+L["Set Main"] = true
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = true
@@ -217,6 +218,9 @@ L["Color self in messages"] = true
 L["Color own charname in messages."] = true
 L["Emphasize self in messages"] = true
 L["Add surrounding brackets to own charname in messages."] = true
+L["Class"] = true
+L["Name"] = true
+L["None"] = true
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = true

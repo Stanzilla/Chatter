@@ -90,7 +90,7 @@ StaticPopupDialogs['MENUITEM_SET_MAIN'] = {
 }	
 
 UnitPopupButtons["SET_MAIN"] = {
-	text = "Set Main",
+	text = L["Set Main"],
 	dist = 0,
 	func = mod.GetMainName
 }

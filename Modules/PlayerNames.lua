@@ -62,9 +62,9 @@ local channels = {
 	RAID = {}
 }
 local colorMethods = {
-	CLASS = "Class",
-	NAME = "Name",
-	NONE = "None",
+	CLASS = L["Class"],
+	NAME = L["Name"],
+	NONE = L["None"],
 }
 
 local defaults = {

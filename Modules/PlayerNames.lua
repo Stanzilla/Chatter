@@ -584,6 +584,7 @@ function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 end
 
 local function changeName(msgHeader, name, msgCnt, displayName, msgBody)
+	if name == player then return end
 	if emphasizeSelfInText then
 		msgBody = msgBody:gsub("("..player..")" , "|cffffff00>|r%1|cffffff00<|r"):gsub("("..player:lower()..")" , "|cffffff00>|r%1|cffffff00<|r")
 	end

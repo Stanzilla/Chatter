@@ -121,9 +121,8 @@ function mod:LibSharedMedia_Registered()
 	end
 end
 
-local words, playerName
+local words
 function mod:OnEnable()
-	playerName = UnitName("player")
 	words = self.db.profile.words
 	self:RegisterEvent("CHAT_MSG_SAY", "ParseChat")
 	
@@ -183,7 +182,7 @@ function mod:AddCustomChannels(...)
 end
 
 function mod:ParseChat(evt, msg, sender, ...)
-	if sender == playerName then return end
+	if sender == player then return end
 	local msg = msg:lower()
 	for k, v in pairs(words) do
 		if msg:find(k) then

@@ -167,7 +167,7 @@ local function pName(msg, name, msgCount, dispName)
 end
 
 function mod:AddMessage(frame, text, ...)
-	if text then 
+	if text and type(text) == "string" then 
 		text = text:gsub("(|Hplayer:(.-):(%d+)|h(.-)|h)", pName) 
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)

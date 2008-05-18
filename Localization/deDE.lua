@@ -254,3 +254,7 @@ L["Allows you to make the chat frames much smaller than usual."] = "Erlaubt dir 
 L["URL Copy"] = "URL Kopieren"
 L["Lets you copy URLs out of chat."] = "Läst dich URL's aus dem Chat kopieren."
 
+-- ./Modules/Scrollback.lua
+--L["Scrollback"] = ""
+--L["Enable Scrollback length modification"] = ""
+-- L["Chat Frame "] exists in ChatFrame section

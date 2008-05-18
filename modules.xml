@@ -25,5 +25,6 @@
 	<Script file="Modules\ChatTabs.lua" />
 	<Script file="Modules\LinkHover.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
+	<Script file="Modules\Scrollback.lua" />
 
 </Ui>

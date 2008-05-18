@@ -1,3 +1,5 @@
+<<<<<<< .mine
+=======
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
 
@@ -17,3 +19,4 @@
 <Include file="Libs\LibSink-2.0\lib.xml"/>
 
 </Ui>
+>>>>>>> .r69653

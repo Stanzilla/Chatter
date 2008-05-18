@@ -205,6 +205,7 @@ function mod:LibSharedMedia_Registered()
 end
 
 function mod:OnEnable()
+	self:LibSharedMedia_Registered()
 	self:SetBackdrops()
 	for i = 1, #frames do
 		frames[i]:Show()

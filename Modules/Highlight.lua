@@ -123,6 +123,7 @@ end
 
 local words
 function mod:OnEnable()
+	self:LibSharedMedia_Registered()
 	words = self.db.profile.words
 	self:RegisterEvent("CHAT_MSG_SAY", "ParseChat")
 	
@@ -231,4 +232,5 @@ end
 function mod:GetOptions()
 	return options
 end
+
 

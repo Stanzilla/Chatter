@@ -1,4 +1,4 @@
-local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
+﻿local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("Chatter", "zhCN")
 if not L then return end
 
@@ -25,6 +25,7 @@ L["Custom color"] = "自定义颜色"
 L["Select the custom color to use for alt names"] = "为小号名字选择自定义颜色"
 L["Who is %s's main?"] = "谁是%s的大号？"
 L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."] = "允许你右键点击一个人的名字，设置一个在聊天窗口中显示的备注，例如他们的大号的名字。"
+L["Set Main"] = "设置大号"
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = "聊天日志"
@@ -252,7 +253,9 @@ L["Allows you to make the chat frames much smaller than usual."] = "允许你弄
 -- ./Modules/UrlCopy.lua
 L["URL Copy"] = "网址复制"
 L["Lets you copy URLs out of chat."] = "允许你将网址从聊天框中复制出来。"
+
 -- ./Modules/Scrollback.lua
---L["Scrollback"] = ""
---L["Enable Scrollback length modification"] = ""
+L["Scrollback"] = "回滚"
+L["Enable Scrollback length modification"] = "启用回滚长度修改"
 -- L["Chat Frame "] exists in ChatFrame section
+

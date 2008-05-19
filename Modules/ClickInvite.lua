@@ -58,8 +58,8 @@ end
 function mod:OnEnable()
 	words = self.db.profile.words
 	if not next(words) then
-		words["invite"] = L["invite"]
-		words["inv"] = L["inv"]
+		words[L["invite"]] = L["invite"]
+		words[L["inv"]] = L["inv"]
 	end
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]

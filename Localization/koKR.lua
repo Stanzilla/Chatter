@@ -255,6 +255,6 @@ L["URL Copy"] = "홈페이지 주소"
 L["Lets you copy URLs out of chat."] = "대화창의 홈페이지 주소를 복사할 수 있습니다."
 
 -- ./Modules/Scrollback.lua
---L["Scrollback"] = ""
---L["Enable Scrollback length modification"] = ""
+L["Scrollback"] = "스크롤백"
+L["Enable Scrollback length modification"] = "대화창의 지난 대화의 한 번에 스크롤백하는 줄 수를 변경하는 모듈입니다."
 -- L["Chat Frame "] exists in ChatFrame section

@@ -48,5 +48,5 @@ function mod:GetOptions()
 end
 
 function mod:Info()
-	return "Lets you set the scrollback length of your chat frames."
+	return L["Lets you set the scrollback length of your chat frames."]
 end

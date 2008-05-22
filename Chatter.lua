@@ -78,10 +78,10 @@ function Chatter:OnInitialize()
 				Chatter.db.profile.modules[k] = v
 				if v then
 					Chatter:EnableModule(k)
-					Chatter:Print(L["Enabled"], k, "module")
+					Chatter:Print(L["Enabled"], k, L["Module"])
 				else
 					Chatter:DisableModule(k)
-					Chatter:Print(L["Disabled"], k, "module")
+					Chatter:Print(L["Disabled"], k, L["Module"])
 				end
 			end
 		}

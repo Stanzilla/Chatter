@@ -21,8 +21,8 @@ function mod:OnInitialize()
 		local f = _G["ChatFrame" .. i]
 		options[s] = {
 			type = "select",
-			name = "Chat Frame " .. i,
-			desc = "Chat Frame " .. i,
+			name = L["Chat Frame "] .. i,
+			desc = L["Chat Frame "] .. i,
 			values = VALID_JUSTIFICATIONS,
 			get = function() return self.db.profile[s] or "LEFT" end,
 			set = function(info, v)

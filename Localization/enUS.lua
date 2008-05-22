@@ -9,6 +9,7 @@ L["Standalone Config"] = true
 L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."] = true
 L["Configure"] = true
 L["Modules"] = true
+L["Module"] = true
 L["Settings"] = true
 L["Enable "] = true
 L["Enabled"] = true
@@ -260,5 +261,6 @@ L["Lets you copy URLs out of chat."] = true
 -- ./Modules/Scrollback.lua
 L["Scrollback"] = true
 L["Enable Scrollback length modification"] = true
+L["Lets you set the scrollback length of your chat frames."] = true
 -- L["Chat Frame "] exists in ChatFrame section
 

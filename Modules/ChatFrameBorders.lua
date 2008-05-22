@@ -65,8 +65,8 @@ function mod:OnInitialize()
 		tinsert(frames, frame)
 		local t = {
 			type = "group",
-			name = "Frame " .. i,
-			desc = "Frame " .. i,
+			name = L["Chat Frame "] .. i,
+			desc = L["Chat Frame "] .. i,
 			args = {
 				enable = {
 					type = "toggle",

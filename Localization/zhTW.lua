@@ -25,6 +25,7 @@ L["Custom color"] = "自定義顏色"
 L["Select the custom color to use for alt names"] = "為分身名字選擇自定義顏色"
 L["Who is %s's main?"] = "誰是%s的本尊？"
 L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."] = "允許你右鍵點擊一個人的名字，設置一個在聊天視窗中顯示的備註，例如他們的本尊的名字。"
+L["Set Main"] = "設定本尊"
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = "聊天日誌"
@@ -94,6 +95,7 @@ L["Gives you finer control over the chat frame's background and border colors"] 
 -- ./Modules/ChatLink.Lua
 L["Chat Link"] = "聊天鏈接"
 L["Lets you link items, enchants, spells, and quests in custom channels."] = "使你能夠在自定義頻道裡鏈接物品，附魔，法術以及任務。"
+L["Trade -"] = "交易 -"
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = "滑鼠滾輪滾動"
@@ -215,6 +217,9 @@ L["Color self in messages"] = "彩色的自我訊息"
 L["Color own charname in messages."] = "彩色自己的角色名稱在訊息中"
 L["Emphasize self in messages"] = "在訊息中強調自己"
 L["Add surrounding brackets to own charname in messages."] = "在訊息中自己的角色名稱加上括號"
+L["Class"] = "職業"
+L["Name"] = "名稱"
+L["None"] = "無"
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = "固定頻道"
@@ -249,7 +254,8 @@ L["Allows you to make the chat frames much smaller than usual."] = "允許你弄
 -- ./Modules/UrlCopy.lua
 L["URL Copy"] = "網址複製"
 L["Lets you copy URLs out of chat."] = "允許你將網址從聊天框中複製出來。"
+
 -- ./Modules/Scrollback.lua
---L["Scrollback"] = ""
---L["Enable Scrollback length modification"] = ""
+L["Scrollback"] = "捲動"
+L["Enable Scrollback length modification"] = "啟用捲動長度修改"
 -- L["Chat Frame "] exists in ChatFrame section

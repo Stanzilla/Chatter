@@ -9,6 +9,7 @@ L["Standalone Config"] = "Configuration"
 L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."] = "Ouvre la fen\195\170tre de configuration. Il est conseill\195\169 d'installer l'addon |cffffff00BetterBlizzOptions|r pour redimensionner la fen\195\170tre des options d'interface de Blizzard"
 L["Configure"] = "Configure"
 L["Modules"] = "Modules"
+L["Module"] = "Module"
 L["Settings"] = "R\195\169glages"
 L["Enable"] = "Activer"
 L["Enabled"] = "Activ\195\169"
@@ -27,6 +28,7 @@ L["Custom color"] = "Couleur personnalis\195\169e"
 L["Select the custom color to use for alt names"] = "Choix de la couleur personnalis\195\169e \195\160 utiliser pour les noms secondaires"
 L["Who is %s's main?"] = "Quel est le personnage principal de %s?"
 L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."] = "Vous permet d'activer le clic droit sur le nom d'une personne dans le chat et cr\195\169e une note affichable dans le chat, indiquant le nom de son personnage principal."
+L["Set Main"] = "D\195\169finir comme personnage principal"
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = "Enregistrement"
@@ -96,6 +98,7 @@ L["Gives you finer control over the chat frame's background and border colors"] 
 -- ./Modules/ChatLink.Lua
 L["Chat Link"] = "Liens du Chat"
 L["Lets you link items, enchants, spells, and quests in custom channels."] = "Vous permet de cr\195\169er un lien pour les objets, les enchantements, les sorts, et les qu\195\170tes dans les canaux personnalis\195\169s"
+L["Trade -"] = "Echanger -"
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = "D\195\169filement \195\160 la Souris"
@@ -217,6 +220,9 @@ L["Color self in messages"] = "Colorer votre nom"
 L["Color own charname in messages."] = "Colore votre nom dans les messages"
 L["Emphasize self in messages"] = "Mettre en \195\169vidence"
 L["Add surrounding brackets to own charname in messages."] = "Ajoute des crochets \195\160 votre nom dans les messages"
+L["Class"] = "Classe"
+L["Name"] = "Nom"
+L["None"] = "Aucun"
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = "Canaux Persistants"
@@ -253,6 +259,7 @@ L["URL Copy"] = "Copie d'URL"
 L["Lets you copy URLs out of chat."] = "Vous permet de copier les URL."
 
 -- ./Modules/Scrollback.lua
---L["Scrollback"] = ""
---L["Enable Scrollback length modification"] = ""
+L["Scrollback"] = "Scrollback"
+L["Enable Scrollback length modification"] = "Active le Scrollback"
+L["Lets you set the scrollback length of your chat frames."] = "Vous permet de d\195\169finir la longueur du Scrollback de vos fen\195\170tres de chat."
 -- L["Chat Frame "] exists in ChatFrame section

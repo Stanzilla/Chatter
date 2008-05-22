@@ -7,6 +7,7 @@ L["Standalone Config"] = "단독 설정"
 L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."] = "Chatter 설정창을 엽니다. |cffffff00BetterBlizzOptions|r을 설치하여 Blizzard UI 설정창의 크기를 조절할 수 있습니다."
 L["Configure"] = "설정"
 L["Modules"] = "모듈"
+L["Module"] = "모듈"
 L["Settings"] = "현재 설정"
 L["Enable "] = "사용: "
 L["Enabled"] = "사용중"
@@ -258,4 +259,5 @@ L["Lets you copy URLs out of chat."] = "대화창의 홈페이지 주소를 복�
 -- ./Modules/Scrollback.lua
 L["Scrollback"] = "스크롤백"
 L["Enable Scrollback length modification"] = "대화창의 지난 대화의 한 번에 스크롤백하는 줄 수를 변경하는 모듈입니다."
+L["Lets you set the scrollback length of your chat frames."] = "대화창의 스크롤백 줄수를 설정하십시오."
 -- L["Chat Frame "] exists in ChatFrame section

@@ -259,4 +259,5 @@ L["Lets you copy URLs out of chat."] = "允許你將網址從聊天框中複製�
 -- ./Modules/Scrollback.lua
 L["Scrollback"] = "捲動"
 L["Enable Scrollback length modification"] = "啟用捲動長度修改"
+L["Lets you set the scrollback length of your chat frames."] = "讓你設定聊天視窗的捲動長度"
 -- L["Chat Frame "] exists in ChatFrame section

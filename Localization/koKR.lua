@@ -95,6 +95,7 @@ L["Gives you finer control over the chat frame's background and border colors"] 
 -- ./Modules/ChatLink.Lua
 L["Chat Link"] = "대화창 링크"
 L["Lets you link items, enchants, spells, and quests in custom channels."] = "사용자 채널에 아이템, 마법부여, 주문 및 퀘스트를 링크할 수 있습니다."
+L["Trade -"] = "거래 -"
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = "마우스 스크롤"

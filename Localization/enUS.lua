@@ -97,6 +97,7 @@ L["Gives you finer control over the chat frame's background and border colors"] 
 -- ./Modules/ChatLink.Lua
 L["Chat Link"] = true
 L["Lets you link items, enchants, spells, and quests in custom channels."] = true
+L["Trade -"] = true
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = true

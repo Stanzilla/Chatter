@@ -52,7 +52,7 @@ end
 function mod:SendChatMessage(msg, chatType, language, channel)
     if msg and (chatType == "CHANNEL") then
         local _, chanName = GetChannelName(channel)
-        if chanName and not find(chanName, "Trade -") and not serverChannels[chanName] then
+        if chanName and not find(chanName, L["Trade -"]) and not serverChannels[chanName] then
             msg = self:CreateLinks(msg)
         end
     end

@@ -95,6 +95,7 @@ L["Gives you finer control over the chat frame's background and border colors"] 
 -- ./Modules/ChatLink.Lua
 L["Chat Link"] = "Chat Links"
 L["Lets you link items, enchants, spells, and quests in custom channels."] = "Läst dich Items, Verzauberrungen, Zauber und Quest in selbsterstellten Chatkanälen verlinken."
+L["Trade -"] = "Handel -"
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = "Mausrad Scrollen"
@@ -255,6 +256,9 @@ L["URL Copy"] = "URL Kopieren"
 L["Lets you copy URLs out of chat."] = "Läst dich URL's aus dem Chat kopieren."
 
 -- ./Modules/Scrollback.lua
---L["Scrollback"] = ""
---L["Enable Scrollback length modification"] = ""
+L["Scrollback"] = "Zurückscrollen"
+L["Enable Scrollback length modification"] = "Aktiviere die Zurückscrollen Modifikation"
 -- L["Chat Frame "] exists in ChatFrame section
+L["Lets you set the scrollback length of your chat frames."] = "Läst dich justieren wieviele Zeilen du in den Chatfenstern zurückscrollen kannst."
+
+

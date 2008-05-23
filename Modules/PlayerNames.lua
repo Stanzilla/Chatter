@@ -441,7 +441,7 @@ function mod:OnDisable()
 end
 
 function mod:AddPlayer(name, class, level, save)
-	if name and class and class ~= "UNKNOWN" then
+	if name and class and class ~= UNKNOWN then
 		if save then
 			self.db.realm.names[name] = self.db.realm.names[name] or {}
 			self.db.realm.names[name].class = class

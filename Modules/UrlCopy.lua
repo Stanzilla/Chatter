@@ -103,7 +103,7 @@ do
 	end
 	function mod:RegisterMatch(text)
 		local token = "\255\254\253"..tokennum.."\253\254\255"
-		matchTable[token] = text
+		matchTable[token] = gsub(text, "%%", "%%%%")
 		tokennum = tokennum + 1
 		return token
 	end

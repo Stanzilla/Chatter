@@ -103,7 +103,7 @@ function mod:SetItemRef(link, text, button)
 	local linkType = sub(link, 1, 6)
 	-- Chatter:Print(IsAltKeyDown(), linkType, self.db.profile.altClickToInvite)
 	if IsAltKeyDown() and linkType == "player" and self.db.profile.altClickToInvite then
-		local name = match(link, "player:(%w+)")
+		local name = match(link, "player:([^|]+)")
 		InviteUnit(name)
 		return nil
 	elseif linkType == "invite" then

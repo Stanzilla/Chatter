@@ -1,4 +1,4 @@
-local mod = Chatter:NewModule("Chat Font")
+local mod = Chatter:NewModule("Chat Font", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Chat Font"]
 
@@ -6,6 +6,7 @@ local Media = LibStub("LibSharedMedia-3.0")
 local fonts = {}
 local fonts_and_default = {Default = "Default"}
 local pairs = _G.pairs
+local player_entered_world = false
 
 local defaults = {
 	profile = {
@@ -119,6 +120,16 @@ end
 function mod:OnEnable()
 	self:LibSharedMedia_Registered()
 	self:SetFont()
+
+	if not player_entered_world then
+		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	end
+end
+
+function mod:PLAYER_ENTERING_WORLD()
+	self:SetFont()
+	self:UnregisterAllEvents()
+	player_entered_world = true
 end
 
 function mod:OnDisable()

@@ -7,6 +7,7 @@ L["Standalone Config"] = "独立配置"
 L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."] = "打开一个独立的配置窗口。你也许希望使用|cffffff00BetterBlizzOptions|r插件使得暴雪的选项窗口可以调整大小。"
 L["Configure"] = "配置"
 L["Modules"] = "模块"
+L["Module"] = "模块"
 L["Settings"] = "设置"
 L["Enable "] = "启用"
 L["Enabled"] = "已启用"
@@ -53,12 +54,12 @@ L["Whisper"] = "密语"
 L["Select a color for this channel"] = "为该频道选择一个颜色"
 
 -- ./Modules/ChannelNames.lua
-L["Add space after channels"] = "在频道名后加空格"
 L["Channel Names"] = "频道名称"
 L["Raid Leader"] = "团队领袖"
 L["LookingForGroup"] = "寻求组队"
 L["Battleground Leader"] = "战场领袖"
 L["Custom Channels"] = "自定义频道"
+L["Add space after channels"] = "在频道名后加空格"
 L["Replace this channel name with..."] = "将频道名字替换为……"
 L["^To "] = "^发送给"
 L["^(.-|h) whispers:"]= "^(.-|h)悄悄地说："
@@ -95,6 +96,7 @@ L["Gives you finer control over the chat frame's background and border colors"] 
 -- ./Modules/ChatLink.Lua
 L["Chat Link"] = "聊天链接"
 L["Lets you link items, enchants, spells, and quests in custom channels."] = "使你能够在自定义频道里链接物品，附魔，法术以及任务。"
+L["Trade -"] = "交易 -"
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = "鼠标滚轮滚动"
@@ -257,5 +259,6 @@ L["Lets you copy URLs out of chat."] = "允许你将网址从聊天框中复制�
 -- ./Modules/Scrollback.lua
 L["Scrollback"] = "回滚"
 L["Enable Scrollback length modification"] = "启用回滚长度修改"
+L["Lets you set the scrollback length of your chat frames."] = "允许你设置你的聊天框的回滚长度。"
 -- L["Chat Frame "] exists in ChatFrame section
 

@@ -150,7 +150,7 @@ function mod:AddAlt(alt, main)
 	self.db.realm[alt] = main	
 end
 
-local function pName(msg, name, msgCount, dispName)
+local function pName(msg, name)
 	if name and #name > 0 then
 		local alt = NAMES[name]
 		if alt then
@@ -168,7 +168,7 @@ end
 
 function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then 
-		text = text:gsub("(|Hplayer:(.-):(%d+)|h(.-)|h)", pName) 
+		text = text:gsub("(|Hplayer:([^:]+)[:%d+]*|h%[.-%]|h)", pName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

@@ -14,9 +14,17 @@ local FORMATS = {
 	["%H:%M"] = L["HH:MM (24-hour)"],
 	["%M:%S"] = L["MM:SS"],
 }
+local CHATFRAMES = {
+	["Frame1"] = L["Chat Frame "].."1",
+	["Frame3"] = L["Chat Frame "].."3",
+	["Frame4"] = L["Chat Frame "].."4",
+	["Frame5"] = L["Chat Frame "].."5",
+	["Frame6"] = L["Chat Frame "].."6",
+	["Frame7"] = L["Chat Frame "].."7",
+}
 
 local defaults = {
-	profile = { format = "%X", color = { r = 0.45, g = 0.45, b = 0.45 } }
+	profile = { format = "%X", color = { r = 0.45, g = 0.45, b = 0.45 }, frames = {["Frame1"] = true, ["Frame3"] = true, ["Frame4"] = true, ["Frame5"] = true, ["Frame6"] = true, ["Frame7"] = true} }
 }
 
 local options = {
@@ -68,7 +76,15 @@ local options = {
 		set = function(info, v)
 			mod.db.profile.colorByChannel = v
 		end
-	}
+	},
+	frames = {
+		type = "multiselect",
+		name = L["Per chat frame settings"],
+		desc = L["Choose which chat frames display timestamps"],
+		values = CHATFRAMES,
+		get = function(info, k) return mod.db.profile.frames[k] end,
+		set = function(info, k, v) mod.db.profile.frames[k] = v end,
+	},
 }
 
 function mod:OnInitialize()
@@ -88,13 +104,17 @@ function mod:OnEnable()
 end
 
 function mod:AddMessage(frame, text, ...)
-	if not text then 
+	local id = frame:GetID()
+	if id and self.db.profile.frames["Frame"..id] then
+		if not text then 
+			return self.hooks[frame].AddMessage(frame, text, ...)
+		end
+		if self.db.profile.colorByChannel then
+			text = date(SELECTED_FORMAT) .. text
+		else
+			text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r".. text
+		end
 		return self.hooks[frame].AddMessage(frame, text, ...)
-	end
-	if self.db.profile.colorByChannel then
-		text = date(SELECTED_FORMAT) .. text
-	else
-		text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r".. text
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

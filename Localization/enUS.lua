@@ -249,6 +249,8 @@ L["Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list o
 L["Timestamp color"] = true
 L["Color timestamps the same as the channel they appear in."] = true
 L["Adds timestamps to chat."] = true
+L["Per chat frame settings"] = true
+L["Choose which chat frames display timestamps"] = true
 
 -- ./Modules/TinyChat.lua
 L["Tiny Chat"] = true

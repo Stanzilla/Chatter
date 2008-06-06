@@ -124,6 +124,7 @@ L["Gives you more flexibility in how you invite people to your group."] = "파�
 
 -- ./Modules/CopyChat.lua
 L["Copy Chat"] = "대화창 복사"
+L["Copy text from this frame."] = "현재 창의 내용 복사"
 L["Lets you copy text out of your chat frames."] = "대화창의 내용을 복사합니다."
 
 -- ./Modules/EditBox.lua
@@ -247,6 +248,8 @@ L["Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list o
 L["Timestamp color"] = "시간표시 색상"
 L["Color timestamps the same as the channel they appear in."] = "시간표시의 색상을 대화채널의 색상과 동일하게 합니다."
 L["Adds timestamps to chat."] = "대화창에 시간표시를 추가합니다."
+L["Per chat frame settings"] = "각 대화창 설정"
+L["Choose which chat frames display timestamps"] = "시간을 표시할 대화창을 선택합니다."
 
 -- ./Modules/TinyChat.lua
 L["Tiny Chat"] = "작은 대화창"

@@ -247,6 +247,8 @@ L["Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list o
 L["Timestamp color"] = "时间戳颜色"
 L["Color timestamps the same as the channel they appear in."] = "依据时间戳所在的频道，用频道颜色为其着色。"
 L["Adds timestamps to chat."] = "给聊天文字增加时间戳。"
+L["Per chat frame settings"] = "聊天窗口独立设置"
+L["Choose which chat frames display timestamps"] = "选择要显示时间戳的聊天窗口"
 
 -- ./Modules/TinyChat.lua
 L["Tiny Chat"] = "迷你窗口"

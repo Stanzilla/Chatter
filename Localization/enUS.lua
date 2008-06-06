@@ -126,6 +126,7 @@ L["Gives you more flexibility in how you invite people to your group."] = true
 
 -- ./Modules/CopyChat.lua
 L["Copy Chat"] = true
+L["Copy text from this frame."] = true
 L["Lets you copy text out of your chat frames."] = true
 
 -- ./Modules/EditBox.lua

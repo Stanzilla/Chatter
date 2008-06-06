@@ -124,6 +124,7 @@ L["Gives you more flexibility in how you invite people to your group."] = "給�
 
 -- ./Modules/CopyChat.lua
 L["Copy Chat"] = "聊天複製"
+L["Copy text from this frame."] = "從此聊天框複製文字"
 L["Lets you copy text out of your chat frames."] = "允許你把文字從聊天框複製出來"
 
 -- ./Modules/EditBox.lua
@@ -247,6 +248,8 @@ L["Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list o
 L["Timestamp color"] = "時間標籤顏色"
 L["Color timestamps the same as the channel they appear in."] = "依據時間標籤所在的頻道，用頻道顏色為其著色。"
 L["Adds timestamps to chat."] = "給聊天文字增加時間標籤。"
+L["Per chat frame settings"] = "各聊天框設置"
+L["Choose which chat frames display timestamps"] = "開啟此聊天框的時間標籤"
 
 -- ./Modules/TinyChat.lua
 L["Tiny Chat"] = "迷你視窗"

@@ -123,8 +123,9 @@ L["inv"] = "组"
 L["Gives you more flexibility in how you invite people to your group."] = "提供更灵活多样的邀请其他人加入你队伍的方式"
 
 -- ./Modules/CopyChat.lua
-L["Copy Chat"] = "聊天拷贝"
-L["Lets you copy text out of your chat frames."] = "允许你把文字从聊天框拷贝出来"
+L["Copy Chat"] = "聊天复制"
+L["Copy text from this frame."] = "从这个窗口复制文本"
+L["Lets you copy text out of your chat frames."] = "允许你把文字从聊天框复制出来"
 
 -- ./Modules/EditBox.lua
 L["Edit Box Polish"] = "输入框美化"

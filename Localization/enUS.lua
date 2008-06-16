@@ -110,6 +110,8 @@ L["Lets you use the mousewheel to page up and down chat."] = true
 L["Chat Tabs"] = true
 L["Button Height"] = true
 L["Button's height, and text offset from the frame"] = true
+L["Hide Tabs"] = true
+L["Hides chat frame tabs"] = true
 
 -- ./Modules/ClickInvite.lua
 L["Invite Links"] = true

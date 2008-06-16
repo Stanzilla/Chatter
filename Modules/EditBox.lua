@@ -178,6 +178,12 @@ local defaults = {
 		edgeSize = 24,
 		tileSize = 16,
 		attach = "BOTTOM",
+		font = (function()
+			local f = ChatFrameEditBox:GetFont()
+			for k,v in pairs(Media:HashTable("font")) do
+				if v == f then return k end
+			end
+		end)()
 	}
 }
 
@@ -242,7 +248,7 @@ function mod:OnDisable()
 	right:Show()
 	self.frame:Hide()
 	self:SetAttach("BOTTOM")
-	ChatFrameEditBox:SetFont("Fonts\\ARIALN.TTF", 14)
+	ChatFrameEditBox:SetFont(Media:Fetch("font", defaults.profile.font), 14)
 end
 
 function mod:GetOptions()

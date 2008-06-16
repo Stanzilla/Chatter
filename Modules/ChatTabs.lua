@@ -25,6 +25,13 @@ local options = {
 			end
 		end,
 		disabled = function() return not mod:IsEnabled() end
+	},
+	hidetabs = {
+		type = "toggle",
+		name = L["Hide Tabs"],
+		desc = L["Hides chat frame tabs"],
+		get = function() return mod.db.profile.chattabs end,
+		set = function(info, v) mod.db.profile.chattabs = not mod.db.profile.chattabs; mod:ToggleTabShow() end,
 	}
 }
 
@@ -58,6 +65,10 @@ function mod:OnEnable()
 		self:HookScript(tab, "OnLeave")
 		self:HookScript(tab, "OnMouseWheel")
 		self:HookScript(tab, "OnClick")
+		
+		if (mod.db.profile.chattabs) then
+			mod:HideTab(tab)
+		end
 		-- self:RawHook(tab, "SetAlpha", true)
 		-- self:RawHook(tab, "Hide", true)
 		
@@ -105,10 +116,21 @@ function mod:OnClick(f, button, ...)
 	end
 end
 
-function mod:Hide()
+function mod:ToggleTabShow()
+	for i = 1, NUM_CHAT_WINDOWS do
+		local tab = _G["ChatFrame"..i.."Tab"]
+		if (mod.db.profile.chattabs) then
+			tab:SetScript("OnShow", function(...) tab:Hide() end)
+		else
+			tab:SetScript("OnShow", function(...) tab:Show() end)
+		end
+		tab:Show()
+		tab:Hide()
+	end
 end
 
-function mod:SetAlpha()
+function mod:HideTab(tab)
+	tab:SetScript("OnShow", function(...) tab:Hide() end)
 end
 
 function mod:OnMouseWheel(frame, dir)

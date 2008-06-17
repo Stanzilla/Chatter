@@ -108,6 +108,8 @@ L["Lets you use the mousewheel to page up and down chat."] = "대화창을 마�
 L["Chat Tabs"] = "대화창 탭"
 L["Button Height"] = "버튼 높이"
 L["Button's height, and text offset from the frame"] = "버튼의 높이 및 글자의 위치를 변경합니다."
+L["Hide Tabs"] = "탭 숨기기"
+L["Hides chat frame tabs"] = "대화창 탭을 숨깁니다."
 
 -- ./Modules/ClickInvite.lua
 L["Invite Links"] = "초대 링크"

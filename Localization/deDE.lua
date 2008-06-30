@@ -7,6 +7,7 @@ L["Standalone Config"] = "Eigenes Menü"
 L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."] = "Öffnet ein eigenes Options Menü. Vielleicht solltest du in Erwägung ziehen |cffffff00BetterBlizzOptions|r zu installieren damit das Blizzard Optionsmenü in der Größe dynamisch anpassbar wird."
 L["Configure"] = "Justiere"
 L["Modules"] = "Module"
+L["Module"] = "Module"
 L["Settings"] = "Einstellungen"
 L["Enable "] = "Aktiviere "
 L["Enabled"] = "Aktiviert"
@@ -107,6 +108,8 @@ L["Lets you use the mousewheel to page up and down chat."] = "Läst dich mit dem
 L["Chat Tabs"] = "Chat Karteikarten"
 L["Button Height"] = "Tastenhöhe"
 L["Button's height, and text offset from the frame"] = "Tastenhöhe und Text Abstand vom Fenster."
+L["Hide Tabs"] = "Verstecke Karteikarten"
+L["Hides chat frame tabs"] = "Versteckt die Karteikarten der Chatfenster."
 
 -- ./Modules/ClickInvite.lua
 L["Invite Links"] = "Einladen Links"
@@ -123,6 +126,7 @@ L["Gives you more flexibility in how you invite people to your group."] = "Gibt 
 
 -- ./Modules/CopyChat.lua
 L["Copy Chat"] = "Chat Kopieren Taste"
+L["Copy text from this frame."] = "Kopiere Text von diesem Fenster"
 L["Lets you copy text out of your chat frames."] = "Läst dich aus deinen Chatfenstern Text kopieren."
 
 -- ./Modules/EditBox.lua
@@ -246,6 +250,8 @@ L["Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list o
 L["Timestamp color"] = "Zeitstempel Farbe"
 L["Color timestamps the same as the channel they appear in."] = "Färbe den Zeitsempel in der gleichen Farbe wie der Kanal eingestellt ist."
 L["Adds timestamps to chat."] = "Fügt dem Chat Zeitstempel hinzu."
+L["Per chat frame settings"] = "Einstellungen nach Chatfenster"
+L["Choose which chat frames display timestamps"] = "Wähle welche Chatfenster Zeitstempel anzeigen sollen."
 
 -- ./Modules/TinyChat.lua
 L["Tiny Chat"] = "Kleiner Chat"
@@ -258,7 +264,6 @@ L["Lets you copy URLs out of chat."] = "Läst dich URL's aus dem Chat kopieren."
 -- ./Modules/Scrollback.lua
 L["Scrollback"] = "Zurückscrollen"
 L["Enable Scrollback length modification"] = "Aktiviere die Zurückscrollen Modifikation"
--- L["Chat Frame "] exists in ChatFrame section
 L["Lets you set the scrollback length of your chat frames."] = "Läst dich justieren wieviele Zeilen du in den Chatfenstern zurückscrollen kannst."
-
+-- L["Chat Frame "] exists in ChatFrame section
 

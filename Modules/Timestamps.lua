@@ -106,13 +106,15 @@ end
 function mod:AddMessage(frame, text, ...)
 	local id = frame:GetID()
 	if id and self.db.profile.frames["Frame"..id] then
-		if not text then 
-			return self.hooks[frame].AddMessage(frame, text, ...)
-		end
-		if self.db.profile.colorByChannel then
-			text = date(SELECTED_FORMAT) .. text
-		else
-			text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r".. text
+		if not Chatter.loading then
+			if not text then 
+				return self.hooks[frame].AddMessage(frame, text, ...)
+			end
+			if self.db.profile.colorByChannel then
+				text = date(SELECTED_FORMAT) .. text
+			else
+				text = "|cff"..COLOR..date(SELECTED_FORMAT).."|r".. text
+			end
 		end
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end

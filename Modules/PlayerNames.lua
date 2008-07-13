@@ -18,7 +18,7 @@ L["Rogue"]
 ]]--
 
 local local_names, local_levels = {}, {}
-local leftBracket, rightBracket
+local leftBracket, rightBracket, separator
 local colorSelfInText, emphasizeSelfInText
 local gsub = _G.string.gsub
 local find = _G.string.find

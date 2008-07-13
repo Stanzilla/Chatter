@@ -34,7 +34,7 @@ local function setlines(frame, lines)
 			end
 		end
 
-		frame:SetMaxLines(lines)
+		frame:SetMaxLines(lines or 250)
 
 		Chatter.loading = true
 

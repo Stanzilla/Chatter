@@ -108,6 +108,8 @@ L["Lets you use the mousewheel to page up and down chat."] = "允许你使用鼠
 L["Chat Tabs"] = "聊天分栏"
 L["Button Height"] = "按钮高度"
 L["Button's height, and text offset from the frame"] = "按钮的高度，以及框体文字的偏移量"
+L["Hide Tabs"] = "隐藏分栏"
+L["Hides chat frame tabs"] = "隐藏聊天框架的分栏"
 
 -- ./Modules/ClickInvite.lua
 L["Invite Links"] = "邀请链接"

@@ -13,6 +13,7 @@
 embeds.xml
 
 Localization\enUS.lua
+Localization\ruRU.lua
 Localization\deDE.lua
 Localization\frFR.lua
 Localization\esES.lua

@@ -23,7 +23,7 @@ local options = {
 		desc = L["Font"],
 		values = fonts,
 		get = function() return mod.db.profile.font end,
-		set = function(info, v) 
+		set = function(info, v)
 			mod.db.profile.font = v
 			mod:SetFont(nil, v)
 		end
@@ -48,7 +48,7 @@ local options = {
 		desc = L["Font outlining"],
 		values = outlines,
 		get = function() return mod.db.profile.outline or "" end,
-		set = function(info, v) 
+		set = function(info, v)
 			mod.db.profile.outline = v
 			mod:SetFont(nil, nil, nil, v)
 		end
@@ -88,7 +88,7 @@ function mod:OnInitialize()
 					desc = L["Font"],
 					values = fonts_and_default,
 					get = function() return mod.db.profile.frames["FRAME_" .. i].font or mod.db.profile.font end,
-					set = function(info, v) 
+					set = function(info, v)
 						mod.db.profile.frames["FRAME_" .. i].font = v
 						mod:SetFont(cf, v)
 					end
@@ -99,7 +99,7 @@ function mod:OnInitialize()
 					desc = L["Font outlining"],
 					values = outlines,
 					get = function() return mod.db.profile.frames["FRAME_" .. i].outline or "" end,
-					set = function(info, v) 
+					set = function(info, v)
 						mod.db.profile.frames["FRAME_" .. i].outline = v
 						mod:SetFont(cf, nil, nil, v)
 					end
@@ -107,7 +107,7 @@ function mod:OnInitialize()
 			}
 		}
 		options["frame" .. i] = t
-	end	
+	end
 end
 
 function mod:LibSharedMedia_Registered()
@@ -115,11 +115,12 @@ function mod:LibSharedMedia_Registered()
 		fonts[v] = v
 		fonts_and_default[v] = v
 	end
+
+	self:SetFont()
 end
 
 function mod:OnEnable()
 	self:LibSharedMedia_Registered()
-	self:SetFont()
 
 	if not player_entered_world then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -137,7 +138,7 @@ function mod:OnDisable()
 end
 
 function mod:SetFont(cf, font, size, outline)
-	if cf then		
+	if cf then
 		self:SetFrameFont(cf, font, size, outline)
 	else
 		for i = 1, NUM_CHAT_WINDOWS do
@@ -154,7 +155,7 @@ function mod:SetFrameFont(cf, font, size, outline)
 	if profFont == "Default" then
 		profFont = nil
 	end
-	local f, s, m = cf:GetFont() 
+	local f, s, m = cf:GetFont()
 	font = Media:Fetch("font", font or profFont or self.db.profile.font or f)
 	size = size or prof.fontsize or self.db.profile.fontsize or s
 	outline = outline or prof.outline or self.db.profile.outline or m

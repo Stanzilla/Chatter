@@ -32,7 +32,7 @@ local options = {
 			name = L["Modules"],
 			desc = L["Modules"],
 			args = {}
-		}
+		}		
 	}
 }
 
@@ -113,8 +113,8 @@ end
 
 do
 	local info
-	function Chatter:FCF_Tab_OnClick(button)
-		self.hooks.FCF_Tab_OnClick(button)
+	function Chatter:FCF_Tab_OnClick(fcf, button)
+		self.hooks.FCF_Tab_OnClick(fcf, button)
 		info = info or UIDropDownMenu_CreateInfo();
 		info.text = L["Chatter Settings"]
 		info.func = Chatter.OpenConfig

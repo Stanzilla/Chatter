@@ -120,10 +120,10 @@ end
 
 function mod:Copy(frame)
 	local _, size = frame:GetFont()
-	FCF_SetChatWindowFontSize(frame, 0.01)
+	FCF_SetChatWindowFontSize(frame, frame, 0.01)
 	local lineCt = self:GetLines(frame:GetRegions())
 	local text = table_concat(lines, "\n", 1, lineCt)
-	FCF_SetChatWindowFontSize(frame, size)
+	FCF_SetChatWindowFontSize(frame, frame, size)
 	self.frame:Show()
 	self.editBox:SetText(text)
 	self.editBox:HighlightText(0)

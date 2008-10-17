@@ -558,7 +558,7 @@ function mod:UPDATE_MOUSEOVER_UNIT(evt)
 end
 
 function mod:CHAT_MSG_SYSTEM(evt, msg)
-	local name, level, class = select(3, msg:find("^|Hplayer:%w+|h%[(%w+)%]|h: %w+ (%d+) %w+ (%w+)"))
+	local name, level, class = select(3, msg:find("^|Hplayer:[^|]+|h%[([^%]]+)%]|h: %w+ (%d+) %w+ (%w+)"))
 	if name and class then
 		self:AddPlayer(name, lookup[class], level)
 	end

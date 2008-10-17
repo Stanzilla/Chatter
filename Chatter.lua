@@ -131,7 +131,7 @@ function Chatter:OpenConfig(input)
 		AceConfigDialog:Open("Chatter")
 	else
 		options.args.aceConfig.guiHidden = false
-		InterfaceOptionsFrame_OpenToFrame(optFrame)
+		InterfaceOptionsFrame_OpenToCategory(optFrame)
 	end
 end
 

@@ -113,8 +113,8 @@ end
 
 do
 	local info
-	function Chatter:FCF_Tab_OnClick(fcf, button)
-		self.hooks.FCF_Tab_OnClick(fcf, button)
+	function Chatter:FCF_Tab_OnClick(...)
+		self.hooks.FCF_Tab_OnClick(...)
 		info = info or UIDropDownMenu_CreateInfo();
 		info.text = L["Chatter Settings"]
 		info.func = Chatter.OpenConfig

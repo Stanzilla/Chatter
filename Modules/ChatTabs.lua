@@ -60,11 +60,20 @@ function mod:OnEnable()
 		_G["ChatFrame"..i.."TabMiddle"]:Hide()
 		_G["ChatFrame"..i.."TabRight"]:Hide()
 
+		--[[ TODO: Grum @ 18/10/2008
+		    There seems to be a bug with certain fonts/fontObjects which prevents
+		    tab:GetNormalFontObject() to return anything sensible
+		    The buttons now have font objects. If you change the size on one it will change on
+		    the other tabs as well. However assigning a new font object seems to go wrong with
+		    the default ChatFrame$Tab font-object. This will need further investigation
+		
+		    For now I just disabled all the font-changing mechanics.
+		--]]
 		tab:EnableMouseWheel(true)
-		self:HookScript(tab, "OnEnter")
-		self:HookScript(tab, "OnLeave")
+		--self:HookScript(tab, "OnEnter")
+		--self:HookScript(tab, "OnLeave")
 		self:HookScript(tab, "OnMouseWheel")
-		self:HookScript(tab, "OnClick")
+		--self:HookScript(tab, "OnClick")
 		
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
@@ -73,7 +82,7 @@ function mod:OnEnable()
 		-- self:RawHook(tab, "Hide", true)
 		
 		-- tab:GetTextFontObject():SetJustifyV("BOTTOM")
-		tab:SetTextColor(1, 1, 1)
+		--tab:SetTextColor(1, 1, 1)
 		tab:GetHighlightTexture():SetTexture(nil)
 		--[[
 		if chat.isDocked or chat:IsVisible() then
@@ -96,8 +105,9 @@ function mod:OnDisable()
 		_G["ChatFrame"..i.."TabRight"]:Show()
 		
 		-- tab:GetTextFontObject():SetJustifyV("MIDDLE")
-		local f, s, m = font:GetFont()
-		tab:SetFont(f, s, m)
+		-- TODO: Check other TODO's
+		--local f, s, m = font:GetFont()
+		--tab:SetFont(f, s, m)
 
 		tab:EnableMouseWheel(false)
 		tab:SetTextColor(1, 0.82, 0)

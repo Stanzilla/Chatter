@@ -22,9 +22,7 @@
 	<Script file="Modules\TinyChat.lua" />
 	<Script file="Modules\GroupSay.lua" />
 	<Script file="Modules\ChannelColors.lua" />
-	<!--
 	<Script file="Modules\ChatTabs.lua" />
-	//-->
 	<Script file="Modules\LinkHover.lua" />
 	<Script file="Modules\Scrollback.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />

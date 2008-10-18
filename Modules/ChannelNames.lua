@@ -136,7 +136,8 @@ end
 local function replaceChannel(msg, num, channel)
 	local v = channels[channel] or channels[channel:lower()]
 	if v then
-		return (v == " " and (mod.db.profile.addSpace and " " or "")) or ((functions[channel] or functions[channel:lower()] or v) .. (mod.db.profile.addSpace and " " or ""))
+		-- XXX Grum @ 18/10/2008 - The insertion of '|h' is at best crude, but I couldn't find a way to make this work faster without rewriting the whole thing.
+		return (v == " " and (mod.db.profile.addSpace and " " or "")) or ((functions[channel] or functions[channel:lower()] or v) .. "|h" .. (mod.db.profile.addSpace and " " or ""))
 	end
 end
 

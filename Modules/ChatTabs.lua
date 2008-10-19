@@ -110,7 +110,7 @@ function mod:OnDisable()
 		--tab:SetFont(f, s, m)
 
 		tab:EnableMouseWheel(false)
-		tab:SetTextColor(1, 0.82, 0)
+		--tab:SetTextColor(1, 0.82, 0)
 		tab:GetHighlightTexture():SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
 		tab:Hide()
 	end

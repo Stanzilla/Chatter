@@ -165,7 +165,7 @@ function mod:OnMouseWheel(frame, dir)
 	if t then
 		_G[DOCKED_CHAT_FRAMES[t]:GetName() .. "Tab"]:Click()
 	end
-	SetFontSizes()
+	--SetFontSizes()
 end
 
 function mod:OnEnter(frame)

@@ -9,6 +9,7 @@ local UnitName = _G.UnitName
 local pairs = _G.pairs
 local select = _G.select
 local type = _G.type
+local ChatFrame_GetMessageEventFilters = _G.ChatFrame_GetMessageEventFilters
 
 Media:Register("sound", "Loot Chime", [[Sound\interface\igLootCreature.wav]])
 Media:Register("sound", "Whisper Ping", [[Sound\interface\iTellMessage.wav]])
@@ -184,6 +185,18 @@ end
 
 function mod:ParseChat(evt, msg, sender, ...)
 	if sender == player then return end
+
+	local filters = ChatFrame_GetMessageEventFilters(evt)
+	if filters then
+		for i, filterFunc in ipairs(filters) do
+			local filtered, new_message = filterFunc(msg)
+			if filtered then
+				return
+			end
+			msg = new_message or msg
+		end
+	end
+
 	local msg = msg:lower()
 	for k, v in pairs(words) do
 		if msg:find(k) then
@@ -233,4 +246,4 @@ function mod:GetOptions()
 	return options
 end
 
-
+-- vim: ts=4 noexpandtab

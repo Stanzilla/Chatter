@@ -146,6 +146,10 @@ L["Requires the Alt key to be held down to move the cursor in chat"] = true
 L["Select the font to use for the edit box"] = true
 L["Lets you customize the position and look of the edit box"] = true
 
+-- ./Modules/EditBoxHistory.lua
+L["Edit Box History"] = true
+L["Remembers the history of the editbox across sessions."] = true
+
 -- ./Modules/GroupSay.lua
 L["Group Say (/gr)"] = true
 L["Provides a /gr slash command to let you speak in your group (raid, party, or battleground) automatically."] = true

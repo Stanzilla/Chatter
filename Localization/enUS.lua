@@ -273,3 +273,6 @@ L["Enable Scrollback length modification"] = true
 L["Lets you set the scrollback length of your chat frames."] = true
 -- L["Chat Frame "] exists in ChatFrame section
 
+L["Chatter"] = true
+L["Options"] = true
+L["Profiles"] = true

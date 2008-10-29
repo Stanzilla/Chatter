@@ -36,6 +36,7 @@ local options = {
 	altClick = {
 		type = "toggle",
 		name = L["Alt-click name to invite"],
+		width = "double",
 		desc = L["Lets you alt-click player names to invite them to your party."],
 		get = function() return mod.db.profile.altClickToinvite end,
 		set = function(i, v) mod.db.profile.altClickToinvite = v end

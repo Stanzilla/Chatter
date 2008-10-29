@@ -316,6 +316,7 @@ local options = {
 		type = "toggle",
 		name = L["Emphasize self in messages"],
 		desc = L["Add surrounding brackets to own charname in messages."],
+		width = "double",
 		get = function() return mod.db.profile.emphasizeSelfInText end,
 		set = function(i, v)
 			mod.db.profile.emphasizeSelfInText = v

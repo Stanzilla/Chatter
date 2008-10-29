@@ -31,80 +31,87 @@ local defaults = {
 }
 
 local options = {
-	sound = {
-		type = "toggle",
-		name = L["Use sound"],
-		desc = L["Play a soundfile when one of your keywords is said."],
-		get = function()
-			return mod.db.profile.sound
-		end,
-		set = function(info, v)
-			mod.db.profile.sound = v
-		end
+	defaultOptions = {
+		type = "group",
+		name = L["Options"],
+		order = 1,
+		args = {
+			sound = {
+				type = "toggle",
+				name = L["Use sound"],
+				desc = L["Play a soundfile when one of your keywords is said."],
+				get = function()
+					return mod.db.profile.sound
+				end,
+				set = function(info, v)
+					mod.db.profile.sound = v
+				end
+			},
+			sink = {
+				type = "toggle",
+				name = L["Show SCT message"],
+				desc = L["Show highlights in your SCT mod"],
+				order = 21,
+				get = function()
+					return mod.db.profile.useSink
+				end,
+				set = function(info, v)
+					mod.db.profile.useSink = v
+				end
+			},
+			rerouteMessage = {
+				type = "toggle",
+				name = L["Reroute whole message to SCT"],
+				desc = L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"],
+				order = 22,
+				get = function()
+					return mod.db.profile.rerouteMessage
+				end,
+				set = function(info, v)
+					mod.db.profile.rerouteMessage = v
+				end,
+				disabled = function() return not mod.db.profile.useSink end
+			},
+			soundFile = {
+				type = "select",
+				name = L["Sound File"],
+				desc = L["Sound file to play"],
+				get = function()
+					return mod.db.profile.soundFile
+				end,
+				set = function(info, v)
+					mod.db.profile.soundFile = v
+					PlaySoundFile(Media:Fetch("sound", v))
+				end,
+				values = sounds,
+				disabled = function() return not mod.db.profile.sound end
+			},
+			addWord = {
+				type = "input",
+				name = L["Add Word"],
+				desc = L["Add word to your highlight list"],
+				get = function() end,
+				set = function(info, v)
+					mod.db.profile.words[v:lower()] = v
+				end
+			},
+			removeWord = {
+				type = "select",
+				name = L["Remove Word"],
+				desc = L["Remove a word from your highlight list"],
+				get = function() end,
+				set = function(info, v)
+					mod.db.profile.words[v:lower()] = nil
+				end,
+				values = function() return mod.db.profile.words end,
+				confirm = function(info, v) return (L["Remove this word from your highlights?"]) end
+			}
+		}
 	},
-	sink = {
-		type = "toggle",
-		name = L["Show SCT message"],
-		desc = L["Show highlights in your SCT mod"],
-		order = 21,
-		get = function()
-			return mod.db.profile.useSink
-		end,
-		set = function(info, v)
-			mod.db.profile.useSink = v
-		end
-	},
-	rerouteMessage = {
-		type = "toggle",
-		name = L["Reroute whole message to SCT"],
-		desc = L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"],
-		order = 22,
-		get = function()
-			return mod.db.profile.rerouteMessage
-		end,
-		set = function(info, v)
-			mod.db.profile.rerouteMessage = v
-		end,
-		disabled = function() return not mod.db.profile.useSink end
-	},
-	soundFile = {
-		type = "select",
-		name = L["Sound File"],
-		desc = L["Sound file to play"],
-		get = function()
-			return mod.db.profile.soundFile
-		end,
-		set = function(info, v)
-			mod.db.profile.soundFile = v
-			PlaySoundFile(Media:Fetch("sound", v))
-		end,
-		values = sounds,
-		disabled = function() return not mod.db.profile.sound end
-	},
-	addWord = {
-		type = "input",
-		name = L["Add Word"],
-		desc = L["Add word to your highlight list"],
-		get = function() end,
-		set = function(info, v)
-			mod.db.profile.words[v:lower()] = v
-		end
-	},
-	removeWord = {
-		type = "select",
-		name = L["Remove Word"],
-		desc = L["Remove a word from your highlight list"],
-		get = function() end,
-		set = function(info, v)
-			mod.db.profile.words[v:lower()] = nil
-		end,
-		values = function() return mod.db.profile.words end,
-		confirm = function(info, v) return (L["Remove this word from your highlights?"]) end
-	},
-	customSplitter = {
-		type = "header",
+	config = {
+		type = "group",
 		name = L["Custom Channel Sounds"],
-		order= 101
+		args = {}
 	}
 }
 
@@ -167,7 +174,7 @@ function mod:AddCustomChannels(...)
 	for i = 1, select("#", ...), 2 do
 		local id, name = select(i, ...)
 		if not options[name:gsub(" ", "_")] then
-			options[name:gsub(" ", "_")] = {
+			options.config.args[name:gsub(" ", "_")] = {
 				type = "select",
 				name = name,
 				values = sounds,

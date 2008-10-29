@@ -21,6 +21,7 @@ local options = {
 		type = "select",
 		name = L["Font"],
 		desc = L["Font"],
+		dialogControl = 'LSM30_Font',
 		values = fonts,
 		get = function() return mod.db.profile.font end,
 		set = function(info, v) 
@@ -85,6 +86,7 @@ function mod:OnInitialize()
 					type = "select",
 					name = L["Font"],
 					desc = L["Font"],
+					dialogControl = 'LSM30_Font',
 					values = fonts_and_default,
 					get = function() return mod.db.profile.frames["FRAME_" .. i].font or mod.db.profile.font end,
 					set = function(info, v) 

@@ -16,6 +16,7 @@ local options = {
 		type = "toggle",
 		name = L["Show bottom when scrolled"],
 		desc = L["Show bottom button when scrolled up"],
+		width = "double",
 		get = function()
 			return mod.db.profile.scrollReminder
 		end,

@@ -10,15 +10,21 @@ local optFrame
 local options = {
 	type = "group",
 	args = {
-		aceConfig = {
-			type = "execute",
-			name = L["Standalone Config"],
-			desc = L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."],
-			func = function()
-				InterfaceOptionsFrame:Hide()
-				AceConfigDialog:SetDefaultSize("Chatter", 500, 550)
-				AceConfigDialog:Open("Chatter")
-			end
+		defaultArgs = {
+			type = "group",
+			name = L["Chatter"],
+			args = {
+				aceConfig = {
+					type = "execute",
+					name = L["Standalone Config"],
+					desc = L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."],
+					func = function()
+						InterfaceOptionsFrame:Hide()
+						AceConfigDialog:SetDefaultSize("Chatter", 500, 550)
+						AceConfigDialog:Open("Chatter")
+					end
+				}
+			}
 		},
 		config = {
 			type = "execute",
@@ -45,11 +51,18 @@ local defaults = {
 	}
 }
 
-AceConfig:RegisterOptionsTable("Chatter", options)
 Chatter:SetDefaultModuleState(false)
+
+local optionFrames = {}
+local ACD3 = LibStub("AceConfigDialog-3.0")
 
 function Chatter:OnInitialize()
 	self.db = LibStub("AceDB-3.0"):New("ChatterDB", defaults, "Default")
+
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Chatter", options)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("ChatterModules", options.args.modules)
+	optFrame = ACD3:AddToBlizOptions("Chatter", nil, nil, "defaultArgs")
+	
 	for k, v in self:IterateModules() do
 		options.args.modules.args[k:gsub(" ", "_")] = {
 			type = "group",
@@ -69,6 +82,7 @@ function Chatter:OnInitialize()
 		t.toggle = {
 			type = "toggle", 
 			name = v.toggleLabel or (L["Enable "] .. (v.modName or k)), 
+			width = "double",
 			desc = v.Info and v:Info() or (L["Enable "] .. (v.modName or k)), 
 			order = 11,
 			get = function()
@@ -99,9 +113,18 @@ function Chatter:OnInitialize()
 		end
 		options.args.modules.args[k:gsub(" ", "_")].args = t
 	end	
-	optFrame = AceConfigDialog:AddToBlizOptions("Chatter", "Chatter")
 	
-	options.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+	local moduleList = {}
+	local moduleNames = {}
+	for k, v in pairs(options.args.modules.args) do
+		moduleList[v.name] = k
+		tinsert(moduleNames, v.name)
+	end
+	table.sort(moduleNames)
+	for _, name in ipairs(moduleNames) do
+		ACD3:AddToBlizOptions("ChatterModules", name, "Chatter", moduleList[name])
+	end
+	
 	self:RegisterChatCommand("chatter", "OpenConfig")
 	
 	self.db.RegisterCallback(self, "OnProfileChanged", "SetUpdateConfig")
@@ -125,12 +148,13 @@ end
 
 function Chatter:OpenConfig(input)
 	if input == "config" or not InterfaceOptionsFrame:IsResizable() then
-		options.args.aceConfig.guiHidden = true
+		options.args.defaultArgs.guiHidden = true
 		InterfaceOptionsFrame:Hide()
 		AceConfigDialog:SetDefaultSize("Chatter", 500, 550)
 		AceConfigDialog:Open("Chatter")
 	else
-		options.args.aceConfig.guiHidden = false
+		InterfaceOptionsFrame_OpenToCategory(Chatter.lastConfig)
+		options.args.defaultArgs.guiHidden = false
 		InterfaceOptionsFrame_OpenToCategory(optFrame)
 	end
 end
@@ -169,6 +193,11 @@ function Chatter:OnEnable()
 		if self.db.profile.modules[k] ~= false then
 			v:Enable()
 		end
+	end
+	
+	if not options.args.Profiles then
+ 		options.args.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+		self.lastConfig = ACD3:AddToBlizOptions("Chatter", L["Profiles"], "Chatter", "Profiles")
 	end
 end
 

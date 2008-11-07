@@ -276,3 +276,7 @@ L["Lets you set the scrollback length of your chat frames."] = true
 L["Chatter"] = true
 L["Options"] = true
 L["Profiles"] = true
+
+-- ./Modules/SplitText.lua
+L["Message Split"] = true
+L["Allows you to type messages longer than normal, and splits message that are too long."] = true

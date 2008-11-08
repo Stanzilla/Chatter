@@ -27,6 +27,6 @@
 	<Script file="Modules\Scrollback.lua" />
 	<Script file="Modules\EditBoxHistory.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
-	<Include file="Modules\SplitText.lua" />
+	<!-- <Include file="Modules\SplitText.lua" /> //-->
 	<!-- <Script file="Modules\ChannelBindings.lua" /> //-->
 </Ui>

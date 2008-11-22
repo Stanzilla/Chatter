@@ -135,6 +135,7 @@ StaticPopupDialogs["ChatterUrlCopyDialog"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = 1,
+	maxLetters=1024, -- this otherwise gets cached from other dialogs which caps it at 10..20..30...
 }
 
 function mod:SetItemRef(link, text, button)

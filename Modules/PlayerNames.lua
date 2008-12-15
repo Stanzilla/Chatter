@@ -4,23 +4,11 @@ local AceTab = LibStub("AceTab-3.0")
 
 mod.modName = L["Player Names"]
 
---[[
--- for autolocalization
-L["Warlock"]
-L["Warrior"]
-L["Hunter"]
-L["Mage"]
-L["Priest"]
-L["Druid"]
-L["Paladin"]
-L["Shaman"]
-L["Rogue"]
-]]--
-
-local local_names, local_levels = {}, {}
+local local_names = {}
 local leftBracket, rightBracket, separator
 local colorSelfInText, emphasizeSelfInText
 local gsub = _G.string.gsub
+local strmatch = _G.string.match
 local find = _G.string.find
 local pairs = _G.pairs
 local string_format = _G.string.format
@@ -53,9 +41,9 @@ local sqrt = _G.sqrt
 local tinsert = _G.tinsert
 local type = _G.type
 
-local lookup = {}
 local player = UnitName("player")
-local classes = {"Druid", "Mage", "Paladin", "Priest", "Rogue", "Hunter", "Shaman", "Warlock", "Warrior"}
+
+
 local channels = {
 	GUILD = {},
 	PARTY = {},
@@ -80,8 +68,35 @@ local defaults = {
 		useTabComplete = true,
 		colorSelfInText = true,
 		emphasizeSelfInText = true,
+	},
+	global = {
+		classes = {		-- yeah this should be localized by translators but ... they dont. so we also autodiscover on UnitClass() calls
+			DRUID = L["Druid"],
+			MAGE = L["Mage"],
+			PALADIN = L["Paladin"],
+			PRIEST = L["Priest"],
+			ROGUE = L["Rogue"],
+			HUNTER = L["Hunter"],
+			SHAMAN = L["Shaman"],
+			WARLOCK = L["Warlock"],
+			WARRIOR = L["Warrior"],
+			DEATHKNIGHT = L["Death Knight"],
+		}
 	}
 }
+
+local localizedToSystemClass = {} -- gets initialized in OnInit
+
+local origUnitClass = UnitClass
+local function UnitClass(unit)	-- Hook UnitClass for calls below so that we can autodiscover
+	local loc,sys = origUnitClass(unit)
+	if sys and mod.db.global.classes[sys] then
+		mod.db.global.classes[sys] = loc
+		localizedToSystemClass = sys
+	end
+	return loc,sys
+end
+
 
 local tabComplete
 do
@@ -163,10 +178,10 @@ local names = setmetatable({}, {
 		end
 		local coloring = mod.db.profile.nameColoring
 		local dLevel
-		if mod.db.profile.levelByDiff and level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
+		if mod.db.profile.levelByDiff and level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
 			local c = GetDifficultyColor(level)
 			dLevel = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, level)
-		elseif level and (level ~= 70 or not mod.db.profile.excludeSeventies) then
+		elseif level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
 			dLevel = level
 		end
 		if coloring ~= "NONE" then
@@ -188,208 +203,23 @@ local names = setmetatable({}, {
 	end
 })
 
+local function wipeCache()
+	for k in pairs(names) do
+		names[k] = nil
+	end
+end
+
+
 local function updateSaveData(v)
 	if v then
 		for k, v in pairs(local_names) do
 			mod.db.realm.names[k] = v
 		end
-	else
-		for k, v in pairs(mod.db.realm.names) do
-			local_names[k] = v
-		end
 	end
 end
 
-local options = {
-	save = {
-		type = "group",
-		name = L["Save Data"],
-		desc = L["Save data between sessions. Will increase memory usage"],
-		args = {
-			guild = {
-				type = "toggle",
-				name = L["Guild"],
-				desc = L["Save class data from guild between sessions."],
-				get = function()
-					return mod.db.profile.saveGuild
-				end,
-				set = function(info, v)
-					mod.db.profile.saveGuild = v
-					updateSaveData(v)
-				end
-			},
-			group = {
-				type = "toggle",
-				name = L["Group"],
-				desc = L["Save class data from groups between sessions."],
-				get = function()
-					return mod.db.profile.saveGroup
-				end,
-				set = function(info, v)
-					mod.db.profile.saveGroup = v
-					updateSaveData(v)
-				end
-			},
-			target = {
-				type = "toggle",
-				name = L["Target/Mouseover"],
-				desc = L["Save class data from target/mouseover between sessions."],
-				get = function()
-					return mod.db.profile.saveTarget
-				end,
-				set = function(info, v)
-					mod.db.profile.saveTarget = v
-					updateSaveData(v)
-				end
-			},
-			who = {
-				type = "toggle",
-				name = L["Who"],
-				desc = L["Save class data from /who queries between sessions."],
-				get = function()
-					return mod.db.profile.saveWho
-				end,
-				set = function(info, v)
-					mod.db.profile.saveWho = v
-					updateSaveData(v)
-				end
-			},
-			resetDB = {
-				type = "execute",
-				name = L["Reset Data"],
-				desc = L["Destroys all your saved class/level data"],
-				func = function()
-					for k, v in pairs(mod.db.realm.names) do
-						mod.db.realm.names = nil
-					end
-				end,
-				order = 101,
-				confirm = function() return L["Are you sure you want to delete all your saved class/level data?"] end
-			}
-		}
-	},
-	leftbracket = {
-		type = "input",
-		name = L["Left Bracket"],
-		desc = L["Character to use for the left bracket"],
-		get = function() return mod.db.profile.leftBracket end,
-		set = function(i, v)
-			mod.db.profile.leftBracket = v
-			leftBracket = v
-		end
-	},
-	rightbracket = {
-		type = "input",
-		name = L["Right Bracket"],
-		desc = L["Character to use for the right bracket"],
-		get = function() return mod.db.profile.rightBracket end,
-		set = function(i, v)
-			mod.db.profile.rightBracket = v
-			rightBracket = v
-		end
-	},	
-	useTabComplete = {
-		type = "toggle",
-		name = L["Use Tab Complete"],
-		desc = L["Use tab key to automatically complete character names."],
-		get = function() return mod.db.profile.useTabComplete end,
-		set = function(info, v)
-			mod.db.profile.useTabComplete = v
-			if v and not AceTab:IsTabCompletionRegistered("Chatter") then
-				AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
-			elseif not v and AceTab:IsTabCompletionRegistered("Chatter") then
-				AceTab:UnregisterTabCompletion("Chatter")
-			end
-		end
-	},
-	colorSelfInText = {
-		type = "toggle",
-		name = L["Color self in messages"],
-		desc = L["Color own charname in messages."],
-		get = function() return mod.db.profile.colorSelfInText end,
-		set = function(i, v)
-			mod.db.profile.colorSelfInText = v
-			colorSelfInText = v
-		end
-	},
-	emphasizeSelfInText = {
-		type = "toggle",
-		name = L["Emphasize self in messages"],
-		desc = L["Add surrounding brackets to own charname in messages."],
-		width = "double",
-		get = function() return mod.db.profile.emphasizeSelfInText end,
-		set = function(i, v)
-			mod.db.profile.emphasizeSelfInText = v
-			emphasizeSelfInText = v
-		end
-	},
-	levelHeader = {
-		type = "header",
-		name = L["Level Options"],
-		order = 104
-	},
-	includeLevel = {
-		type = "toggle",
-		name = L["Include level"],
-		desc = L["Include the player's level"],
-		order = 105,
-		get = function() return mod.db.profile.includeLevel end,
-		set = function(info, val)
-			mod.db.profile.includeLevel = val
-			for k, v in pairs(names) do
-				names[k] = nil
-			end
-		end
-	},
-	excludeSeventies = {
-		type = "toggle",
-		name = L["Exclude Level 70s"],
-		desc = L["Exclude level display for level 70s"],
-		order = 105,
-		get = function() return mod.db.profile.excludeSeventies end,
-		set = function(info, val)
-			mod.db.profile.excludeSeventies = val
-			for k, v in pairs(names) do
-				names[k] = nil
-			end
-		end,
-		hidden = function() return not mod.db.profile.includeLevel end
-	},
-	colorLevelByDifficulty = {
-		type = "toggle",
-		name = L["Color level by difficulty"],
-		desc = L["Color level by difficulty"],
-		order = 105,
-		get = function()
-			return mod.db.profile.levelByDiff
-		end,
-		set = function(info, v)
-			mod.db.profile.levelByDiff = v
-			for k, v in pairs(names) do
-				names[k] = nil
-			end
-		end,
-		hidden = function() return not mod.db.profile.includeLevel end
-	},
-	colorBy = {
-		type = "select",
-		name = L["Color Player Names By..."],
-		desc = L["Select a method for coloring player names"],
-		values = colorMethods,
-		get = function() return mod.db.profile.nameColoring end,
-		set = function(info, val)
-			mod.db.profile.nameColoring = val
-			for k, v in pairs(names) do
-				names[k] = nil
-			end
-		end
-	}
-}
 
 function mod:OnInitialize()
-	for i = 1, #classes do
-		lookup[L[classes[i]]] = classes[i]:upper()
-	end
 	
 	self.db = Chatter.db:RegisterNamespace("PlayerNames", defaults)
 	for k, v in pairs(self.db.realm.names) do
@@ -398,9 +228,13 @@ function mod:OnInitialize()
 		end
 	end
 	
-	
 	if self.db.global and self.db.global.names then
 		self.db.global.names = nil	-- get rid of old data
+	end
+	
+	-- create reverse map of classes (localized -> system)
+	for sys,loc in pairs(self.db.global.classes) do
+		localizedToSystemClass[loc]=sys
 	end
 end
 
@@ -443,7 +277,8 @@ end
 
 function mod:AddPlayer(name, class, level, save)
 	if name and class and class ~= UNKNOWN then
-		if save then
+		-- print("AddPlayer:",name,":",level,class)
+		if save or self.db.realm.names[name] then	-- if we already have an entry saved from elsewhere, we update it regardless of the requested "save" type - nothing else makes sense
 			self.db.realm.names[name] = self.db.realm.names[name] or {}
 			self.db.realm.names[name].class = class
 			if level and level ~= 0 then
@@ -464,7 +299,7 @@ function mod:FRIENDLIST_UPDATE(evt)
 	for i = 1, GetNumFriends() do
 		local name, level, class = GetFriendInfo(i)
 		if class then
-			self:AddPlayer(name, lookup[class], level, self.db.profile.saveFriends)
+			self:AddPlayer(name, localizedToSystemClass[class], level, self.db.profile.saveFriends)
 		end
 	end
 end
@@ -546,30 +381,39 @@ end
 
 function mod:PLAYER_TARGET_CHANGED(evt)
 	if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then return end
-	local _, cls = UnitClass("target")
+	local _, c = UnitClass("target")
 	local l = UnitLevel("target")
-	self:AddPlayer(UnitName("target"), cls, l, self.db.profile.saveTarget)
+	self:AddPlayer(UnitName("target"), c, l, self.db.profile.saveTarget)
 end
 
 function mod:UPDATE_MOUSEOVER_UNIT(evt)
 	if not UnitExists("mouseover") or not UnitIsPlayer("mouseover") or not UnitIsFriend("player", "mouseover") then return end
-	local _, cls = UnitClass("mouseover")
+	local _, c = UnitClass("mouseover")
 	local l = UnitLevel("mouseover")
-	self:AddPlayer(UnitName("mouseover"), cls, l, self.db.profile.saveTarget)
+	self:AddPlayer(UnitName("mouseover"), c, l, self.db.profile.saveTarget)
 end
 
 function mod:CHAT_MSG_SYSTEM(evt, msg)
-	local name, level, class = select(3, msg:find("^|Hplayer:[^|]+|h%[([^%]]+)%]|h: %w+ (%d+) %w+ (%w+)"))
-	if name and class then
-		self:AddPlayer(name, lookup[class], level)
+	local name, level, raceclass = strmatch(msg, "^|Hplayer:(.-)|h.-|h: %S+ (%d+) (.-) %p")
+	-- Races can be 1--n words. Classes can be 1--2 words ("Death Knight", joy) ... so we go hunting
+	if raceclass then
+		local class
+		for sys,loc in pairs(mod.db.global.classes) do
+			if strmatch(raceclass, " "..loc.."$") then
+				self:AddPlayer(name, sys, level, self.db.profile.saveWho)
+				break
+			end
+		end
 	end
 end
 
 function mod:WHO_LIST_UPDATE(evt)
-	for i = 1, GetNumWhoResults() do
-		local name, _, level, _, class = GetWhoInfo(i)
-		if class then
-			self:AddPlayer(name, lookup[class], level, self.db.profile.saveWho)
+	if GetNumWhoResults()<=3 then	-- really only interested when we're WHOing _one_ person, not e.g. everyone in a zone (but we might get several hits if it's a short name so <=3 sounds reasonable)
+		for i=1,GetNumWhoResults() do
+			local name, _, level, _, _,_, class = GetWhoInfo(i)
+			if class then
+				self:AddPlayer(name, class, level, self.db.profile.saveWho)
+			end
 		end
 	end
 end
@@ -608,7 +452,189 @@ function mod:Info()
 	return L["Provides options to color player names, add player levels, and add tab completion of player names."]
 end
 
+local options
+
 function mod:GetOptions()
+	if not options then	-- save RAM / load time
+		options = {
+			save = {
+				type = "group",
+				name = L["Save Data"],
+				desc = L["Save data between sessions. Will increase memory usage"],
+				args = {
+					guild = {
+						type = "toggle",
+						name = L["Guild"],
+						desc = L["Save class data from guild between sessions."],
+						get = function()
+							return mod.db.profile.saveGuild
+						end,
+						set = function(info, v)
+							mod.db.profile.saveGuild = v
+							updateSaveData(v)
+						end
+					},
+					group = {
+						type = "toggle",
+						name = L["Group"],
+						desc = L["Save class data from groups between sessions."],
+						get = function()
+							return mod.db.profile.saveGroup
+						end,
+						set = function(info, v)
+							mod.db.profile.saveGroup = v
+							updateSaveData(v)
+						end
+					},
+					target = {
+						type = "toggle",
+						name = L["Target/Mouseover"],
+						desc = L["Save class data from target/mouseover between sessions."],
+						get = function()
+							return mod.db.profile.saveTarget
+						end,
+						set = function(info, v)
+							mod.db.profile.saveTarget = v
+							updateSaveData(v)
+						end
+					},
+					who = {
+						type = "toggle",
+						name = L["Who"],
+						desc = L["Save class data from /who queries between sessions."],
+						get = function()
+							return mod.db.profile.saveWho
+						end,
+						set = function(info, v)
+							mod.db.profile.saveWho = v
+							updateSaveData(v)
+						end
+					},
+					resetDB = {
+						type = "execute",
+						name = L["Reset Data"],
+						desc = L["Destroys all your saved class/level data"],
+						func = function()
+							for k, v in pairs(mod.db.realm.names) do
+								mod.db.realm.names = nil
+							end
+						end,
+						order = 101,
+						confirm = function() return L["Are you sure you want to delete all your saved class/level data?"] end
+					}
+				}
+			},
+			leftbracket = {
+				type = "input",
+				name = L["Left Bracket"],
+				desc = L["Character to use for the left bracket"],
+				get = function() return mod.db.profile.leftBracket end,
+				set = function(i, v)
+					mod.db.profile.leftBracket = v
+					leftBracket = v
+				end
+			},
+			rightbracket = {
+				type = "input",
+				name = L["Right Bracket"],
+				desc = L["Character to use for the right bracket"],
+				get = function() return mod.db.profile.rightBracket end,
+				set = function(i, v)
+					mod.db.profile.rightBracket = v
+					rightBracket = v
+				end
+			},	
+			useTabComplete = {
+				type = "toggle",
+				name = L["Use Tab Complete"],
+				desc = L["Use tab key to automatically complete character names."],
+				get = function() return mod.db.profile.useTabComplete end,
+				set = function(info, v)
+					mod.db.profile.useTabComplete = v
+					if v and not AceTab:IsTabCompletionRegistered("Chatter") then
+						AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
+					elseif not v and AceTab:IsTabCompletionRegistered("Chatter") then
+						AceTab:UnregisterTabCompletion("Chatter")
+					end
+				end
+			},
+			colorSelfInText = {
+				type = "toggle",
+				name = L["Color self in messages"],
+				desc = L["Color own charname in messages."],
+				get = function() return mod.db.profile.colorSelfInText end,
+				set = function(i, v)
+					mod.db.profile.colorSelfInText = v
+					colorSelfInText = v
+				end
+			},
+			emphasizeSelfInText = {
+				type = "toggle",
+				name = L["Emphasize self in messages"],
+				desc = L["Add surrounding brackets to own charname in messages."],
+				width = "double",
+				get = function() return mod.db.profile.emphasizeSelfInText end,
+				set = function(i, v)
+					mod.db.profile.emphasizeSelfInText = v
+					emphasizeSelfInText = v
+				end
+			},
+			levelHeader = {
+				type = "header",
+				name = L["Level Options"],
+				order = 104
+			},
+			includeLevel = {
+				type = "toggle",
+				name = L["Include level"],
+				desc = L["Include the player's level"],
+				order = 105,
+				get = function() return mod.db.profile.includeLevel end,
+				set = function(info, val)
+					mod.db.profile.includeLevel = val
+					wipeCache()
+				end
+			},
+			excludeMaxLevel = {
+				type = "toggle",
+				name = L["Exclude max levels"],
+				desc = L["Exclude level display for max level characters"],
+				order = 105,
+				get = function() return mod.db.profile.excludeMaxLevel end,
+				set = function(info, val)
+					mod.db.profile.excludeMaxLevel = val
+					wipeCache()
+				end,
+				hidden = function() return not mod.db.profile.includeLevel end
+			},
+			colorLevelByDifficulty = {
+				type = "toggle",
+				name = L["Color level by difficulty"],
+				desc = L["Color level by difficulty"],
+				order = 105,
+				get = function()
+					return mod.db.profile.levelByDiff
+				end,
+				set = function(info, v)
+					mod.db.profile.levelByDiff = v
+					wipeCache()
+				end,
+				hidden = function() return not mod.db.profile.includeLevel end
+			},
+			colorBy = {
+				type = "select",
+				name = L["Color Player Names By..."],
+				desc = L["Select a method for coloring player names"],
+				values = colorMethods,
+				get = function() return mod.db.profile.nameColoring end,
+				set = function(info, val)
+					mod.db.profile.nameColoring = val
+					wipeCache()
+				end
+			}
+		}
+
+	end
 	return options
 end
 

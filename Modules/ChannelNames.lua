@@ -14,11 +14,11 @@ local defaults = {
 	profile = {
 		channels = {
 			[L["Guild"]] = "[G]",
+			[L["Officer"]] = "[O]",
 			[L["Party"]] = "[P]",
 			[L["Raid"]] = "[R]",
 			[L["Raid Leader"]] = "[RL]",
 			[L["Raid Warning"]] = "[RW]",
-			[L["Officer"]] = "[O]",
 			[L["LookingForGroup"]] = "[LFG]",
 			[L["Battleground"]] = "[BG]",
 			[L["Battleground Leader"]] = "[BL]",
@@ -133,12 +133,28 @@ function mod:CHAT_MSG_CHANNEL_NOTICE()
 	self:AddCustomChannels(GetChannelList())
 end
 
-local function replaceChannel(msg, num, channel)
+local function replaceChannel(ch, msg, num, channel)
 	local v = channels[channel] or channels[channel:lower()]
+	local t = " "
 	if v then
-		-- XXX Grum @ 18/10/2008 - The insertion of '|h' is at best crude, but I couldn't find a way to make this work faster without rewriting the whole thing.
-		return (v == " " and (mod.db.profile.addSpace and " " or "")) or ((functions[channel] or functions[channel:lower()] or v) .. "|h" .. (mod.db.profile.addSpace and " " or ""))
+		t = ((functions[channel] or functions[channel:lower()] or v))
+	else
+		v = ""
 	end
+	t = "|Hchannel:" .. ch .. "|h" .. t .. "|h" .. (t == " " and "" or (mod.db.profile.addSpace and " " or ""))
+	return t
+end
+
+local function replaceChannelRW(msg, channel)
+	local v = channels[channel] or channels[channel:lower()]
+	local t = " "
+	if v then
+		t = ((functions[channel] or functions[channel:lower()] or v))
+	else
+		v = ""
+	end
+	t = t .. (t == " " and "" or (mod.db.profile.addSpace and " " or ""))
+	return t
 end
 
 function mod:AddMessage(frame, text, ...)
@@ -146,10 +162,15 @@ function mod:AddMessage(frame, text, ...)
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
 
-	local oldText = text
-	text = gsub(text, "(%[([%d. ]*)([^%]]+)%])|h ", replaceChannel)
-	text = gsub(text, L["^To "], channels["Whisper To"] .. (mod.db.profile.addSpace and " " or ""))
-	text = gsub(text, L["^(.-|h) whispers:"], channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	text = gsub(text, "^|Hchannel:(%S-)|h(%[([%d. ]*)([^%]]+)%])|h ", replaceChannel)
+	text = gsub(text, "^(%[(" .. L["Raid Warning"] .. ")%]) ", replaceChannelRW)
+	if (GetLocale() == "koKR") then
+		text = gsub(text, L["^To (.-|h):"], "%1" .. channels["Whisper To"] .. ":")
+		text = gsub(text, L["^(.-|h) whispers:"], "%1" .. channels["Whisper From"] .. ":")
+	else
+		text = gsub(text, L["^To "], channels["Whisper To"] .. (mod.db.profile.addSpace and " " or ""))
+		text = gsub(text, L["^(.-|h) whispers:"], channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

@@ -9,7 +9,7 @@ local channels = {
 	EMOTE = L["Emote"],
 	YELL = L["Yell"],
 	OFFICER = L["Officer"],
-	RAID_WARNING = L["Raid warning"],
+	RAID_WARNING = L["Raid Warning"],
 	WHISPER = L["Whisper"],
 	CHANNEL = L["Custom channels"]
 }

@@ -33,15 +33,16 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	self:AddChannels(GetChannelList())
 	self:AddChannels(
+		"SAY", L["Say"],
 		"YELL", L["Yell"],
 		"GUILD", L["Guild"], 
 		"OFFICER", L["Officer"], 
-		"RAID", L["Raid"], 
 		"PARTY", L["Party"], 
+		"RAID", L["Raid"], 
+		"RAID_LEADER", L["Raid Leader"],
 		"RAID_WARNING", L["Raid Warning"],
-		"SAY", L["Say"],
 		"BATTLEGROUND", L["Battleground"],
-		"BATTLEGROUND_LEADER", L["Battleground"],
+		"BATTLEGROUND_LEADER", L["Battleground Leader"],
 		"WHISPER", L["Whisper"]
 	)
 end

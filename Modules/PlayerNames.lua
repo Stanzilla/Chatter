@@ -394,6 +394,8 @@ function mod:UPDATE_MOUSEOVER_UNIT(evt)
 end
 
 function mod:CHAT_MSG_SYSTEM(evt, msg)
+	mod:WHO_LIST_UPDATE(evt)
+--[[
 	local name, level, raceclass = strmatch(msg, "^|Hplayer:(.-)|h.-|h: %S+ (%d+) (.-) %p")
 	-- Races can be 1--n words. Classes can be 1--2 words ("Death Knight", joy) ... so we go hunting
 	if raceclass then
@@ -405,12 +407,13 @@ function mod:CHAT_MSG_SYSTEM(evt, msg)
 			end
 		end
 	end
+]]--
 end
 
 function mod:WHO_LIST_UPDATE(evt)
-	if GetNumWhoResults()<=3 then	-- really only interested when we're WHOing _one_ person, not e.g. everyone in a zone (but we might get several hits if it's a short name so <=3 sounds reasonable)
-		for i=1,GetNumWhoResults() do
-			local name, _, level, _, _,_, class = GetWhoInfo(i)
+	if GetNumWhoResults() <= 3 then	-- really only interested when we're WHOing _one_ person, not e.g. everyone in a zone (but we might get several hits if it's a short name so <=3 sounds reasonable)
+		for i = 1, GetNumWhoResults() do
+			local name, _, level, _, _, _, class = GetWhoInfo(i)
 			if class then
 				self:AddPlayer(name, class, level, self.db.profile.saveWho)
 			end

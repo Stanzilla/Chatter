@@ -70,6 +70,8 @@ local function addChannel(name)
 			mod.db.profile.channels[name] = #v > 0 and v or nil
 			if v:match("^function%(") then
 				functions[name] = loadstring("return " .. v)()
+			else
+				functions[name] = nil
 			end
 		end
 	}
@@ -133,28 +135,16 @@ function mod:CHAT_MSG_CHANNEL_NOTICE()
 	self:AddCustomChannels(GetChannelList())
 end
 
-local function replaceChannel(ch, msg, num, channel)
-	local v = channels[channel] or channels[channel:lower()]
-	local t = " "
-	if v then
-		t = ((functions[channel] or functions[channel:lower()] or v))
-	else
-		v = ""
-	end
-	t = "|Hchannel:" .. ch .. "|h" .. t .. "|h" .. (t == " " and "" or (mod.db.profile.addSpace and " " or ""))
-	return t
+local function replaceChannel(origChannel, msg, num, channel)
+	local f = functions[channel] or functions[channel:lower()]
+	local newChannelName = f and f(channel) or channels[channel] or channels[channel:lower()] or channel
+	return ("|Hchannel:%s|h%s|h%s"):format(origChannel, newChannelName, mod.db.profile.addSpace and " " or "")
 end
 
 local function replaceChannelRW(msg, channel)
-	local v = channels[channel] or channels[channel:lower()]
-	local t = " "
-	if v then
-		t = ((functions[channel] or functions[channel:lower()] or v))
-	else
-		v = ""
-	end
-	t = t .. (t == " " and "" or (mod.db.profile.addSpace and " " or ""))
-	return t
+	local f = functions[channel] or functions[channel:lower()]
+	local newChannelName = f and f(channel) or channels[channel] or channels[channel:lower()] or channel
+	return newChannelName .. (mod.db.profile.addSpace and " " or "")
 end
 
 function mod:AddMessage(frame, text, ...)

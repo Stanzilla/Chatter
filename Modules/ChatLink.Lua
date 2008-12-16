@@ -38,6 +38,8 @@ function mod:ParseLinks(text)
 	text = gsub(text, "{CLINK:quest:(%x+):([%d-]-):([%d-]-):([^}]-)}", "|c%1|Hquest:%2:%3|h[%4]|h|r")
 	text = gsub(text, "{CLINK:(%x+):([%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-):([^}]-)}", "|c%1|Hitem:%2|h[%3]|h|r")
 	text = gsub(text, "{CLINK:trade:(%x+):(%-?%d-:%-?%d-:.*:.*):([^}]-)}", "|c%1|Htrade:%2|h[%3]|h|r")
+	--	{CLINK:achievement:ffffff00:780:00000000001ED5C3:1:12:16:8:4294967295:4294967295:4294967295:4294967295:Explore Redridge Mountains}
+	text = gsub(text, "{CLINK:achievement:(%x+):(%-?%d-:%-?%x-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-):([^}]-)}", "|c%1|Hachievement:%2|h[%3]|h|r")
 	return text
 end
 
@@ -48,6 +50,10 @@ function mod:CreateLinks(text)
 	text = gsub(text, "|c(%x+)|H(quest):(%-?%d-):(%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4:%5}")
 	text = gsub(text, "|c(%x+)|H(spell):(%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")	
 	text = gsub(text, "|c(%x+)|H(trade):(%-?%d-:%-?%d-:%-?%d-:.*:.*)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
+	
+	text = gsub(text, "|c(%x+)|H(achievement):(%-?%d-:.*:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
+	
+	-- |cffffff00|Hachievement:1722:00000000001C9642:1:11:25:8:4294967295:4294967295:4294967295:4294967295|h[Archavon the Stone Watcher]|h|r
 	return text
 	-- color|Hitem:id:0:0:0:0:0:0:0:0:0|name|
 end

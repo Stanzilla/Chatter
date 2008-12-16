@@ -243,7 +243,7 @@ function mod:OnEnable()
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED")
 	self:RegisterEvent("WHO_LIST_UPDATE")
 	self:RegisterEvent("PLAYER_TARGET_CHANGED")
-	self:RegisterEvent("CHAT_MSG_SYSTEM")
+	self:RegisterEvent("CHAT_MSG_SYSTEM", "WHO_LIST_UPDATE")
 	self:RegisterEvent("FRIENDLIST_UPDATE")
 	self:RegisterEvent("GUILD_ROSTER_UPDATE")
 	self:RegisterEvent("CHAT_MSG_CHANNEL_JOIN")
@@ -393,30 +393,11 @@ function mod:UPDATE_MOUSEOVER_UNIT(evt)
 	self:AddPlayer(UnitName("mouseover"), c, l, self.db.profile.saveTarget)
 end
 
-function mod:CHAT_MSG_SYSTEM(evt, msg)
-	mod:WHO_LIST_UPDATE(evt)
---[[
-	local name, level, raceclass = strmatch(msg, "^|Hplayer:(.-)|h.-|h: %S+ (%d+) (.-) %p")
-	-- Races can be 1--n words. Classes can be 1--2 words ("Death Knight", joy) ... so we go hunting
-	if raceclass then
-		local class
-		for sys,loc in pairs(mod.db.global.classes) do
-			if strmatch(raceclass, " "..loc.."$") then
-				self:AddPlayer(name, sys, level, self.db.profile.saveWho)
-				break
-			end
-		end
-	end
-]]--
-end
-
 function mod:WHO_LIST_UPDATE(evt)
-	if GetNumWhoResults() <= 3 then	-- really only interested when we're WHOing _one_ person, not e.g. everyone in a zone (but we might get several hits if it's a short name so <=3 sounds reasonable)
-		for i = 1, GetNumWhoResults() do
-			local name, _, level, _, _, _, class = GetWhoInfo(i)
-			if class then
-				self:AddPlayer(name, class, level, self.db.profile.saveWho)
-			end
+	for i = 1, GetNumWhoResults() do
+		local name, _, level, _, _, _, class = GetWhoInfo(i)
+		if class then
+			self:AddPlayer(name, class, level, self.db.profile.saveWho)
 		end
 	end
 end

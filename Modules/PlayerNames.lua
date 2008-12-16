@@ -394,10 +394,12 @@ function mod:UPDATE_MOUSEOVER_UNIT(evt)
 end
 
 function mod:WHO_LIST_UPDATE(evt)
-	for i = 1, GetNumWhoResults() do
-		local name, _, level, _, _, _, class = GetWhoInfo(i)
-		if class then
-			self:AddPlayer(name, class, level, self.db.profile.saveWho)
+	if GetNumWhoResults() <= 3 or self.db.profile.saveAllWho then
+		for i = 1, GetNumWhoResults() do
+			local name, _, level, _, _, _, class = GetWhoInfo(i)
+			if class then
+				self:AddPlayer(name, class, level, self.db.profile.saveWho)
+			end
 		end
 	end
 end
@@ -486,12 +488,26 @@ function mod:GetOptions()
 						type = "toggle",
 						name = L["Who"],
 						desc = L["Save class data from /who queries between sessions."],
+						order = 104,
 						get = function()
 							return mod.db.profile.saveWho
 						end,
 						set = function(info, v)
 							mod.db.profile.saveWho = v
 							updateSaveData(v)
+						end
+					},
+					saveAllWho = {
+						type = "toggle",
+						name = L["Save all /who data"],
+						desc = L["Will save all data for large /who queries"],
+						disabled = function() return not mod.db.profile.saveWho end,
+						order = 105,
+						get = function()
+							return mod.db.profile.saveAllWho
+						end,
+						set = function(info, v)
+							mod.db.profile.saveAllWho = v
 						end
 					},
 					resetDB = {

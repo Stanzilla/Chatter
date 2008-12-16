@@ -281,3 +281,5 @@ L["Profiles"] = true
 -- ./Modules/SplitText.lua
 L["Message Split"] = true
 L["Allows you to type messages longer than normal, and splits message that are too long."] = true
+L["Save all /who data"] = true
+L["Will save all data for large /who queries"] = true

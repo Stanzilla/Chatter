@@ -137,13 +137,13 @@ end
 
 local function replaceChannel(origChannel, msg, num, channel)
 	local f = functions[channel] or functions[channel:lower()]
-	local newChannelName = f and f(channel) or channels[channel] or channels[channel:lower()] or channel
+	local newChannelName = f and f(channel) or channels[channel] or channels[channel:lower()] or msg
 	return ("|Hchannel:%s|h%s|h%s"):format(origChannel, newChannelName, mod.db.profile.addSpace and " " or "")
 end
 
 local function replaceChannelRW(msg, channel)
 	local f = functions[channel] or functions[channel:lower()]
-	local newChannelName = f and f(channel) or channels[channel] or channels[channel:lower()] or channel
+	local newChannelName = f and f(channel) or channels[channel] or channels[channel:lower()] or msg
 	return newChannelName .. (mod.db.profile.addSpace and " " or "")
 end
 

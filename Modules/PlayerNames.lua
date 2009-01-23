@@ -132,36 +132,75 @@ do
 	local t = {}
 	
 	-- http://www.tecgraf.puc-rio.br/~mgattass/color/HSVtoRGB.htm
+
+
 	local function HSVtoRGB(h, s, v)
-		h = h * 6
-		local i = floor(h)
-		local i1 = v * (1 - s)
-		local i2 = v * (1 - s * (h - i))
-		local i3 = v * (1 - s * (1 - (h - i)))
-		if i == 0 then
-			return v, i3, i1
-		elseif i == 1 then
-			return i2, v, i1
-		elseif i == 2 then
-			return i1, v, i3
-		elseif i == 3 then
-			return i3, i2, v
-		elseif i == 4 then
-			return i3, i1, v
-		else
-			return v, i1, i2
-		end
+	   if ( s == 0 ) then
+		  --achromatic=fail
+		  t.r = v
+		  t.g = v
+		  t.b = v
+		  if not t.r then t.r = 0 end
+		  if not t.g then t.g = 0 end
+		  if not t.b then t.b = 0 end
+		  return t.r,t.g,t.b
+	   end
+	   h = h/60
+	   local i = floor(h)
+	   local i1 = v * (1 - s)
+	   local i2 = v * (1 - s * (h - i))
+	   local i3 = v * (1 - s * (1 - (h - i)))
+	   if i == 0 then
+		  --	return v, i3, i1
+		  t.r = v
+		  t.g = i3
+		  t.b = i1
+	   elseif i == 1 then
+		  --	return i2, v, i1
+		  t.r = i2
+		  t.g = v
+		  t.b = i1
+	   elseif i == 2 then
+		  --	return i1, v, i3
+		  t.r = i1
+		  t.g = v
+		  t.b = i3
+	   elseif i == 3 then
+		  --	return i3, i2, v
+		  t.r = i3
+		  t.g = i2
+		  t.b = v
+	   elseif i == 4 then
+		  --	return i3, i1, v
+		  t.r = i3
+		  t.g = i1
+		  t.b = v
+	   elseif i == 5 then
+		  --	return v, i1, i2
+		  t.r = v
+		  t.g = i1
+		  t.b = i2
+	   else
+		  DEFAULT_CHAT_FRAME:AddMessage("Chatter HSVtoRGB failed")
+	   end
+	   if not t.r then t.r = 0 end
+	   if not t.g then t.g = 0 end
+	   if not t.b then t.b = 0 end
+	   return t.r,t.g,t.b
 	end
 	
 	function getNameColor(name)
-		local seed = 5124
+		local seed = 5381 --old seed: 5124
 		local h, s, v = 1, 1, 1
 		local r, g, b
 		for i = 1, #name do
-			seed = 29 * seed + strbyte(name, i)
+			seed = 33 * seed + strbyte(name, i) --used to use 29 here
 		end
-		h = fmod(seed, 255) / 255
-		
+		-- h = fmod(seed, 255) / 255
+		h = fmod(seed, 360) --changed the HSVtoRGB to acompany this change
+		if (h > 220) and (h < 270) then
+		   h = h + 60
+		end
 		t.r, t.g, t.b = HSVtoRGB(h, s, v)
 		
 		return t

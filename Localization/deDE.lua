@@ -144,6 +144,10 @@ L["Requires the Alt key to be held down to move the cursor in chat"] = "Setzt da
 L["Select the font to use for the edit box"] = "Wähle die Schriftart die beim Eingabefeld benutzt wird"
 L["Lets you customize the position and look of the edit box"] = "Läst dich die Position und das Aussehn des Eingabefelds, deinen eigenen Wünschen nach anpassen."
 
+-- ./Modules/EditBoxHistory.lua
+L["Edit Box History"] = "Eingabefeld Verlauf"
+L["Remembers the history of the editbox across sessions."] = "Merkt sich die Texte des Eingabefeldes zwischen den Sitzungen."
+
 -- ./Modules/GroupSay.lua
 L["Group Say (/gr)"] = "Gruppe Sagen (/gr)"
 L["Provides a /gr slash command to let you speak in your group (raid, party, or battleground) automatically."] = "Fügt das /gr Slash Kommando hinzu damit du immer (Raid, Gruppe, Schlachtfeld) im Gruppenchat schreiben kannst."
@@ -210,9 +214,9 @@ L["Use Tab Complete"] = "Benutze Tab Vervollständigen"
 L["Use tab key to automatically complete character names."] = "Benutze die Tab Taste um Namen automatisch zu vervollständigen."
 L["Level Options"] = "Level Optionen"
 L["Include level"] = "Level hinzufügen"
-L["Include the player's level"] = "Füge dem Namen den Level des spielers hinzu."
-L["Exclude Level 70s"] = "Level 70 Ausschließen"
-L["Exclude level display for level 70s"] = "Zeige das Level bei Stufe 70 Spielern nicht an."
+L["Include the player's level"] = "Füge dem Namen, den Level des Spielers hinzu."
+L["Exclude max levels"] = "Max Level Aus"
+L["Exclude level display for max level characters"] = "Zeige das Level bei Stufe 80 Spielern nicht an."
 L["Color level by difficulty"] = "Färbe Level nach Schwierigkeit"
 L["Color Player Names By..."] = "Färbe Spieler Namen nach..."
 L["Select a method for coloring player names"] = "Wähle eine Methode wie Spielernamen eingefärbt werden."

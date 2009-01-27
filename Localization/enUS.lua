@@ -27,8 +27,14 @@ L["Set the coloring mode for alt names"] = true
 L["Custom color"] = true
 L["Select the custom color to use for alt names"] = true
 L["Who is %s's main?"] = true
-L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name."] = true
+L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name. Can also scan guild notes for character names to display, if no note has been manually set."] = true
 L["Set Main"] = true
+L["Use guildnotes"] = true
+L["Look in guildnotes for character names, unless a note is set manually"] = true
+L["Alt note fallback"] = true
+L["If no name can be found for an 'alt' rank character, use entire note"] = true
+L["alt2"] = "alt"	-- allow up to 2 localized versions of 'alt'. keep this lowercase! (and don't set it to "" or it'll match all ranks!)
+L["alt3"] = "alt"
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = true

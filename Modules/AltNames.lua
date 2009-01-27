@@ -131,9 +131,14 @@ function mod:OnDisable()
 end
 
 function mod.GetMainName()
-	local alt = _G[UIDROPDOWNMENU_INIT_MENU].name
+	local alt = UIDROPDOWNMENU_INIT_MENU.name
 	local popup = StaticPopup_Show("MENUITEM_SET_MAIN", alt)
-	if popup then popup.data = alt end
+	if popup then 
+		popup.data = alt 
+		local editbox = getglobal(popup:GetName().."EditBox")
+		editbox:SetText(NAMES[alt] or "")
+		editbox:HighlightText()
+	end
 end
 
 function mod:UnitPopup_ShowMenu(dropdownMenu, which, unit, name, userData, ...)

@@ -16,4 +16,7 @@ externals:
     Libs/LibSink-2.0: svn://svn.wowace.com/wow/libsink-2-0/mainline/trunk/LibSink-2.0
     Libs/LibStub: svn://svn.wowace.com/wow/ace3/mainline/trunk/LibStub
 	Libs/AceGUI-3.0-SharedMediaWidgets: svn://svn.wowace.com/wow/ace-gui-3-0-shared-media-widgets/mainline/trunk
-	LibBetterBlizzOptions-1.0: svn://svn.wowace.com/wow/libbetterblizzoptions-1-0/mainline/trunk/LibBetterBlizzOptions-1.0
+	Libs/LibBetterBlizzOptions-1.0: svn://svn.wowace.com/wow/libbetterblizzoptions-1-0/mainline/trunk/LibBetterBlizzOptions-1.0
+ignore:
+    - Tests
+    - strings.rb

@@ -5,12 +5,29 @@
 ## Notes-zhCN: 一个轻量级的聊天增强插件
 ## Author: Antiarc
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, LibSink-2.0
-## X-Embeds: Ace3, LibSharedMedia-3.0, LibSink-2.0
 ## X-Category: Chat/Communication
 ## Version: 1.0
 ## SavedVariables: ChatterDB
 
-embeds.xml
+#@no-lib-strip@
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceHook-3.0\AceHook-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceLocale-3.0\AceLocale-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
+Libs\AceTab-3.0\AceTab-3.0.xml
+Libs\LibSharedMedia-3.0\lib.xml
+Libs\LibSink-2.0\lib.xml
+Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+Libs\LibBetterBlizzOptions-1.0\lib.xml
+#@end-no-lib-strip@
+
 
 Localization\enUS.lua
 Localization\ruRU.lua
@@ -23,4 +40,3 @@ Localization\koKR.lua
 
 Chatter.lua
 modules.xml
-

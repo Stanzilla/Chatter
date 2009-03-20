@@ -252,7 +252,9 @@ function mod:EnableGuildNotes(enable)
 	GUILDNOTES={}
 	if enable then
 		mod:RegisterEvent("GUILD_ROSTER_UPDATE")
-		GuildRoster()
+		if IsInGuild() then
+			GuildRoster()
+		end
 		mod:ScanGuildNotes()	-- Unfortunately we can't count on GuildRoster() triggering the event if someone else triggered it recently. So we try once at first straight off the bat.
 	else
 		mod:UnregisterEvent("GUILD_ROSTER_UPDATE")
@@ -282,6 +284,7 @@ function mod:ScanGuildNotes()
 	--DBG print("Scanning guildnotes!")
 	--DBG local n,nFallback=0,0
 	local names = {}  -- ["playername"]="Playername"   (note lowercase = uppercase) (yes, this works for 'foreign' letters too in WoW, even though it does not in standard Lua)
+	GUILDNOTES = {} -- Yes, we do want to zap it, otherwise we end up storing notes for people being promoted/demoted through alt ranks and stuff
 	
 	-- #1: find all names
 	for i=1,GetNumGuildMembers(true) do

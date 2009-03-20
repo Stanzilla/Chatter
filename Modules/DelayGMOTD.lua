@@ -13,7 +13,10 @@ local pattern = GUILD_MOTD_TEMPLATE:
 local gmotdData
 
 function frame:AddMessage(frame, text, ...)
-	local gmotd = strmatch(text, pattern)
+	local gmotd 
+	if text then
+		gmotd = strmatch(text, pattern)
+	end
 	if gmotd then
 		gmotdData={text,...}
 		self:UnhookAll()

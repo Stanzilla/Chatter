@@ -90,9 +90,8 @@ end
 
 do
 	local tokennum, matchTable = 1, {}
-	mod.filterFunc = function(frame, event, ...)
-		local msg = ...
-		if not msg then return false, ... end
+	mod.filterFunc = function(frame, event, msg, ...)
+		if not msg then return false, msg, ... end
 		for i, v in ipairs(patterns) do
 			msg = gsub(msg, v.pattern, v.matchfunc)
 		end
@@ -100,7 +99,7 @@ do
 			msg = gsub(msg, k, v)
 			matchTable[k] = nil
 		end
-		return false, msg, select(2, ...)
+		return false, msg, ...
 	end
 	function mod:RegisterMatch(text)
 		local token = "\255\254\253"..tokennum.."\253\254\255"

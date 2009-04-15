@@ -198,7 +198,7 @@ function mod:ParseChat(evt, msg, sender, ...)
 	local filters = ChatFrame_GetMessageEventFilters(evt)
 	if filters then
 		for i, filterFunc in ipairs(filters) do
-			local filtered, new_message = filterFunc(DEFAULT_CHAT_FRAME, evt, msg)
+			local filtered, new_message = filterFunc(DEFAULT_CHAT_FRAME, evt, msg, sender, ...)
 			if filtered then
 				return
 			end

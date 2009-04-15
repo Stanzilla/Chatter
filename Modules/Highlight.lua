@@ -92,6 +92,8 @@ local options = {
 				desc = L["Add word to your highlight list"],
 				get = function() end,
 				set = function(info, v)
+					-- no whitespace only stuff
+					if v:match("^%s*$") then return end
 					mod.db.profile.words[v:lower()] = v
 				end
 			},
@@ -196,7 +198,7 @@ function mod:ParseChat(evt, msg, sender, ...)
 	local filters = ChatFrame_GetMessageEventFilters(evt)
 	if filters then
 		for i, filterFunc in ipairs(filters) do
-			local filtered, new_message = filterFunc(msg)
+			local filtered, new_message = filterFunc(DEFAULT_CHAT_FRAME, evt, msg)
 			if filtered then
 				return
 			end

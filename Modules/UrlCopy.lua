@@ -92,7 +92,7 @@ do
 	local tokennum, matchTable = 1, {}
 	mod.filterFunc = function(frame, event, ...)
 		local msg = ...
-		if not msg then return false, nil end
+		if not msg then return false, ... end
 		for i, v in ipairs(patterns) do
 			msg = gsub(msg, v.pattern, v.matchfunc)
 		end

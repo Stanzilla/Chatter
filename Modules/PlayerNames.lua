@@ -226,7 +226,7 @@ local names = setmetatable({}, {
 		if coloring ~= "NONE" then
 			local c
 			if coloring == "CLASS" then
-				c = RAID_CLASS_COLORS[class] or nil
+				c = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class] or nil
 			elseif coloring == "NAME" then
 				c = getNameColor(v)
 			end
@@ -306,12 +306,23 @@ function mod:OnEnable()
 	if self.db.profile.useTabComplete then
 		AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
 	end
+	
+	if CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS.RegisterCallback then
+		CUSTOM_CLASS_COLORS:RegisterCallback(wipeCache)
+	end
 end
 
 function mod:OnDisable()
 	if AceTab:IsTabCompletionRegistered("Chatter") then
 		AceTab:UnregisterTabCompletion("Chatter")
 	end
+
+	if CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS.UnregisterCallback then
+		CUSTOM_CLASS_COLORS:UnregisterCallback(wipeCache)
+	end
+end
+
+function mod:ClearCustomClassColorCache()
 end
 
 function mod:AddPlayer(name, class, level, save)

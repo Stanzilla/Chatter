@@ -12,7 +12,7 @@ local strmatch = _G.string.match
 local find = _G.string.find
 local pairs = _G.pairs
 local string_format = _G.string.format
-local GetDifficultyColor = _G.GetDifficultyColor
+local GetQuestDifficultyColor = _G.GetQuestDifficultyColor
 local GetChannelName = _G.GetChannelName
 local GetFriendInfo = _G.GetFriendInfo
 local GetGuildRosterInfo = _G.GetGuildRosterInfo
@@ -218,7 +218,7 @@ local names = setmetatable({}, {
 		local coloring = mod.db.profile.nameColoring
 		local dLevel
 		if mod.db.profile.levelByDiff and level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
-			local c = GetDifficultyColor(level)
+			local c = GetQuestDifficultyColor(level)
 			dLevel = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, level)
 		elseif level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
 			dLevel = level

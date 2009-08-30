@@ -243,7 +243,7 @@ end
 local function pName(msg, name)
 	if name and #name > 0 then
 		local alt = NAMES[name] or GUILDNOTES[name]
-		if alt and alt~="" then		-- empty notes can be stored to override guildnote data
+		if alt and alt ~= "" then		-- empty notes can be stored to override guildnote data
 			local mode = mod.db.profile.colorMode
 			if mode == "CUSTOM" then				
 				alt = customColorNames[alt]

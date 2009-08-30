@@ -75,5 +75,5 @@ function mod:AddMessage(frame, text, ...)
 end
 
 function mod:Info()
-	return L["Lets you link items, enchants, spells, and quests in custom channels."]
+	return L["Lets you link items, enchants, spells, talents, achievements and quests in custom channels."]
 end

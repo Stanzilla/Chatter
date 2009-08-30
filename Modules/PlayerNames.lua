@@ -366,7 +366,6 @@ function mod:GUILD_ROSTER_UPDATE(evt)
 	end 
 end 
 
-
 function mod:RAID_ROSTER_UPDATE(evt)
 	for k, v in pairs(channels.RAID) do
 		channels.RAID[k] = nil

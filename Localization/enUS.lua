@@ -1,40 +1,46 @@
-﻿-- This file is script-generated and should not be manually edited.
+-- This file is script-generated and should not be manually edited.
 -- Localizers may copy this file to edit as necessary.
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("Chatter", "enUS", true)
 if not L then return end
 
 -- ./Chatter.lua
+L["Chatter"] = true
 L["Standalone Config"] = true
 L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."] = true
 L["Configure"] = true
 L["Modules"] = true
-L["Module"] = true
 L["Settings"] = true
 L["Enable "] = true
 L["Enabled"] = true
+L["Module"] = true
 L["Disabled"] = true
 L["Chatter Settings"] = true
 L["Welcome to Chatter! Type /chatter to configure."] = true
+L["Profiles"] = true
 
 -- ./Modules/AltNames.lua
 L["Alt Linking"] = true
 L["Use PlayerNames coloring"] = true
 L["Use custom color"] = true
 L["Use channel color"] = true
-L["Name color"] = true
-L["Set the coloring mode for alt names"] = true
-L["Custom color"] = true
-L["Select the custom color to use for alt names"] = true
-L["Who is %s's main?"] = true
-L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name. Can also scan guild notes for character names to display, if no note has been manually set."] = true
-L["Set Main"] = true
 L["Use guildnotes"] = true
 L["Look in guildnotes for character names, unless a note is set manually"] = true
 L["Alt note fallback"] = true
 L["If no name can be found for an 'alt' rank character, use entire note"] = true
-L["alt2"] = "alt"	-- allow up to 2 localized versions of 'alt'. keep this lowercase! (and don't set it to "" or it'll match all ranks!)
-L["alt3"] = "alt"
+L["Name color"] = true
+L["Set the coloring mode for alt names"] = true
+L["Custom color"] = true
+L["Select the custom color to use for alt names"] = true
+L["Left Bracket"] = true
+L["Character to use for the left bracket"] = true
+L["Right Bracket"] = true
+L["Character to use for the right bracket"] = true
+L["Who is %s's main?"] = true
+L["Set Main"] = true
+L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name. Can also scan guild notes for character names to display, if no note has been manually set."] = true
+L["alt2"] = true
+L["alt3"] = true
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = true
@@ -50,27 +56,28 @@ L["Hides the buttons attached to the chat frame"] = true
 L["Channel Colors"] = true
 L["Keeps your channel colors by name rather than by number."] = true
 L["Other Channels"] = true
+L["Say"] = true
 L["Yell"] = true
 L["Guild"] = true
 L["Officer"] = true
-L["Raid"] = true
 L["Party"] = true
+L["Raid"] = true
+L["Raid Leader"] = true
 L["Raid Warning"] = true
-L["Say"] = true
 L["Battleground"] = true
+L["Battleground Leader"] = true
 L["Whisper"] = true
 L["Select a color for this channel"] = true
 
 -- ./Modules/ChannelNames.lua
 L["Channel Names"] = true
-L["Raid Leader"] = true
 L["LookingForGroup"] = true
-L["Battleground Leader"] = true
 L["Custom Channels"] = true
 L["Add space after channels"] = true
 L["Replace this channel name with..."] = true
-L["^To "] = true
+L["^To (.-|h):"] = true
 L["^(.-|h) whispers:"] = true
+L["^To "] = true
 L["Enables you to replace channel names with your own names"] = true
 
 -- ./Modules/ChatFading.lua
@@ -100,11 +107,6 @@ L["Background Inset"] = true
 L["Tile Size"] = true
 L["Edge Size"] = true
 L["Gives you finer control over the chat frame's background and border colors"] = true
-
--- ./Modules/ChatLink.Lua
-L["Chat Link"] = true
-L["Lets you link items, enchants, spells, and quests in custom channels."] = true
-L["Trade -"] = true
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = true
@@ -137,6 +139,9 @@ L["Copy Chat"] = true
 L["Copy text from this frame."] = true
 L["Lets you copy text out of your chat frames."] = true
 
+-- ./Modules/DelayGMOTD.lua
+-- no localization
+
 -- ./Modules/EditBox.lua
 L["Edit Box Polish"] = true
 L["Top"] = true
@@ -162,10 +167,13 @@ L["Provides a /gr slash command to let you speak in your group (raid, party, or 
 
 -- ./Modules/Highlight.lua
 L["Highlights"] = true
+L["Options"] = true
 L["Use sound"] = true
 L["Play a soundfile when one of your keywords is said."] = true
 L["Show SCT message"] = true
 L["Show highlights in your SCT mod"] = true
+L["Reroute whole message to SCT"] = true
+L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"] = true
 L["Sound File"] = true
 L["Sound file to play"] = true
 L["Add word to your highlight list"] = true
@@ -173,11 +181,9 @@ L["Remove a word from your highlight list"] = true
 L["Remove this word from your highlights?"] = true
 L["Custom Channel Sounds"] = true
 L["Play a sound when a message is received in this channel"] = true
+L["[%s] %s: %s"] = true
 L["%s said '%s' in %s"] = true
 L["Alerts you when someone says a keyword or speaks in a specified channel."] = true
-L["Reroute whole message to SCT"] = true
-L["Reroute whole message to SCT instead of just displaying 'who said keyword in channel'"] = true
-L["[%s] %s: %s"] = true
 
 -- ./Modules/Justify.lua
 L["Text Justification"] = true
@@ -193,36 +199,44 @@ L["Makes link tooltips show when you hover them in chat."] = true
 
 -- ./Modules/PlayerNames.lua
 L["Player Names"] = true
+L["Class"] = true
+L["Name"] = true
+L["None"] = true
+L["Druid"] = true
+L["Mage"] = true
+L["Paladin"] = true
+L["Priest"] = true
+L["Rogue"] = true
+L["Hunter"] = true
+L["Shaman"] = true
 L["Warlock"] = true
 L["Warrior"] = true
-L["Hunter"] = true
-L["Mage"] = true
-L["Priest"] = true
-L["Druid"] = true
-L["Paladin"] = true
-L["Shaman"] = true
-L["Rogue"] = true
 L["Death Knight"] = true
+L["Provides options to color player names, add player levels, and add tab completion of player names."] = true
 L["Save Data"] = true
 L["Save data between sessions. Will increase memory usage"] = true
 L["Save class data from guild between sessions."] = true
 L["Group"] = true
 L["Save class data from groups between sessions."] = true
+L["Friends"] = true
+L["Save class data from friends between sessions."] = true
 L["Target/Mouseover"] = true
 L["Save class data from target/mouseover between sessions."] = true
 L["Who"] = true
 L["Save class data from /who queries between sessions."] = true
+L["Save all /who data"] = true
+L["Will save all data for large /who queries"] = true
 L["Reset Data"] = true
 L["Destroys all your saved class/level data"] = true
 L["Are you sure you want to delete all your saved class/level data?"] = true
 L["Separator"] = true
 L["Character to use between the name and level"] = true
-L["Left Bracket"] = true
-L["Character to use for the left bracket"] = true
-L["Right Bracket"] = true
-L["Character to use for the right bracket"] = true
 L["Use Tab Complete"] = true
 L["Use tab key to automatically complete character names."] = true
+L["Color self in messages"] = true
+L["Color own charname in messages."] = true
+L["Emphasize self in messages"] = true
+L["Add surrounding brackets to own charname in messages."] = true
 L["Level Options"] = true
 L["Include level"] = true
 L["Include the player's level"] = true
@@ -231,19 +245,19 @@ L["Exclude level display for max level characters"] = true
 L["Color level by difficulty"] = true
 L["Color Player Names By..."] = true
 L["Select a method for coloring player names"] = true
-L["Provides options to color player names, add player levels, and add tab completion of player names."] = true
-L["Color self in messages"] = true
-L["Color own charname in messages."] = true
-L["Emphasize self in messages"] = true
-L["Add surrounding brackets to own charname in messages."] = true
-L["Class"] = true
-L["Name"] = true
-L["None"] = true
+
+-- ./Modules/Scrollback.lua
+L["Scrollback"] = true
+L["Enable Scrollback length modification"] = true
+L["Lets you set the scrollback length of your chat frames."] = true
+
+-- ./Modules/SplitText.lua
+L["Message Split"] = true
+L["Allows you to type messages longer than normal, and splits message that are too long."] = true
 
 -- ./Modules/StickyChannels.lua
 L["Sticky Channels"] = true
 L["Emote"] = true
-L["Raid warning"] = true
 L["Custom channels"] = true
 L["Make %s sticky"] = true
 L["Makes channels you select sticky."] = true
@@ -264,9 +278,9 @@ L["Custom format (advanced)"] = true
 L["Enter a custom time format. See http://www.lua.org/pil/22.1.html for a list of valid formatting symbols."] = true
 L["Timestamp color"] = true
 L["Color timestamps the same as the channel they appear in."] = true
-L["Adds timestamps to chat."] = true
 L["Per chat frame settings"] = true
 L["Choose which chat frames display timestamps"] = true
+L["Adds timestamps to chat."] = true
 
 -- ./Modules/TinyChat.lua
 L["Tiny Chat"] = true
@@ -276,18 +290,11 @@ L["Allows you to make the chat frames much smaller than usual."] = true
 L["URL Copy"] = true
 L["Lets you copy URLs out of chat."] = true
 
--- ./Modules/Scrollback.lua
-L["Scrollback"] = true
-L["Enable Scrollback length modification"] = true
-L["Lets you set the scrollback length of your chat frames."] = true
--- L["Chat Frame "] exists in ChatFrame section
+-- ./Modules/ChatLink.lua
+L["Chat Link"] = true
+L["Trade -"] = true
+L["Lets you link items, enchants, spells, talents, achievements and quests in custom channels."] = true
 
-L["Chatter"] = true
-L["Options"] = true
-L["Profiles"] = true
+-- ./Tests/urlMatch.lua
+-- no localization
 
--- ./Modules/SplitText.lua
-L["Message Split"] = true
-L["Allows you to type messages longer than normal, and splits message that are too long."] = true
-L["Save all /who data"] = true
-L["Will save all data for large /who queries"] = true

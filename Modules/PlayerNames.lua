@@ -536,6 +536,18 @@ function mod:GetOptions()
 							updateSaveData(v)
 						end
 					},
+					friend = {
+						type = "toggle",
+						name = L["Friends"],
+						desc = L["Save class data from friends between sessions."],
+						get = function()
+							return mod.db.profile.saveFriends
+						end,
+						set = function(info, v)
+							mod.db.profile.saveFriends = v
+							updateSaveData(v)
+						end
+					},
 					target = {
 						type = "toggle",
 						name = L["Target/Mouseover"],

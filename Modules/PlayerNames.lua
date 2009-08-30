@@ -65,6 +65,7 @@ local defaults = {
 		nameColoring = "CLASS", 
 		leftBracket = "[", 
 		rightBracket = "]", 
+		separator = ":",
 		useTabComplete = true,
 		colorSelfInText = true,
 		emphasizeSelfInText = true,
@@ -84,6 +85,7 @@ local defaults = {
 		}
 	}
 }
+local default_nick_color = { ["r"] = 0.627, ["g"] = 0.627, ["b"] = 0.627 }
 
 local localizedToSystemClass = {} -- gets initialized in OnInit
 
@@ -207,47 +209,11 @@ do
 	end
 end
 
-local names = setmetatable({}, {
-	__index = function(t, v)
-		local tab = mod.db.realm.names[v] or local_names[v]
-		local class, level
-		if tab then
-			class = tab.class
-			level = mod.db.profile.includeLevel and tab.level or nil
-		end
-		local coloring = mod.db.profile.nameColoring
-		local dLevel
-		if mod.db.profile.levelByDiff and level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
-			local c = GetQuestDifficultyColor(level)
-			dLevel = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, level)
-		elseif level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
-			dLevel = level
-		end
-		if coloring ~= "NONE" then
-			local c
-			if coloring == "CLASS" then
-				c = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class] or nil
-			elseif coloring == "NAME" then
-				c = getNameColor(v)
-			end
-			if c then
-				t[v] = ("|cff%02x%02x%02x%s%s%s|r"):format(c.r * 255, c.g * 255, c.b * 255, v, dLevel and ":" or "", dLevel or "")
-			else
-				t[v] = string_format("|cffa0a0a0%s%s%s|r", v, dLevel and ":" or "", dLevel or "")
-			end
-		else
-			t[v] = string_format("%s%s%s", v, dLevel and ":" or "", dLevel or "")
-		end
-		return t[v]
-	end
-})
+local cache = {};
 
 local function wipeCache()
-	for k in pairs(names) do
-		names[k] = nil
-	end
+	wipe(cache)
 end
-
 
 local function updateSaveData(v)
 	if v then
@@ -341,7 +307,7 @@ function mod:AddPlayer(name, class, level, save)
 				local_names[name].level = level
 			end
 		end
-		names[name] = nil
+		cache[name] = nil
 	end
 end
 
@@ -473,7 +439,55 @@ local function changeName(msgHeader, name, msgCnt, displayName, msgBody)
 			msgBody = msgBody:gsub("("..player..")" , "|cffff0000%1|r"):gsub("("..player:lower()..")" , "|cffff0000%1|r")
 		end
 	end
-	return ("|Hplayer:%s%s|h%s%s%s|h%s"):format(name, msgCnt, leftBracket, names[name], rightBracket, msgBody)
+
+	if not strmatch( displayName, "|cff" ) then
+		displayName = mod:ColorName( name )
+	end
+
+	cache[name] = displayName
+
+	local level
+	local tab = mod.db.realm.names[name] or local_names[name]
+	if tab then
+		level = mod.db.profile.includeLevel and tab.level or nil
+	end
+
+	if level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
+		if mod.db.profile.levelByDiff and level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
+			local c = GetQuestDifficultyColor(level)
+			level = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, level)
+		end
+		displayName = format("%s%s%s", displayName, separator, level )
+	end
+
+	return ("|Hplayer:%s%s|h%s%s%s|h%s"):format(name, msgCnt, leftBracket, displayName, rightBracket, msgBody)
+end
+
+function mod:ColorName( name )
+	local class
+	local tab = mod.db.realm.names[name] or local_names[name]
+	if tab then class = tab.class end
+
+	-- already known?
+	if cache[name] then
+		name = cache[name]
+	else
+		local coloring = mod.db.profile.nameColoring
+
+		-- not yet colored by blizzy
+		if coloring ~= "NONE" then
+			local c = default_nick_color
+			if coloring == "CLASS" then
+				c = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class] or default_nick_color
+			elseif coloring == "NAME" then
+				c = getNameColor(name)
+			end
+
+			name = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, name )
+		end
+	end
+
+	return name
 end
 
 function mod:AddMessage(frame, text, ...)
@@ -594,6 +608,16 @@ function mod:GetOptions()
 					rightBracket = v
 				end
 			},	
+			separator = {
+				type = "input",
+				name = L["Separator"],
+				desc = L["Character to use between the name and level"],
+				get = function() return mod.db.profile.separator end,
+				set = function(i, v)
+					mod.db.profile.separator = v
+					separator = v
+				end
+			},
 			useTabComplete = {
 				type = "toggle",
 				name = L["Use Tab Complete"],
@@ -687,5 +711,3 @@ function mod:GetOptions()
 	end
 	return options
 end
-
-mod.names = names

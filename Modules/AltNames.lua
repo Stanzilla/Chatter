@@ -222,7 +222,7 @@ local function pName(msg, name)
 			if mode == "CUSTOM" then				
 				alt = customColorNames[alt]
 			elseif mode == "COLOR_MOD" and mod.colorMod and mod.colorMod:IsEnabled() then
-				alt = mod.colorMod.names[alt]
+				alt = mod.colorMod:ColorName(alt)
 			end
 			return msg .. "[" .. alt .. "]"
 		end

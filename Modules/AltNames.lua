@@ -14,13 +14,17 @@ local unpack = _G.unpack
 local strlower= _G.string.lower
 local gmatch = _G.string.gmatch
 
+local leftBracket, rightBracket
+
 local defaults = { 
 	realm = {}, 
 	profile = {
 		guildNotes=true,
 		altNotesFallback=true,
 		colorMode = "COLOR_MOD", 
-		color = {0.6, 0.6, 0.6} 
+		color = {0.6, 0.6, 0.6},
+		leftBracket = "[",
+		rightBracket = "]",
 	} 
 }
 local colorModes = {
@@ -101,6 +105,26 @@ function mod:GetOptions()
 			end,
 			disabled = function() return mod.db.profile.colorMode ~= "CUSTOM" end
 		},
+		leftbracket = {
+			type = "input",
+			name = L["Left Bracket"],
+			desc = L["Character to use for the left bracket"],
+			get = function() return mod.db.profile.leftBracket end,
+			set = function(i, v)
+				mod.db.profile.leftBracket = v
+				leftBracket = v
+			end
+		},
+		rightbracket = {
+			type = "input",
+			name = L["Right Bracket"],
+			desc = L["Character to use for the right bracket"],
+			get = function() return mod.db.profile.rightBracket end,
+			set = function(i, v)
+				mod.db.profile.rightBracket = v
+				rightBracket = v
+			end
+		},
 	}
 	return options
 end
@@ -156,6 +180,8 @@ function mod:OnEnable()
 	tinsert(UnitPopupMenus["FRIEND"],	#UnitPopupMenus["FRIEND"] - 1,	"SET_MAIN")
 	tinsert(UnitPopupMenus["PARTY"], 	#UnitPopupMenus["PARTY"] - 1,	"SET_MAIN")
 	self:SecureHook("UnitPopup_ShowMenu")
+
+	leftBracket, rightBracket = self.db.profile.leftBracket, self.db.profile.rightBracket
 	
 	mod:EnableGuildNotes(mod.db.profile.guildNotes)
 	
@@ -224,7 +250,7 @@ local function pName(msg, name)
 			elseif mode == "COLOR_MOD" and mod.colorMod and mod.colorMod:IsEnabled() then
 				alt = mod.colorMod:ColorName(alt)
 			end
-			return msg .. "[" .. alt .. "]"
+			return ("%s%s%s%s"):format( msg, leftBracket, alt, rightBracket )
 		end
 	end
 	return msg

@@ -9,6 +9,7 @@ local UnitName = _G.UnitName
 local pairs = _G.pairs
 local select = _G.select
 local type = _G.type
+local gsub = _G.string.gsub
 local ChatFrame_GetMessageEventFilters = _G.ChatFrame_GetMessageEventFilters
 
 Media:Register("sound", "Loot Chime", [[Sound\interface\igLootCreature.wav]])
@@ -240,6 +241,7 @@ function mod:Highlight(msg, who, what, where, event)
 	end
 	if self.db.profile.useSink then
 		if mod.db.profile.rerouteMessage then
+			msg = gsub( msg, "|h[^|]+|h(.-)|h", "%1" )
 			self:Pour((L["[%s] %s: %s"]):format(where, who, msg), 1, 1, 0, nil, 24, "OUTLINE", false)
 		else
 			self:Pour((L["%s said '%s' in %s"]):format(who, what, where), 1, 1, 0, nil, 24, "OUTLINE", false)

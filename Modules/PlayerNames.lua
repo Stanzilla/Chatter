@@ -452,11 +452,20 @@ local function changeName(msgHeader, name, msgCnt, displayName, msgBody)
 	end
 
 	if level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
-		if mod.db.profile.levelByDiff and level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
+		if mod.db.profile.levelByDiff then
 			local c = GetQuestDifficultyColor(level)
 			level = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, level)
+			displayName = ("%s%s%s"):format( displayName, separator, level )
+		else
+			-- If we already have a color -- steal it and use it to color the level
+			if strmatch( displayName, "|cff......" ) then
+				-- This will seriously fuck up the string if there is already more than 1 color ... FIXME
+				level = gsub(displayName, "((|cff......).-|r)", function (string, color)
+					return ("%s%s|r"):format( color, level )
+				end )
+			end
+			displayName = ("%s%s%s"):format( displayName, separator, level )
 		end
-		displayName = format("%s%s%s", displayName, separator, level )
 	end
 
 	return ("|Hplayer:%s%s|h%s%s%s|h%s"):format(name, msgCnt, leftBracket, displayName, rightBracket, msgBody)

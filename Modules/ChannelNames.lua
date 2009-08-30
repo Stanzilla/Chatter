@@ -10,6 +10,8 @@ local tostring = _G.tostring
 local GetChannelList = _G.GetChannelList
 local select = _G.select
 
+local empty_tag = L["$$EMPTY$$"];
+
 local defaults = {
 	profile = {
 		channels = {
@@ -138,6 +140,7 @@ end
 local function replaceChannel(origChannel, msg, num, channel)
 	local f = functions[channel] or functions[channel:lower()]
 	local newChannelName = f and f(channel) or channels[channel] or channels[channel:lower()] or msg
+	if newChannelName == empty_tag then return "" end
 	return ("|Hchannel:%s|h%s|h%s"):format(origChannel, newChannelName, mod.db.profile.addSpace and " " or "")
 end
 
@@ -169,7 +172,7 @@ function mod:GetOptions()
 end
 
 function mod:Info()
-	return L["Enables you to replace channel names with your own names"]
+	return L["Enables you to replace channel names with your own names. You can use '%s' to force an empty string."]:format( empty_tag )
 end
 
 mod.funcs = functions

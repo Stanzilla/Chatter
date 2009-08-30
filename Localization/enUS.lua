@@ -71,6 +71,7 @@ L["Select a color for this channel"] = true
 
 -- ./Modules/ChannelNames.lua
 L["Channel Names"] = true
+L["$$EMPTY$$"] = true
 L["LookingForGroup"] = true
 L["Custom Channels"] = true
 L["Add space after channels"] = true
@@ -78,7 +79,7 @@ L["Replace this channel name with..."] = true
 L["^To (.-|h):"] = true
 L["^(.-|h) whispers:"] = true
 L["^To "] = true
-L["Enables you to replace channel names with your own names"] = true
+L["Enables you to replace channel names with your own names. You can use '%s' to force an empty string."] = true
 
 -- ./Modules/ChatFading.lua
 L["Disable Fading"] = true

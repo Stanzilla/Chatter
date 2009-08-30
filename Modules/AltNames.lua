@@ -260,7 +260,7 @@ function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then 
 		-- local t = {text:match("(|Hplayer:([^:]+)[:%d+]*|h%[.-%]|h)")}
 		-- local d = table.concat(t, ", ")
-		text = text:gsub("(|Hplayer:([^:]+)[:%d+]*|h%[.-%]|h)", pName)
+		text = text:gsub("(|Hplayer:([^:]+)[:%d+]*|h.-|h)", pName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

@@ -53,11 +53,9 @@ function mod:CreateLinks(text)
 	text = gsub(text, "|c(%x+)|H(enchant):(%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
 	text = gsub(text, "|c(%x+)|H(quest):(%-?%d-):(%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4:%5}")
 	text = gsub(text, "|c(%x+)|H(spell):(%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")	
-	text = gsub(text, "|c(%x+)|H(trade):(%-?%d-:%-?%d-:%-?%d-:.*:.*)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
+	text = gsub(text, "|c(%x+)|H(trade):(%-?%d-:%-?%d-:%-?%d-:.-:.-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
+	text = gsub(text, "|c(%x+)|H(achievement):([0-9A-F:-]+)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
 	
-	text = gsub(text, "|c(%x+)|H(achievement):(%-?%d-:.*:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
-	
-	-- |cffffff00|Hachievement:1722:00000000001C9642:1:11:25:8:4294967295:4294967295:4294967295:4294967295|h[Archavon the Stone Watcher]|h|r
 	return text
 	-- color|Hitem:id:0:0:0:0:0:0:0:0:0|name|
 end

@@ -6,6 +6,9 @@ local IsShiftKeyDown = _G.IsShiftKeyDown
 local IsControlKeyDown = _G.IsControlKeyDown
 
 local scrollFunc = function(self, arg1)
+	-- prevent itemtooltips to be kept open when using LinkHover.
+	HideUIPanel(GameTooltip)
+
 	if arg1 > 0 then
 		if IsShiftKeyDown() then
 			self:ScrollToTop()

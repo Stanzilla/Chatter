@@ -11,6 +11,7 @@ local gsub = _G.string.gsub
 local strmatch = _G.string.match
 local find = _G.string.find
 local pairs = _G.pairs
+local wipe = _G.wipe
 local string_format = _G.string.format
 local GetQuestDifficultyColor = _G.GetQuestDifficultyColor
 local GetChannelName = _G.GetChannelName
@@ -354,9 +355,7 @@ end
 
 function mod:GUILD_ROSTER_UPDATE(evt)
 	if not IsInGuild() then return end
-	for k, v in pairs(channels.GUILD) do 
-		channels.GUILD[k] = nil 
-	end 
+	wipe( channels.GUILD )
 	for i = 1, GetNumGuildMembers() do 
 		local name, _, _, level, _, _, _, _, online, _, class = GetGuildRosterInfo(i) 
 		if online then 
@@ -367,9 +366,7 @@ function mod:GUILD_ROSTER_UPDATE(evt)
 end 
 
 function mod:RAID_ROSTER_UPDATE(evt)
-	for k, v in pairs(channels.RAID) do
-		channels.RAID[k] = nil
-	end
+	wipe(channels.RAID)
 
 	for i = 1, GetNumRaidMembers() do
 		local n, _, _, l, _, c = GetRaidRosterInfo(i)
@@ -381,9 +378,7 @@ function mod:RAID_ROSTER_UPDATE(evt)
 end
 
 function mod:PARTY_MEMBERS_CHANGED(evt)
-	for k, v in pairs(channels.PARTY) do
-		channels.PARTY[k] = nil
-	end
+	wipe(channels.PARTY)
 	
 	for i = 1, GetNumPartyMembers() do
 		local n = UnitName("party" .. i)
@@ -598,11 +593,7 @@ function mod:GetOptions()
 						type = "execute",
 						name = L["Reset Data"],
 						desc = L["Destroys all your saved class/level data"],
-						func = function()
-							for k, v in pairs(mod.db.realm.names) do
-								mod.db.realm.names = nil
-							end
-						end,
+						func = function() wipe( mod.db.realm.names ) end,
 						order = 101,
 						confirm = function() return L["Are you sure you want to delete all your saved class/level data?"] end
 					}

@@ -157,13 +157,8 @@ function mod:AddMessage(frame, text, ...)
 
 	text = gsub(text, "^|Hchannel:(%S-)|h(%[([%d. ]*)([^%]]+)%])|h ", replaceChannel)
 	text = gsub(text, "^(%[(" .. L["Raid Warning"] .. ")%]) ", replaceChannelRW)
-	if (GetLocale() == "koKR") then
-		text = gsub(text, L["^To (.-|h):"], "%1" .. channels["Whisper To"] .. ":")
-		text = gsub(text, L["^(.-|h) whispers:"], "%1" .. channels["Whisper From"] .. ":")
-	else
-		text = gsub(text, L["^To "], channels["Whisper To"] .. (mod.db.profile.addSpace and " " or ""))
-		text = gsub(text, L["^(.-|h) whispers:"], channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
-	end
+	text = gsub(text, L["To (|Hplayer.-|h):"], channels["Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	text = gsub(text, L["(|Hplayer.-|h) whispers:"], channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

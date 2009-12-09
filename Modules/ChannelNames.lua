@@ -18,6 +18,7 @@ local defaults = {
 			[L["Guild"]] = "[G]",
 			[L["Officer"]] = "[O]",
 			[L["Party"]] = "[P]",
+			[PARTY_LEADER] = "[PL]",
 			[L["Raid"]] = "[R]",
 			[L["Raid Leader"]] = "[RL]",
 			[L["Raid Warning"]] = "[RW]",

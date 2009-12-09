@@ -38,6 +38,7 @@ function mod:OnEnable()
 		"GUILD", L["Guild"], 
 		"OFFICER", L["Officer"], 
 		"PARTY", L["Party"], 
+		"PARTY_LEADER", PARTY_LEADER,
 		"RAID", L["Raid"], 
 		"RAID_LEADER", L["Raid Leader"],
 		"RAID_WARNING", L["Raid Warning"],

@@ -17,7 +17,8 @@ local function excludeChannels(...)
 end
 
 function mod:OnEnable()
-	self:RawHook("SendChatMessage", true)
+	-- Disabled outgoing translations -- appears not to be needed
+	--self:RawHook("SendChatMessage", true)
 	excludeChannels(EnumerateServerChannels())
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]

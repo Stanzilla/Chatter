@@ -17,8 +17,6 @@ local function excludeChannels(...)
 end
 
 function mod:OnEnable()
-	-- Disabled outgoing translations -- appears not to be needed
-	--self:RawHook("SendChatMessage", true)
 	excludeChannels(EnumerateServerChannels())
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
@@ -44,31 +42,6 @@ function mod:ParseLinks(text)
 	--	{CLINK:achievement:ffffff00:780:00000000001ED5C3:1:12:16:8:4294967295:4294967295:4294967295:4294967295:Explore Redridge Mountains}
 	text = gsub(text, "{CLINK:achievement:(%x+):(%-?%d-:%-?%x-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-):([^}]-)}", "|c%1|Hachievement:%2|h[%3]|h|r")
 	return text
-end
-
-function mod:CreateLinks(text)
-	if not text then return nil end
-	text = gsub(text, "|c(%x+)|H(item):(%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-:%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
-	text = gsub(text, "|c(%x+)|H(talent):(%-?%d-:%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
-	text = gsub(text, "|c(%x+)|H(glyph):(%-?%d-:%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
-	text = gsub(text, "|c(%x+)|H(enchant):(%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
-	text = gsub(text, "|c(%x+)|H(quest):(%-?%d-):(%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4:%5}")
-	text = gsub(text, "|c(%x+)|H(spell):(%-?%d-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")	
-	text = gsub(text, "|c(%x+)|H(trade):(%-?%d-:%-?%d-:%-?%d-:.-:.-)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
-	text = gsub(text, "|c(%x+)|H(achievement):([0-9A-F:-]+)|h%[([^%]]-)%]|h|r", "{CLINK:%2:%1:%3:%4}")
-	
-	return text
-	-- color|Hitem:id:0:0:0:0:0:0:0:0:0|name|
-end
-
-function mod:SendChatMessage(msg, chatType, language, channel)
-    if msg and (chatType == "CHANNEL") then
-        local _, chanName = GetChannelName(channel)
-        if chanName and not find(chanName, L["Trade -"]) and not serverChannels[chanName] then
-            msg = self:CreateLinks(msg)
-        end
-    end
-    self.hooks.SendChatMessage(msg, chatType, language, channel)
 end
 
 function mod:AddMessage(frame, text, ...)

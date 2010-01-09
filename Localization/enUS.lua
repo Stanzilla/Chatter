@@ -39,6 +39,7 @@ L["Who is %s's main?"] = true
 L["Set Main"] = true
 L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name. Can also scan guild notes for character names to display, if no note has been manually set."] = true
 L["alt2"] = true
+L["alt3"] = true
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = true
@@ -296,6 +297,8 @@ L["Allows you to make the chat frames much smaller than usual."] = true
 L["URL Copy"] = true
 L["Parse Mumble links"] = true
 L["Automatically inject your character's name into Mumble links, so you connect with your username prefilled."] = true
+L["Parse Teamspeak 3 links"] = true
+L["Automatically inject your character's name into Teamspeak 3 links, so you connect with your username prefilled."] = true
 L["Lets you copy URLs out of chat."] = true
 
 -- ./Tests/urlMatch.lua

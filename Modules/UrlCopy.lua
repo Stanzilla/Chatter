@@ -72,14 +72,22 @@ local options = {
 		desc = L["Automatically inject your character's name into Mumble links, so you connect with your username prefilled."],
 		get = function() return mod.db.profile.mangleMumble end,
 		set = function(info, v) mod.db.profile.mangleMumble = v end
-	}
+	},
+	mangleTeamspeak = {
+		type = "toggle",
+		name = L["Parse Teamspeak 3 links"],
+		desc = L["Automatically inject your character's name into Teamspeak 3 links, so you connect with your username prefilled."],
+		get = function() return mod.db.profile.mangleTeamspeak end,
+		set = function(info, v) mod.db.profile.mangleTeamspeak = v end
+	}	
 }
 
 do
 	
 	local defaults = {
 		profile = {
-			mangleMumble = true
+			mangleMumble = true,
+			mangleTeamspeak = true
 		}
 	}
 	local events = {
@@ -157,6 +165,7 @@ StaticPopupDialogs["ChatterUrlCopyDialog"] = {
 	maxLetters=1024, -- this otherwise gets cached from other dialogs which caps it at 10..20..30...
 }
 
+local mangleLinkForVoiceChat
 do
 	--[[
 	mumble://192.168.1.102:50008?version=1.2.0
@@ -181,18 +190,64 @@ do
 		end
 		return scheme .. new
 	end
-
-	function mod:SetItemRef(link, text, button)
-		if sub(link, 1, 3) == "url" then
-			currentLink = sub(link, 5)
-			if mod.db.profile.mangleMumble then
-				currentLink = currentLink:gsub("^(mumble://)([^/?]+)", injectCharacterNameForMumble)
+	
+	local buff = {}
+	local function addTS3Nickname(...)
+		wipe(buff)
+		for i = 1, select("#", ...) do
+			local chunk = select(i, ...)
+			local key, val = strsplit("=", chunk, 2)
+			if val then
+				if strlower(key) ~= "nickname" then
+					tinsert(buff, chunk)
+				end
 			end
-			StaticPopup_Show("ChatterUrlCopyDialog")
-			return
 		end
-		return self.hooks.SetItemRef(link, text, button)
+		if not gotName then
+			local nick = "nickname=" .. UnitName("player")
+			tinsert(buff, nick)
+		end
+		return table.concat(buff, "&")
 	end
+	
+	--[[
+		ts3server://ts3.hoster.com
+		ts3server://ts3.hoster.com?
+		ts3server://ts3.hoster.com?port=9987&
+		ts3server://ts3.hoster.com?port=9987&nickname=UserNickname&password=serverPassword
+	]]--
+	
+	local function injectCharacterNameForTeamspeak(scheme, connstr)
+		local url, query = strsplit("?", connstr, 2)
+		if query then
+			query = addTS3Nickname(strsplit("&", query))
+		else
+			query = "nickname=" .. UnitName("player")
+		end
+		return scheme .. url .. "?" .. query
+	end
+	
+	function mangleLinkForVoiceChat(text)
+		if mod.db.profile.mangleMumble then
+			text = text:gsub("^(mumble://)([^/?]+)", injectCharacterNameForMumble)
+		end
+		if mod.db.profile.mangleTeamspeak then
+			text = text:gsub("^(ts3server://)(.+)", injectCharacterNameForTeamspeak)
+		end
+		return text
+	end
+end
+
+
+function mod:SetItemRef(link, text, button)
+	if sub(link, 1, 3) == "url" then
+		currentLink = sub(link, 5)
+		currentLink = mangleLinkForVoiceChat(currentLink)
+
+		StaticPopup_Show("ChatterUrlCopyDialog")
+		return
+	end
+	return self.hooks.SetItemRef(link, text, button)
 end
 
 function mod:Info()

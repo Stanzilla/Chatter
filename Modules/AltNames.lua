@@ -333,7 +333,9 @@ function mod:ScanGuildNotes()
 		if not success and mod.db.profile.altNotesFallback and note~="" then
 			-- #3:  no joy? then if this is an 'alt' rank, use the entire note
 			rank=strlower(rank)
-			if strfind(rank, "alt") or strfind(rank, L["alt2"]) or strfind(rank, L["alt3"]) then
+			if strfind(rank, "alt") or
+				strfind(rank, L["alt2"]) or
+				strfind(rank, L["alt3"]) then
 				GUILDNOTES[name] = note
 				--DBG print("Fallback: ",note)
 				--DBG nFallback=nFallback+1

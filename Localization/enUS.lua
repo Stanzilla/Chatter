@@ -13,7 +13,6 @@ L["Modules"] = true
 L["Settings"] = true
 L["Enable "] = true
 L["Enabled"] = true
-L["Module"] = true
 L["Disabled"] = true
 L["Chatter Settings"] = true
 L["Welcome to Chatter! Type /chatter to configure."] = true
@@ -40,7 +39,6 @@ L["Who is %s's main?"] = true
 L["Set Main"] = true
 L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name. Can also scan guild notes for character names to display, if no note has been manually set."] = true
 L["alt2"] = true
-L["alt3"] = true
 
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = true
@@ -107,6 +105,10 @@ L["Background Inset"] = true
 L["Tile Size"] = true
 L["Edge Size"] = true
 L["Gives you finer control over the chat frame's background and border colors"] = true
+
+-- ./Modules/ChatLink.Lua
+L["Chat Link"] = true
+L["Lets you link items, enchants, spells, talents, achievements and quests in custom channels."] = true
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = true
@@ -196,6 +198,10 @@ L["Lets you set the justification of text in your chat frames."] = true
 -- ./Modules/LinkHover.lua
 L["Link Hover"] = true
 L["Makes link tooltips show when you hover them in chat."] = true
+
+-- ./Modules/MacroLink.lua
+L["Macro Link"] = true
+L["Allows you to link items by ID in chat or macros by using item:1234 syntax."] = true
 
 -- ./Modules/PlayerNames.lua
 L["Player Names"] = true
@@ -288,12 +294,9 @@ L["Allows you to make the chat frames much smaller than usual."] = true
 
 -- ./Modules/UrlCopy.lua
 L["URL Copy"] = true
+L["Parse Mumble links"] = true
+L["Automatically inject your character's name into Mumble links, so you connect with your username prefilled."] = true
 L["Lets you copy URLs out of chat."] = true
-
--- ./Modules/ChatLink.lua
-L["Chat Link"] = true
-L["Trade -"] = true
-L["Lets you link items, enchants, spells, talents, achievements and quests in custom channels."] = true
 
 -- ./Tests/urlMatch.lua
 -- no localization

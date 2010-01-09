@@ -65,7 +65,23 @@ local patterns = {
 	{ pattern = "%f[%S]([-%w_%%%.]+[-%w_%%]%.(%a%a+))", matchfunc=Link_TLD},
 }
 
+local options = {
+	mangleMumble = {
+		type = "toggle",
+		name = L["Parse Mumble links"],
+		desc = L["Automatically inject your character's name into Mumble links, so you connect with your username prefilled."],
+		get = function() return mod.db.profile.mangleMumble end,
+		set = function(info, v) mod.db.profile.mangleMumble = v end
+	}
+}
+
 do
+	
+	local defaults = {
+		profile = {
+			mangleMumble = true
+		}
+	}
 	local events = {
 		"CHAT_MSG_BATTLEGROUND", "CHAT_MSG_BATTLEGROUND_LEADER",
 		"CHAT_MSG_CHANNEL", "CHAT_MSG_EMOTE",
@@ -75,6 +91,9 @@ do
 		"CHAT_MSG_SAY", --[["CHAT_MSG_TEXT_EMOTE",]] "CHAT_MSG_WHISPER",
 		"CHAT_MSG_WHISPER_INFORM", "CHAT_MSG_YELL"
 	}
+	function mod:OnInitialize()
+		self.db = Chatter.db:RegisterNamespace("UrlCopy", defaults)
+	end	
 	function mod:OnEnable()
 		for _,event in ipairs(events) do
 			ChatFrame_AddMessageEventFilter(event, self.filterFunc)
@@ -113,7 +132,7 @@ end
 local currentLink
 
 StaticPopupDialogs["ChatterUrlCopyDialog"] = {
-	text = "URL",
+	text = "URL - Ctrl-C to copy",
 	button2 = CLOSE,
 	hasEditBox = 1,
 	hasWideEditBox = 1,
@@ -138,17 +157,50 @@ StaticPopupDialogs["ChatterUrlCopyDialog"] = {
 	maxLetters=1024, -- this otherwise gets cached from other dialogs which caps it at 10..20..30...
 }
 
-function mod:SetItemRef(link, text, button)
-	if sub(link, 1, 3) == "url" then
-		currentLink = sub(link, 5)
-		StaticPopup_Show("ChatterUrlCopyDialog")
-		return
+do
+	--[[
+	mumble://192.168.1.102:50008?version=1.2.0
+	mumble://foo:bar@192.168.1.102:50008?version=1.2.0
+	mumble://:bar@192.168.1.102:50008?version=1.2.0
+	]]--
+	
+	-- Messes with Mumble links to inject our own username. Nifty magical!
+	local function injectCharacterNameForMumble(scheme, connstr)
+		local pre, post = strsplit("@", connstr, 2)
+		local new
+		if post then
+			local user, password = strsplit(":", pre, 2)
+			if password then
+				new = UnitName("player") .. ":" .. password
+			else
+				new = UnitName("player")
+			end
+			new = new .. "@" .. post
+		else
+			new = UnitName("player") .. "@" .. pre
+		end
+		return scheme .. new
 	end
-	return self.hooks.SetItemRef(link, text, button)
+
+	function mod:SetItemRef(link, text, button)
+		if sub(link, 1, 3) == "url" then
+			currentLink = sub(link, 5)
+			if mod.db.profile.mangleMumble then
+				currentLink = currentLink:gsub("^(mumble://)([^/?]+)", injectCharacterNameForMumble)
+			end
+			StaticPopup_Show("ChatterUrlCopyDialog")
+			return
+		end
+		return self.hooks.SetItemRef(link, text, button)
+	end
 end
 
 function mod:Info()
 	return L["Lets you copy URLs out of chat."]
+end
+
+function mod:GetOptions()
+	return options
 end
 
 tlds = {

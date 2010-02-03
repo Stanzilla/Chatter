@@ -19,6 +19,7 @@ local defaults = {
 			[L["Officer"]] = "[O]",
 			[L["Party"]] = "[P]",
 			[PARTY_LEADER] = "[PL]",
+			["Dungeon Guide"] = "[DG]",
 			[L["Raid"]] = "[R]",
 			[L["Raid Leader"]] = "[RL]",
 			[L["Raid Warning"]] = "[RW]",

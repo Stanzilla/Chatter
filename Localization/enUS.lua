@@ -72,6 +72,7 @@ L["Select a color for this channel"] = true
 L["Channel Names"] = true
 L["$$EMPTY$$"] = true
 L["LookingForGroup"] = true
+L["Dungeon Guide"] = true
 L["Custom Channels"] = true
 L["Add space after channels"] = true
 L["Replace this channel name with..."] = true

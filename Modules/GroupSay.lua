@@ -9,7 +9,10 @@ local GetNumRaidMembers = _G.GetNumRaidMembers
 local SendChatMessage = _G.SendChatMessage
 
 function mod:OnEnable()
-	self:HookScript(ChatFrameEditBox, "OnTextChanged")
+	for i = 1, 10 do
+		self:HookScript(_G["ChatFrame" .. i .. "EditBox"], "OnTextChanged")
+	end	
+	
 	if not self.slashCommandRegistered then
 		self:RegisterChatCommand("gr", "SendChatMessage")
 		self.slashCommandRegistered = true

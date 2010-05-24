@@ -13,7 +13,9 @@ local gsub = _G.string.gsub
 
 function mod:OnEnable()
 	-- self:SecureHook("ChatEdit_ParseText")
-	self:HookScript(ChatFrameEditBox, "OnTextChanged")
+	for i = 1, 10 do
+		self:HookScript(_G["ChatFrame" .. i .. "EditBox"], "OnTextChanged")
+	end
 	if not self.slashCommandRegistered then
 		self:RegisterChatCommand("tt", "SendChatMessage")
 		self.slashCommandRegistered = true
@@ -23,7 +25,7 @@ end
 function mod:OnTextChanged(obj)
 	local text = obj:GetText()
 	if text:sub(1, 4) == "/tt " then
-		self:TellTarget(DEFAULT_CHAT_FRAME, text:sub(5))
+		self:TellTarget(obj:GetParent(), text:sub(5))
 	end
 	self.hooks[obj].OnTextChanged(obj)
 end
@@ -38,7 +40,7 @@ function mod:TellTarget(frame, msg)
 		end
 	end
 	ChatFrame_SendTell((unitname or "InvalidTarget"), frame)
-	ChatFrameEditBox:SetText(msg)
+	_G[frame:GetName() .. "EditBox"]:SetText(msg)
 end
 
 function mod:Info()

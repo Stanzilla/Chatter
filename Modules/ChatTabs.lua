@@ -51,14 +51,24 @@ function mod:OnEnable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G["ChatFrame"..i]
 		local tab = _G["ChatFrame"..i.."Tab"]
-		local flash = _G["ChatFrame"..i.."TabFlash"]
 		tab:SetHeight(mod.db.profile.height)
-
-		flash:GetRegions():SetTexture(nil)
-
+		
+		-- local flash = _G["ChatFrame"..i.."TabFlash"]
+		-- flash:GetRegions():SetTexture(nil)
+		
 		_G["ChatFrame"..i.."TabLeft"]:Hide()
 		_G["ChatFrame"..i.."TabMiddle"]:Hide()
 		_G["ChatFrame"..i.."TabRight"]:Hide()
+		
+		_G["ChatFrame"..i.."TabSelectedLeft"]:SetTexture(nil)
+		_G["ChatFrame"..i.."TabSelectedMiddle"]:SetTexture()
+		_G["ChatFrame"..i.."TabSelectedRight"]:SetTexture(nil)
+
+		_G["ChatFrame"..i.."TabHighlightLeft"]:SetTexture(nil)
+		_G["ChatFrame"..i.."TabHighlightMiddle"]:SetTexture([[BUTTONS\CheckButtonGlow]])
+		_G["ChatFrame"..i.."TabHighlightRight"]:SetTexture(nil)
+		_G["ChatFrame"..i.."TabHighlightMiddle"]:SetTexCoord(0, 0, 1, 0.5)
+		
 
 		--[[ TODO: Grum @ 18/10/2008
 		    There seems to be a bug with certain fonts/fontObjects which prevents
@@ -83,7 +93,7 @@ function mod:OnEnable()
 		
 		-- tab:GetTextFontObject():SetJustifyV("BOTTOM")
 		--tab:SetTextColor(1, 1, 1)
-		tab:GetHighlightTexture():SetTexture(nil)
+		-- tab:GetHighlightTexture():SetTexture(nil)
 		--[[
 		if chat.isDocked or chat:IsVisible() then
 			tab:Show()
@@ -96,14 +106,15 @@ function mod:OnDisable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G["ChatFrame"..i]
 		local tab = _G["ChatFrame"..i.."Tab"]
-		local flash = _G["ChatFrame"..i.."TabFlash"]
-		flash:GetRegions():SetTexture([[Interface\ChatFrame\UI-ChatIcon-BlinkHilight]])
+		
+		-- local flash = _G["ChatFrame"..i.."TabFlash"]
+		-- flash:GetRegions():SetTexture([[Interface\ChatFrame\UI-ChatIcon-BlinkHilight]])
 
 		tab:SetHeight(32)
 		_G["ChatFrame"..i.."TabLeft"]:Show()
 		_G["ChatFrame"..i.."TabMiddle"]:Show()
 		_G["ChatFrame"..i.."TabRight"]:Show()
-		
+
 		-- tab:GetTextFontObject():SetJustifyV("MIDDLE")
 		-- TODO: Check other TODO's
 		--local f, s, m = font:GetFont()
@@ -111,7 +122,7 @@ function mod:OnDisable()
 
 		tab:EnableMouseWheel(false)
 		--tab:SetTextColor(1, 0.82, 0)
-		tab:GetHighlightTexture():SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
+		-- tab:GetHighlightTexture():SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
 		tab:Hide()
 	end
 end
@@ -144,26 +155,27 @@ function mod:HideTab(tab)
 end
 
 function mod:OnMouseWheel(frame, dir)
+	print(frame, dir)
 	local chat = _G["ChatFrame" .. frame:GetID()]
 	if not chat.isDocked then return end
 	
 	local t
-	for i = 1, #DOCKED_CHAT_FRAMES do
-		if DOCKED_CHAT_FRAMES[i]:IsVisible() then
+	for i = 1, #GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES do
+		if GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES[i]:IsVisible() then
 			t = i
 			break
 		end
 	end
 	
 	if t == 1 and dir > 0 then
-		t = #DOCKED_CHAT_FRAMES
-	elseif t == #DOCKED_CHAT_FRAMES and dir < 0 then
+		t = #GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES
+	elseif t == #GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES and dir < 0 then
 		t = 1
 	elseif t then
 		t = t + (dir < 0 and 1 or -1)
 	end
 	if t then
-		_G[DOCKED_CHAT_FRAMES[t]:GetName() .. "Tab"]:Click()
+		_G[GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES[t]:GetName() .. "Tab"]:Click()
 	end
 	--SetFontSizes()
 end

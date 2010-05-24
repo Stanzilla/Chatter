@@ -31,64 +31,56 @@ local options = {
 	}
 }
 
+local bottomButtons = {}
+
 local defaults = { profile = {} }
+local clickFunc = function(self) self:GetParent():ScrollToBottom() end
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("Buttons", defaults)
+	for i = 1, NUM_CHAT_WINDOWS do
+		local f = _G["ChatFrame" .. i]
+		local button = CreateFrame("Button", nil, f)
+		button:SetNormalTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollEnd-Up]])
+		button:SetPushedTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollEnd-Down]])
+		button:SetDisabledTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollEnd-Disabled]])
+		button:SetHighlightTexture([[Interface\Buttons\UI-Common-MouseHilight]])
+		button:SetWidth(20)
+		button:SetHeight(20)
+		button:SetPoint("TOPRIGHT", f, "TOPRIGHT", 0, 0)
+		button:SetScript("OnClick", clickFunc)
+		button:Hide()
+		f.downButton = button
+	end
 end
 
 function mod:OnEnable()
 	ChatFrameMenuButton:Hide()
-	local upButton, downButton, bottomButton
+	ChatFrameMenuButton:SetScript("OnShow", hide)
+	FriendsMicroButton:Hide()
+	FriendsMicroButton:SetScript("OnShow", hide)
 	for i = 1, NUM_CHAT_WINDOWS do
-		upButton = _G[fmt("%s%d%s", "ChatFrame", i, "UpButton")]
-		upButton:SetScript("OnShow", hide)
-		upButton:Hide()
-		downButton = _G[fmt("%s%d%s", "ChatFrame", i, "DownButton")]
-		downButton:SetScript("OnShow", hide)
-		downButton:Hide()
-		bottomButton = _G[fmt("%s%d%s", "ChatFrame", i, "BottomButton")]
-		bottomButton:SetScript("OnShow", hide)
-		bottomButton:Hide()
-		self:FCF_SetButtonSide(_G["ChatFrame" .. i])
+		local f = _G["ChatFrame" .. i]
+		f:SetClampRectInsets(0, 0, 0, 0)
+		local ff = _G["ChatFrame" .. i .. "ButtonFrame"]
+		ff:Hide()
+		ff:SetScript("OnShow", hide)
 	end
-	
-	local v = self.db.profile.scrollReminder
-	if v then
-		mod:EnableBottomButton()
-	elseif self.buttonsEnabled then
-		mod:DisableBottomButton()
-	end
-	self:RawHook("FCF_SetButtonSide", true)
+	if(self.db.profile.scrollReminder) then self:EnableBottomButton() end
 end
 
 function mod:OnDisable()
-	self:Unhook("FCF_SetButtonSide")
 	ChatFrameMenuButton:Show()
-	local upButton, downButton, bottomButton
+	ChatFrameMenuButton:SetScript("OnShow", nil)
+	FriendsMicroButton:Show()
+	FriendsMicroButton:SetScript("OnShow", nil)
 	self:DisableBottomButton()
 	for i = 1, NUM_CHAT_WINDOWS do
-		upButton = _G[fmt("%s%d%s", "ChatFrame", i, "UpButton")]
-		upButton:SetScript("OnShow", nil)
-		upButton:Show()
-		downButton = _G[fmt("%s%d%s", "ChatFrame", i, "DownButton")]
-		downButton:SetScript("OnShow", nil)
-		downButton:Show()
-		bottomButton = _G[fmt("%s%d%s", "ChatFrame", i, "BottomButton")]
-		bottomButton:SetScript("OnShow", nil)
-		bottomButton:Show()
-		
 		local f = _G["ChatFrame" .. i]
-		f.buttonSide = nil
-		bottomButton:ClearAllPoints()
-		bottomButton:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", -32, -4);
-		FCF_UpdateButtonSide(f)
+		f:SetClampRectInsets(-35, 35, 26, -50)
+		local ff = _G["ChatFrame" .. i .. "ButtonFrame"]
+		ff:Show()
+		ff:SetScript("OnShow", nil)
 	end
-end
-
-function mod:FCF_SetButtonSide(chatFrame, buttonSide)
-	local f = _G[chatFrame:GetName().."BottomButton"]
-	f:ClearAllPoints()
-	f:SetPoint("TOPRIGHT", chatFrame, "TOPRIGHT", 2, 2)
 end
 
 function mod:Info()
@@ -110,9 +102,7 @@ function mod:EnableBottomButton()
 			self:Hook(f, "PageDown", "ScrollDown", true)
 
 			if f:GetCurrentScroll() ~= 0 then
-				local button = _G[f:GetName() .. "BottomButton"]
-				button.override = true
-				button:Show()	
+				f.downButton:Show()
 			end
 			
 			if f ~= COMBATLOG then
@@ -138,37 +128,30 @@ function mod:DisableBottomButton()
 			if f ~= COMBATLOG then
 				self:Unhook(f, "AddMessage")
 			end
-			local button = _G["ChatFrame" .. i .. "BottomButton"]
-			button:Hide()
+			f.downButton:Hide()
 		end
 	end
 end
 
 function mod:ScrollUp(frame)
-	local button = _G[frame:GetName() .. "BottomButton"]
-	button.override = true
-	button:Show()
+	frame.downButton:Show()
 end
 
 function mod:ScrollDown(frame)
 	if frame:GetCurrentScroll() == 0 then
-		local button = _G[frame:GetName() .. "BottomButton"]
-		button:Hide()	
+		frame.downButton:Hide()
 	end
 end
 
 function mod:ScrollDownForce(frame)
-	local button = _G[frame:GetName() .. "BottomButton"]
-	button:Hide()	
+	frame.downButton:Hide()
 end
 
 function mod:AddMessage(frame, text, ...)
-	local button = _G[frame:GetName() .. "BottomButton"]
 	if frame:GetCurrentScroll() > 0 then
-		button.override = true
-		button:Show()
+		frame.downButton:Show()
 	else
-		button:Hide()	
+		frame.downButton:Hide()
 	end
 end
 

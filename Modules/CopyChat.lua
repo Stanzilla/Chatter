@@ -24,8 +24,6 @@ local InsetBackdrop  = {
 	insets = { left = 3, right = 3, top = 5, bottom = 3 }
 }
 
-local buttons = {}
-
 function mod:OnInitialize()
 	local frame = CreateFrame("Frame", "ChatterCopyFrame", UIParent)
 	tinsert(UISpecialFrames, "ChatterCopyFrame")
@@ -57,65 +55,29 @@ function mod:OnInitialize()
 	
 	local close = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
 	close:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
-	
-	local tex = select(3, GetSpellInfo(586))
-	for i = 1, NUM_CHAT_WINDOWS do
-		local cf = _G["ChatFrame" .. i]
-		local button = CreateFrame("Button", nil, cf)
-		button:SetPoint("BOTTOMRIGHT", cf, "BOTTOMRIGHT", 0, -5)
-		button:SetHeight(10)
-		button:SetWidth(10)
-		button:SetNormalTexture(tex)
-		button:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
-		button:SetScript("OnClick", function()
-			mod:Copy(cf)
-		end)
-		button:SetScript("OnEnter", function(self)
-			self:SetHeight(28)
-			self:SetWidth(28)
-			GameTooltip:SetOwner(self)
-			GameTooltip:ClearLines()
-			GameTooltip:AddLine(L["Copy text from this frame."])
-			GameTooltip:Show()
-		end)
-		button:SetScript("OnLeave", function(self)
-			button:SetHeight(10)
-			button:SetWidth(10)
-			GameTooltip:Hide()
-		end)
-		button:Hide()
-		tinsert(buttons, button)
-	end
 end
 
 function mod:OnEnable()
-	for i = 1, #buttons do
-		local p = buttons[i]:GetParent()
-		local tab = _G["ChatFrame" .. i .. "Tab"]
-		self:HookScript(tab, "OnShow")
-		self:HookScript(tab, "OnHide")
-		tab.copyButton = buttons[i]
-	end
+	Chatter:AddMenuHook(self, "Menu")
 end
 
 function mod:OnDisable()
-	for i = 1, #buttons do
-		buttons[i]:Hide()		
-	end
+	Chatter:RemoveMenuHook(self)
 end
 
-function mod:OnShow(cft)
-	local cfn = cft:GetName():match("ChatFrame%d")
-	if cfn and _G[cfn]:IsVisible() then
-		cft.copyButton:Show()
+local menuButtons = {}
+function mod:Menu(chatTab, button)
+	local frame = _G["ChatFrame" .. chatTab:GetID()]
+	
+	local info = menuButtons[chatTab:GetID()]
+	if not info then
+		info = {}
+		info.text = L["Copy Text"]
+		info.func = function() mod:Copy(frame) end
+		info.notCheckable = 1;
+		menuButtons[chatTab:GetID()] = info
 	end
-end
-
-function mod:OnHide(cft)
-	local cfn = cft:GetName():match("ChatFrame%d")
-	if cfn and _G[cfn]:IsVisible() then
-		cft.copyButton:Hide()
-	end
+	return info
 end
 
 function mod:Copy(frame)

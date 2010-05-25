@@ -92,6 +92,7 @@ function Chatter:OnInitialize()
 				Chatter.db.profile.modules[k] = v
 				if v then
 					Chatter:EnableModule(k)
+					-- L["Module"]
 					Chatter:Print(L["Enabled"], k, L["Module"])
 				else
 					Chatter:DisableModule(k)
@@ -131,18 +132,36 @@ function Chatter:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileCopied", "SetUpdateConfig")
 	self.db.RegisterCallback(self, "OnProfileReset", "SetUpdateConfig")
 	
+	self:AddMenuHook(self, {
+		text = L["Chatter Settings"],
+		func = Chatter.OpenConfig,
+		notCheckable = 1
+	})
 	self:RawHook("FCF_Tab_OnClick", true)
 end
 
 do
-	local info
+	local info = {}
+	local menuHooks = {}
+	function Chatter:AddMenuHook(module, hook)
+		menuHooks[module] = hook
+	end
+	
+	function Chatter:RemoveMenuHook(module)
+		menuHooks[module] = nil
+	end
+	
 	function Chatter:FCF_Tab_OnClick(...)
 		self.hooks.FCF_Tab_OnClick(...)
-		info = info or UIDropDownMenu_CreateInfo();
-		info.text = L["Chatter Settings"]
-		info.func = Chatter.OpenConfig
-		info.notCheckable = 1;
-		UIDropDownMenu_AddButton(info);	
+		for module, v in pairs(menuHooks) do
+			local menu
+			if type(v) == "table" then
+				menu = v
+			else
+				menu = module[v](module, ...)
+			end
+			UIDropDownMenu_AddButton(menu)
+		end
 	end
 end
 

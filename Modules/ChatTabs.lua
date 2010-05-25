@@ -155,7 +155,6 @@ function mod:HideTab(tab)
 end
 
 function mod:OnMouseWheel(frame, dir)
-	print(frame, dir)
 	local chat = _G["ChatFrame" .. frame:GetID()]
 	if not chat.isDocked then return end
 	

@@ -14,11 +14,7 @@ local options = {
 
 local defaults = {
 	profile = {
-		frames = {
-			FRAME_2 = {
-				combatLogFix = true
-			}
-		}
+		frames = {}
 	}
 }
 
@@ -27,8 +23,8 @@ local frame_defaults = {
 	combatLogFix = false,
 	background = "Blizzard Tooltip",
 	border = "Blizzard Tooltip",
-	inset = 4,
-	edgeSize = 16,
+	inset = 3,
+	edgeSize = 12,
 	backgroundColor = { r = 0, g = 0, b = 0, a = 1 },
 	borderColor = { r = 1, g = 1, b = 1, a = 1 },
 }
@@ -49,6 +45,7 @@ function mod:OnInitialize()
 			defaults.profile.frames["FRAME_" .. i].enable = false
 		end
 	end
+	defaults.profile.frames.FRAME_2.combatLogFix = true
 	
 	self.db = Chatter.db:RegisterNamespace("ChatFrameBorders", defaults)
 	

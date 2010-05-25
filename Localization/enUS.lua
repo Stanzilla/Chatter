@@ -12,6 +12,7 @@ L["Configure"] = true
 L["Modules"] = true
 L["Settings"] = true
 L["Enable "] = true
+L["Module"] = true
 L["Enabled"] = true
 L["Disabled"] = true
 L["Chatter Settings"] = true
@@ -72,7 +73,6 @@ L["Select a color for this channel"] = true
 L["Channel Names"] = true
 L["$$EMPTY$$"] = true
 L["LookingForGroup"] = true
-L["Dungeon Guide"] = true
 L["Custom Channels"] = true
 L["Add space after channels"] = true
 L["Replace this channel name with..."] = true
@@ -140,7 +140,7 @@ L["Gives you more flexibility in how you invite people to your group."] = true
 
 -- ./Modules/CopyChat.lua
 L["Copy Chat"] = true
-L["Copy text from this frame."] = true
+L["Copy Text"] = true
 L["Lets you copy text out of your chat frames."] = true
 
 -- ./Modules/DelayGMOTD.lua
@@ -159,6 +159,8 @@ L["Sets the frame's border color to the color of your currently active channel"]
 L["Use Alt key for cursor movement"] = true
 L["Requires the Alt key to be held down to move the cursor in chat"] = true
 L["Select the font to use for the edit box"] = true
+L["Height"] = true
+L["Select the height of the edit box"] = true
 L["Lets you customize the position and look of the edit box"] = true
 
 -- ./Modules/EditBoxHistory.lua

@@ -51,6 +51,13 @@ function mod:OnInitialize()
 		button:Hide()
 		f.downButton = button
 	end
+	self:SecureHook("FCF_RestorePositionAndDimensions")
+end
+
+function mod:FCF_RestorePositionAndDimensions(chatFrame)
+	if Chatter.db.profile.modules[mod:GetName()] then
+		chatFrame:SetClampRectInsets(0, 0, 0, 0)
+	end
 end
 
 function mod:OnEnable()
@@ -77,6 +84,10 @@ function mod:OnDisable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
 		f:SetClampRectInsets(-35, 35, 26, -50)
+		-- Reset the postion so if the buttons were offscreen frame goes to where it should be
+		if f:IsMovable() then
+			FCF_RestorePositionAndDimensions(f)
+		end
 		local ff = _G["ChatFrame" .. i .. "ButtonFrame"]
 		ff:Show()
 		ff:SetScript("OnShow", nil)

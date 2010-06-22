@@ -92,6 +92,9 @@ function mod:OnInitialize()
 end
 
 function mod:OnEnable()
+	if GetCVar("showTimestamps") ~= "none" then
+		return
+	end
 	SELECTED_FORMAT = mod.db.profile.customFormat or ("[" .. self.db.profile.format .. "]")
 	local c = self.db.profile.color	
 	COLOR = ("%02x%02x%02x"):format(c.r * 255, c.g * 255, c.b * 255)

@@ -298,6 +298,7 @@ function mod:OnDisable()
 		_G["ChatFrame"..i.."EditBoxMid"]:Show()
 		
 		f:SetAltArrowKeyMode(true)
+		f:EnableMouse(true)
 		f.frame:Hide()
 		self:SetAttach("BOTTOM")
 		f:SetFont(Media:Fetch("font", defaults.profile.font), 14)
@@ -309,6 +310,7 @@ end
 function mod:ChatEdit_SetLastActiveWindow(frame)
 	if self.db.profile.hideDialog and frame:IsShown() then
 		frame:SetAlpha(0)
+		frame:EnableMouse(false)
 	end
 end
 
@@ -417,8 +419,8 @@ do
 			end
 			
 			if val == "TOP" then
-				frame:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, 3)
-				frame:SetPoint("BOTTOMRIGHT", ChatFrame1, "TOPRIGHT", 0, 3)
+				frame:SetPoint("BOTTOMLEFT", frame.chatFrame, "TOPLEFT", 0, 3)
+				frame:SetPoint("BOTTOMRIGHT", frame.chatFrame, "TOPRIGHT", 0, 3)
 			elseif val == "BOTTOM" then			
 				frame:SetPoint("TOPLEFT", frame.chatFrame, "BOTTOMLEFT", 0, -8)
 				frame:SetPoint("TOPRIGHT", frame.chatFrame, "BOTTOMRIGHT", 0, -8)

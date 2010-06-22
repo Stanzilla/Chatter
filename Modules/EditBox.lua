@@ -280,7 +280,7 @@ function mod:OnEnable()
 	end
 	
 	self:SecureHook("ChatEdit_DeactivateChat")
-	self:SecureHook("ChatEdit_SetLastActiveWindow", "ChatEdit_DeactivateChat")
+	self:SecureHook("ChatEdit_SetLastActiveWindow")
 	
 	self:SetBackdrop()
 	self:UpdateHeight()
@@ -304,9 +304,17 @@ function mod:OnDisable()
 	end
 end
 
+-- changed the Hide to SetAlpha(0), the new ChatSystem OnHide handlers go though some looping
+-- when in IM style and Classic style, cause heavy delays on the chat edit box.
+function mod:ChatEdit_SetLastActiveWindow(frame)
+	if self.db.profile.hideDialog and frame:IsShown() then
+		editbox:SetAlpha(0)
+	end
+end
+
 function mod:ChatEdit_DeactivateChat(frame)
-	if self.db.profile.hideDialog then
-		frame:Hide()
+	if self.db.profile.hideDialog and frame:IsShown() then
+		frame:SetAlpha(0)
 	end
 end
 

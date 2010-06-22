@@ -156,11 +156,12 @@ function mod:AddMessage(frame, text, ...)
 	if not text then 
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
-
 	text = gsub(text, "^|Hchannel:(%S-)|h(%[([%d. ]*)([^%]]+)%])|h ", replaceChannel)
 	text = gsub(text, "^(%[(" .. L["Raid Warning"] .. ")%]) ", replaceChannelRW)
-	text = gsub(text, L["To (|Hplayer.-|h):"], channels["Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
-	text = gsub(text, L["(|Hplayer.-|h) whispers:"], channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	if not Chatter.loading then -- During scrollback reloading, for some reason channels upvalue gets dorked, and the values are all nil
+		text = gsub(text, L["To (|Hplayer.-|h):"], channels["Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+		text = gsub(text, L["(|Hplayer.-|h) whispers:"], channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

@@ -308,7 +308,7 @@ end
 -- when in IM style and Classic style, cause heavy delays on the chat edit box.
 function mod:ChatEdit_SetLastActiveWindow(frame)
 	if self.db.profile.hideDialog and frame:IsShown() then
-		editbox:SetAlpha(0)
+		frame:SetAlpha(0)
 	end
 end
 

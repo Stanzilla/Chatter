@@ -52,6 +52,9 @@ function mod:OnInitialize()
 end
 
 function mod:OnEnable()
+	if GetCVar("chatMouseScroll") == "1" then
+		return
+	end
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G[("%s%d"):format("ChatFrame", i)]
 		cf:SetScript("OnMouseWheel", scrollFunc)

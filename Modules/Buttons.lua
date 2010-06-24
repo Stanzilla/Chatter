@@ -60,6 +60,12 @@ function mod:FCF_RestorePositionAndDimensions(chatFrame)
 	end
 end
 
+-- Fix the jump in
+for i = 1, NUM_CHAT_WINDOWS do
+	local f = _G["ChatFrame" .. i]
+	f:SetClampRectInsets(0, 0, 0, 0)
+end
+
 function mod:OnEnable()
 	ChatFrameMenuButton:Hide()
 	ChatFrameMenuButton:SetScript("OnShow", hide)

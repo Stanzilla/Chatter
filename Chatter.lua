@@ -56,6 +56,7 @@ local defaults = {
 --]]
 local proto = {
 	Decorate = function(self,chatframe) end,
+	Popout = function(self,chatframe,srcChatFrame) end,
 	TempChatFrames = {},
 	AddTempChat = function(self,name) table.insert(self.TempChatFrames,name) end,
 }
@@ -176,14 +177,16 @@ do
 	end
 end
 
-function Chatter:FCF_OpenTemporaryWindow(...)
-	local frame = self.hooks.FCF_OpenTemporaryWindow(...)
-	if frame and frame.isDecorated then return end
+function Chatter:FCF_OpenTemporaryWindow(chatType, chatTarget, sourceChatFrame, selectWindow)
+	local frame = self.hooks.FCF_OpenTemporaryWindow(chatType, chatTarget, sourceChatFrame, selectWindow)
 	if frame then
 		for k, v in self:IterateModules() do
 			v:AddTempChat(frame:GetName())
-			if v:IsEnabled() then
+			if v:IsEnabled() and not frame.isDecorated then
 				v:Decorate(frame)
+			end
+			if v:IsEnabled() then
+				v:Popout(frame,sourceChatFrame or DEFAULT_CHAT_FRAME)
 			end
 		end
 		frame.isDecorated = true

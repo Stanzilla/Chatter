@@ -119,10 +119,14 @@ function mod:LibSharedMedia_Registered()
 	self:SetFont()
 end
 
+function mod:Popout(frame,src)
+	local fontName, fontHeight, fontFlags = src:GetFont()
+	frame:SetFont(fontName,fontHeight,fontFlags)
+end
+
 function mod:OnEnable()
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	self:LibSharedMedia_Registered()
-
 	if not player_entered_world then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	end
@@ -147,12 +151,12 @@ function mod:SetFont(cf, font, size, outline)
 			cf = _G["ChatFrame" .. i]
 			self:SetFrameFont(cf, font, size, outline)
 		end
-		--for index,name in ipairs(self.TempChatFrames) do
-		--	local cf = _G[name]
-		--	if cf then
-		--		self:SetFrameFont(cf, font, size, outline)
-		--	end
-		--end
+		for index,name in ipairs(self.TempChatFrames) do
+			local cf = _G[name]
+			if cf then
+				self:SetFrameFont(cf, font, size, outline)
+			end
+		end
 	end
 end
 

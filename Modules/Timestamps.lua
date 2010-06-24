@@ -1,4 +1,4 @@
-local mod = Chatter:NewModule("Timestamps", "AceHook-3.0")
+local mod = Chatter:NewModule("Timestamps", "AceHook-3.0","AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Timestamps"]
 
@@ -107,9 +107,6 @@ function mod:Decorate(frame)
 end
 
 function mod:OnEnable()
-	if GetCVar("showTimestamps") ~= "none" then
-		return
-	end
 	SELECTED_FORMAT = mod.db.profile.customFormat or ("[" .. self.db.profile.format .. "]")
 	local c = self.db.profile.color	
 	COLOR = ("%02x%02x%02x"):format(c.r * 255, c.g * 255, c.b * 255)
@@ -129,7 +126,7 @@ end
 
 function mod:AddMessage(frame, text, ...)
 	local id = frame:GetID()
-	if id and self.db.profile.frames["Frame"..id] then
+	if id and self.db.profile.frames["Frame"..id] and not(CHAT_TIMESTAMP_FORMAT) then
 		if not Chatter.loading then
 			if not text then 
 				return self.hooks[frame].AddMessage(frame, text, ...)

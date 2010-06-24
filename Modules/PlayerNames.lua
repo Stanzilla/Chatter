@@ -262,7 +262,7 @@ function mod:OnEnable()
 		GuildRoster()
 	end
 
-	for i = 1, NUM_CHAT_WINDOWS do
+	for i = 1, 2 do
 		local cf = _G["ChatFrame" .. i]
 		if cf ~= COMBATLOG then
 			self:RawHook(cf, "AddMessage", true)
@@ -424,7 +424,7 @@ function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 	channels[chan:lower()][name] = nil
 end
 
-local function changeName(msgHeader, name, msgCnt, displayName, msgBody)
+local function changeName(msgHeader, name, msgCnt, displayName, msgBody,extra)
 	if name ~= player then
 		if emphasizeSelfInText then
 			msgBody = msgBody:gsub("("..player..")" , "|cffffff00>|r%1|cffffff00<|r"):gsub("("..player:lower()..")" , "|cffffff00>|r%1|cffffff00<|r")
@@ -495,8 +495,7 @@ end
 
 function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then 
-		text = text:gsub("(|Hplayer:([^|:]+)([:%d+]*)|h%[([^%]]+)%]|h)(.-)$", changeName)
-		-- text = text:gsub("(|Hplayer:(.-)|h%[(.-)%]|h)", changeName)
+		text = text:gsub("(|Hplayer:([^|:]+)([:%d+]*)[^|:]+|h%[([^%]]+)%]|h)(.-)$", changeName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

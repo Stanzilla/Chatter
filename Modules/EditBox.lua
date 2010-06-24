@@ -21,6 +21,12 @@ local function updateEditBox(method, args)
 		local f = _G["ChatFrame" .. i .. "EditBox"]
 		f[method](f, args)
 	end
+	for index,name in ipairs(mod.TempChatFrames) do
+		local cf = _G[name.."EditBox"]
+		if cf then
+			cf[method](f,args)
+		end
+	end
 end
 
 local options = {
@@ -260,6 +266,39 @@ function mod:OnInitialize()
 	end
 end
 
+function mod:Decorate(chatframe)
+	local parent = _G[chatframe:GetName().."EditBox"]
+	local frame = CreateFrame("Frame", nil, parent)
+	frame:SetFrameStrata("DIALOG")
+	frame:SetFrameLevel(parent:GetFrameLevel() - 1)
+	frame:SetAllPoints(parent)
+	frame:Hide()
+	parent.lDrag = CreateFrame("Frame", nil, parent)
+	parent.lDrag:SetWidth(15)
+	parent.lDrag:SetPoint("TOPLEFT", parent, "TOPLEFT")
+	parent.lDrag:SetPoint("BOTTOMLEFT", parent, "BOTTOMLEFT")
+	parent.rDrag = CreateFrame("Frame", nil, parent)
+	parent.rDrag:SetWidth(15)
+	parent.rDrag:SetPoint("TOPRIGHT", parent, "TOPRIGHT")
+	parent.rDrag:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT")
+	parent.lDrag.left = true
+	parent.frame = frame
+	tinsert(self.frames, frame)
+	local name = chatframe:GetName()
+	local f = _G[name.."EditBox"]
+	_G[name.."EditBoxLeft"]:Hide()
+	_G[name.."EditBoxRight"]:Hide()
+	_G[name.."EditBoxMid"]:Hide()
+	_G[name.."EditBoxFocusLeft"]:SetTexture(nil)
+	_G[name.."EditBoxFocusRight"]:SetTexture(nil)
+	_G[name.."EditBoxFocusMid"]:SetTexture(nil)
+	f:Hide()
+	self.frames[#self.frames]:Show()
+	local font, s, m = f:GetFont()
+	f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
+	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
+end
+
 function mod:OnEnable()
 	self:LibSharedMedia_Registered()
 	updateEditBox("SetAltArrowKeyMode", mod.db.profile.useAlt)
@@ -276,6 +315,20 @@ function mod:OnEnable()
 		self.frames[i]:Show()
 		local font, s, m = f:GetFont()
 		f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)					
+		self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local f = _G[name.."EditBox"]
+		_G[name.."EditBoxLeft"]:Hide()
+		_G[name.."EditBoxRight"]:Hide()
+		_G[name.."EditBoxMid"]:Hide()
+		_G[name.."EditBoxFocusLeft"]:SetTexture(nil)
+		_G[name.."EditBoxFocusRight"]:SetTexture(nil)
+		_G[name.."EditBoxFocusMid"]:SetTexture(nil)
+		f:Hide()
+		self.frames[NUM_CHAT_WINDOWS+index]:Show()
+		local font, s, m = f:GetFont()
+		f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
 		self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	end
 	
@@ -297,6 +350,17 @@ function mod:OnDisable()
 		_G["ChatFrame"..i.."EditBoxRight"]:Show()
 		_G["ChatFrame"..i.."EditBoxMid"]:Show()
 		
+		f:SetAltArrowKeyMode(true)
+		f:EnableMouse(true)
+		f.frame:Hide()
+		self:SetAttach("BOTTOM")
+		f:SetFont(Media:Fetch("font", defaults.profile.font), 14)
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local f = _G[name.."EditBox"]
+		_G[name.."EditBoxLeft"]:Show()
+		_G[name.."EditBoxRight"]:Show()
+		_G[name.."EditBoxMid"]:Show()
 		f:SetAltArrowKeyMode(true)
 		f:EnableMouse(true)
 		f.frame:Hide()
@@ -447,6 +511,53 @@ do
 				frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", self.db.profile.editX or x, self.db.profile.editY or y)
 			end
 		end
+		for index,name in ipairs(self.TempChatFrames) do
+			local frame = _G[name .. "EditBox"]
+			local val = val or self.db.profile.attach
+			if not x and val == "FREE" then
+				x, y, w = frame:GetLeft(), frame:GetTop(), max(frame:GetWidth(), (frame:GetRight() or 0) - (frame:GetLeft() or 0))
+			end
+			if not w or w < 10 then w = 100 end
+			frame:ClearAllPoints()
+			if val ~= "FREE" then
+				frame:SetMovable(false)
+				frame.lDrag:EnableMouse(false)
+				frame.rDrag:EnableMouse(false)
+				frame:SetScript("OnMouseDown", nil)
+				frame:SetScript("OnMouseUp", nil)
+				frame.lDrag:EnableMouse(false)
+				frame.rDrag:EnableMouse(false)
+				frame.lDrag:SetScript("OnMouseDown", nil)
+				frame.rDrag:SetScript("OnMouseDown", nil)
+				frame.lDrag:SetScript("OnMouseUp", nil)
+				frame.rDrag:SetScript("OnMouseUp", nil)
+			end
+			if val == "TOP" then
+				frame:SetPoint("BOTTOMLEFT", frame.chatFrame, "TOPLEFT", 0, 3)
+				frame:SetPoint("BOTTOMRIGHT", frame.chatFrame, "TOPRIGHT", 0, 3)
+			elseif val == "BOTTOM" then
+				frame:SetPoint("TOPLEFT", frame.chatFrame, "BOTTOMLEFT", 0, -8)
+				frame:SetPoint("TOPRIGHT", frame.chatFrame, "BOTTOMRIGHT", 0, -8)
+			elseif val == "FREE" then
+				frame:EnableMouse(true)
+				frame:SetMovable(true)
+				frame:SetResizable(true)
+				frame:SetScript("OnMouseDown", startMoving)
+				frame:SetScript("OnMouseUp", stopMoving)
+				frame:SetWidth(w)
+				frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
+				frame:SetMinResize(40, 1)
+				frame.lDrag:EnableMouse(true)
+				frame.rDrag:EnableMouse(true)
+				frame.lDrag:SetScript("OnMouseDown", startDragging)
+				frame.rDrag:SetScript("OnMouseDown", startDragging)
+				frame.lDrag:SetScript("OnMouseUp", stopDragging)
+				frame.rDrag:SetScript("OnMouseUp", stopDragging)
+			elseif val == "LOCK" then
+				frame:SetWidth(self.db.profile.editW or w)
+				frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", self.db.profile.editX or x, self.db.profile.editY or y)
+			end
+		end
 	end
 end
 
@@ -457,6 +568,10 @@ end
 function mod:UpdateHeight()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local ff = _G["ChatFrame"..i.."EditBox"]
+		ff:SetHeight(mod.db.profile.height)
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local ff = _G[name.."EditBox"]
 		ff:SetHeight(mod.db.profile.height)
 	end
 end

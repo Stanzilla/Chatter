@@ -54,6 +54,23 @@ function mod:OnInitialize()
 	self:SecureHook("FCF_RestorePositionAndDimensions")
 end
 
+function mod:Decorate(frame)
+	local button = CreateFrame("Button", nil, frame)
+	button:SetNormalTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollEnd-Up]])
+	button:SetPushedTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollEnd-Down]])
+	button:SetDisabledTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollEnd-Disabled]])
+	button:SetHighlightTexture([[Interface\Buttons\UI-Common-MouseHilight]])
+	button:SetWidth(20)
+	button:SetHeight(20)
+	button:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, 0)
+	button:SetScript("OnClick", clickFunc)
+	button:Hide()
+	frame.downButton = button
+	-- Adjust the menu buttons
+	self:ApplyFrameChanges(frame)
+	if(self.db.profile.scrollReminder) then self:ApplyBottomButton(frame) end
+end
+
 function mod:FCF_RestorePositionAndDimensions(chatFrame)
 	if Chatter.db.profile.modules[mod:GetName()] then
 		chatFrame:SetClampRectInsets(0, 0, 0, 0)
@@ -66,6 +83,13 @@ for i = 1, NUM_CHAT_WINDOWS do
 	f:SetClampRectInsets(0, 0, 0, 0)
 end
 
+function mod:ApplyFrameChanges(f)
+	f:SetClampRectInsets(0, 0, 0, 0)
+	local ff = _G[f:GetName() .. "ButtonFrame"]
+	ff:Hide()
+	ff:SetScript("OnShow", hide)
+end
+
 function mod:OnEnable()
 	ChatFrameMenuButton:Hide()
 	ChatFrameMenuButton:SetScript("OnShow", hide)
@@ -73,12 +97,24 @@ function mod:OnEnable()
 	FriendsMicroButton:SetScript("OnShow", hide)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
-		f:SetClampRectInsets(0, 0, 0, 0)
-		local ff = _G["ChatFrame" .. i .. "ButtonFrame"]
-		ff:Hide()
-		ff:SetScript("OnShow", hide)
+		self:ApplyFrameChanges(f)
 	end
 	if(self.db.profile.scrollReminder) then self:EnableBottomButton() end
+	for index,frame in ipairs(self.TempChatFrames) do
+		local f = _G[frame]
+		self:ApplyFrameChanges(f)
+	end
+end
+
+function mod:UnDecorate(frame)
+	frame:SetClampRectInsets(-35, 35, 26, -50)
+	-- Reset the postion so if the buttons were offscreen frame goes to where it should be
+	if frame:IsMovable() then
+		FCF_RestorePositionAndDimensions(frame)
+	end
+	local ff = _G[frame:GetName() .. "ButtonFrame"]
+	ff:Show()
+	ff:SetScript("OnShow", nil)
 end
 
 function mod:OnDisable()
@@ -89,19 +125,31 @@ function mod:OnDisable()
 	self:DisableBottomButton()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
-		f:SetClampRectInsets(-35, 35, 26, -50)
-		-- Reset the postion so if the buttons were offscreen frame goes to where it should be
-		if f:IsMovable() then
-			FCF_RestorePositionAndDimensions(f)
-		end
-		local ff = _G["ChatFrame" .. i .. "ButtonFrame"]
-		ff:Show()
-		ff:SetScript("OnShow", nil)
+		self:UnDecorate(f)
+	end
+	for index,frame in ipairs(self.TempChatFrames) do
+		local f = _G[frame]
+		self:UnDecorate(f)
 	end
 end
 
 function mod:Info()
 	return L["Hides the buttons attached to the chat frame"]
+end
+
+function mod:ApplyBottomButton(frame)
+	self:Hook(frame, "ScrollUp", true)
+	self:Hook(frame, "ScrollToTop", "ScrollUp", true)
+	self:Hook(frame, "PageUp", "ScrollUp", true)
+	self:Hook(frame, "ScrollDown", true)
+	self:Hook(frame, "ScrollToBottom", "ScrollDownForce", true)
+	self:Hook(frame, "PageDown", "ScrollDown", true)
+	if frame:GetCurrentScroll() ~= 0 then
+		frame.downButton:Show()
+	end
+	if frame ~= COMBATLOG then
+		self:Hook(frame, "AddMessage", true)
+	end
 end
 
 function mod:EnableBottomButton()
@@ -110,23 +158,28 @@ function mod:EnableBottomButton()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
 		if f then
-			self:Hook(f, "ScrollUp", true)
-			self:Hook(f, "ScrollToTop", "ScrollUp", true)
-			self:Hook(f, "PageUp", "ScrollUp", true)
-						
-			self:Hook(f, "ScrollDown", true)
-			self:Hook(f, "ScrollToBottom", "ScrollDownForce", true)
-			self:Hook(f, "PageDown", "ScrollDown", true)
-
-			if f:GetCurrentScroll() ~= 0 then
-				f.downButton:Show()
-			end
-			
-			if f ~= COMBATLOG then
-				self:Hook(f, "AddMessage", true)
-			end
+			self:ApplyBottomButton(f)
 		end
 	end
+	for index,frame in ipairs(self.TempChatFrames) do
+		local f = _G[frame]
+		if f then
+			self:ApplyBottomButton(f)
+		end
+	end
+end
+
+function mod:UnApplyBottomButton(f)
+	self:Unhook(f, "ScrollUp")
+	self:Unhook(f, "ScrollToTop")
+	self:Unhook(f, "PageUp")
+	self:Unhook(f, "ScrollDown")
+	self:Unhook(f, "ScrollToBottom")
+	self:Unhook(f, "PageDown")
+	if f ~= COMBATLOG then
+		self:Unhook(f, "AddMessage")
+	end
+	f.downButton:Hide()
 end
 
 function mod:DisableBottomButton()
@@ -135,17 +188,13 @@ function mod:DisableBottomButton()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
 		if f then
-			self:Unhook(f, "ScrollUp")
-			self:Unhook(f, "ScrollToTop")
-			self:Unhook(f, "PageUp")					
-			self:Unhook(f, "ScrollDown")
-			self:Unhook(f, "ScrollToBottom")
-			self:Unhook(f, "PageDown")
-			
-			if f ~= COMBATLOG then
-				self:Unhook(f, "AddMessage")
-			end
-			f.downButton:Hide()
+			self:UnApplyBottomButton(f)
+		end
+	end
+	for index,frame in ipairs(self.TempChatFrames) do
+		local f = _G[frame]
+		if f then
+			self:UnApplyBottomButton(f)
 		end
 	end
 end

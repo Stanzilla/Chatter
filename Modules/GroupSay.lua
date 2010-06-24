@@ -8,10 +8,20 @@ local GetNumPartyMembers = _G.GetNumPartyMembers
 local GetNumRaidMembers = _G.GetNumRaidMembers
 local SendChatMessage = _G.SendChatMessage
 
+function mod:Decorate(frame)
+	self:HookScript(_G[frame:GetName().."EditBox"], "OnTextChanged")
+end
+
 function mod:OnEnable()
 	for i = 1, 10 do
 		self:HookScript(_G["ChatFrame" .. i .. "EditBox"], "OnTextChanged")
 	end	
+	for index,name in ipairs(self.TempChatFrames) do
+		local cf = _G[name.."EditBox"]
+		if cf then
+			self:HookScript(cf, "OnTextChanged")
+		end
+	end
 	
 	if not self.slashCommandRegistered then
 		self:RegisterChatCommand("gr", "SendChatMessage")

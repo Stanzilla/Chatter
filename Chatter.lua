@@ -50,7 +50,17 @@ local defaults = {
 		}
 	}
 }
+--[[
+	Creating a prototype for a Decorate/UnDecorate function
+	Adding these in so after everything is loaded we can post decorate/undecorate the popup frames
+--]]
+local proto = {
+	Decorate = function(self,chatframe) end,
+	TempChatFrames = {},
+	AddTempChat = function(self,name) table.insert(self.TempChatFrames,name) end,
+}
 
+Chatter:SetDefaultModulePrototype(proto)
 Chatter:SetDefaultModuleState(false)
 
 local optionFrames = {}
@@ -138,6 +148,7 @@ function Chatter:OnInitialize()
 		notCheckable = 1
 	})
 	self:RawHook("FCF_Tab_OnClick", true)
+	self:RawHook("FCF_OpenTemporaryWindow",true)
 end
 
 do
@@ -163,6 +174,21 @@ do
 			UIDropDownMenu_AddButton(menu)
 		end
 	end
+end
+
+function Chatter:FCF_OpenTemporaryWindow(...)
+	local frame = self.hooks.FCF_OpenTemporaryWindow(...)
+	if frame and frame.isDecorated then return end
+	if frame then
+		for k, v in self:IterateModules() do
+			v:AddTempChat(frame:GetName())
+			if v:IsEnabled() then
+				v:Decorate(frame)
+			end
+		end
+		frame.isDecorated = true
+	end
+	FCFDock_ForceReanchoring(GENERAL_CHAT_DOCK)
 end
 
 function Chatter:OpenConfig(input)

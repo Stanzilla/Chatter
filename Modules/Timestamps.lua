@@ -21,6 +21,17 @@ local CHATFRAMES = {
 	["Frame5"] = L["Chat Frame "].."5",
 	["Frame6"] = L["Chat Frame "].."6",
 	["Frame7"] = L["Chat Frame "].."7",
+	["Frame8"] = L["Chat Frame "].."8",
+	["Frame9"] = L["Chat Frame "].."9",
+	["Frame10"] = L["Chat Frame "].."10",
+	["Frame11"] = L["Chat Frame "].."11",
+	["Frame12"] = L["Chat Frame "].."12",
+	["Frame13"] = L["Chat Frame "].."13",
+	["Frame14"] = L["Chat Frame "].."14",
+	["Frame15"] = L["Chat Frame "].."15",
+	["Frame16"] = L["Chat Frame "].."16",
+	["Frame17"] = L["Chat Frame "].."17",
+	["Frame18"] = L["Chat Frame "].."18",
 }
 
 local defaults = {
@@ -91,6 +102,10 @@ function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("Timestamps", defaults)
 end
 
+function mod:Decorate(frame)
+	self:RawHook(frame, "AddMessage", true)
+end
+
 function mod:OnEnable()
 	if GetCVar("showTimestamps") ~= "none" then
 		return
@@ -101,6 +116,12 @@ function mod:OnEnable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
 		if cf ~= COMBATLOG then
+			self:RawHook(cf, "AddMessage", true)
+		end
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local cf = _G[name]
+		if cf then
 			self:RawHook(cf, "AddMessage", true)
 		end
 	end

@@ -56,6 +56,10 @@ function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace(self:GetName(), defaults)
 end
 
+function mod:Decorate(frame)
+	self:RawHook(frame, "AddMessage", true)
+end
+
 function mod:OnEnable()
 	words = self.db.profile.words
 	if not next(words) then
@@ -65,6 +69,12 @@ function mod:OnEnable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
 		if cf ~= COMBATLOG then
+			self:RawHook(cf, "AddMessage", true)
+		end
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local cf = _G[name]
+		if cf then
 			self:RawHook(cf, "AddMessage", true)
 		end
 	end

@@ -60,11 +60,31 @@ function mod:OnEnable()
 		cf:SetScript("OnMouseWheel", scrollFunc)
 		cf:EnableMouseWheel(true)
 	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local cf = _G[name]
+		if cf then
+			cf:SetScript("OnMouseWheel", scrollFunc)
+			cf:EnableMouseWheel(true)
+		end
+	end
+end
+
+function mod:Decorate(frame)
+	if GetCVar("chatMouseScroll") == "1" then
+		return
+	end
+	frame:SetScript("OnMouseWheel", scrollFunc)
+	frame:EnableMouseWheel(true)
 end
 
 function mod:OnDisable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G[("%s%d"):format("ChatFrame", i)]
+		cf:SetScript("OnMouseWheel", nil)
+		cf:EnableMouseWheel(false)
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local cf = _G[name]
 		cf:SetScript("OnMouseWheel", nil)
 		cf:EnableMouseWheel(false)
 	end

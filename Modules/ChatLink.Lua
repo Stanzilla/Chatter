@@ -16,11 +16,21 @@ local function excludeChannels(...)
 	end
 end
 
+function mod:Decorate(frame)
+	self:RawHook(frame, "AddMessage", true)
+end
+
 function mod:OnEnable()
 	excludeChannels(EnumerateServerChannels())
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
 		if cf ~= COMBATLOG then
+			self:RawHook(cf, "AddMessage", true)
+		end
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local cf = _G[name]
+		if cf then
 			self:RawHook(cf, "AddMessage", true)
 		end
 	end

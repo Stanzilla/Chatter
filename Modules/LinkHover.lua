@@ -11,11 +11,23 @@ local linkTypes = {
 	-- player = true
 }
 
+function mod:Decorate(frame)
+	self:HookScript(frame, "OnHyperlinkEnter", enter)
+	self:HookScript(frame, "OnHyperlinkLeave", leave)
+end
+
 function mod:OnEnable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G["ChatFrame"..i]
 		self:HookScript(frame, "OnHyperlinkEnter", enter)
 		self:HookScript(frame, "OnHyperlinkLeave", leave)
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local cf = _G[name]
+		if cf then
+			self:HookScript(cf, "OnHyperlinkEnter", enter)
+			self:HookScript(cf, "OnHyperlinkLeave", leave)
+		end
 	end
 end
 

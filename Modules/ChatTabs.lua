@@ -44,6 +44,36 @@ local function SetFontSizes()
 		local tab = _G["ChatFrame"..i.."Tab"]
 		mod:OnLeave(tab)
 	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local tab = _G[name.."Tab"]
+		mod:OnLeave(tab)
+	end
+end
+
+function mod:Decorate(frame)
+	local name = "ChatFrame"..frame:GetID();
+	local tab = _G[name.."Tab"]
+	tab:SetHeight(mod.db.profile.height)
+	_G[name.."TabLeft"]:Hide()
+	_G[name.."TabMiddle"]:Hide()
+	_G[name.."TabRight"]:Hide()
+	tab.leftSelectedTexture:SetAlpha(0)
+	tab.rightSelectedTexture:SetAlpha(0)
+	tab.middleSelectedTexture:SetAlpha(0)
+	tab.leftHighlightTexture:SetTexture(nil)
+	tab.rightHighlightTexture:SetTexture(nil)
+	tab.middleHighlightTexture:SetTexture([[BUTTONS\CheckButtonGlow]])
+	tab.middleHighlightTexture:SetWidth(76)
+	tab.middleHighlightTexture:SetTexCoord(0, 0, 1, 0.5)
+	tab.leftSelectedTexture:SetAlpha(0)
+	tab.rightSelectedTexture:SetAlpha(0)
+	tab.middleSelectedTexture:SetAlpha(0)
+	tab:EnableMouseWheel(true)
+	self:HookScript(tab, "OnMouseWheel")
+	tab:Show()
+	if (mod.db.profile.chattabs) then
+		mod:HideTab(tab)
+	end
 end
 
 function mod:OnEnable()
@@ -52,24 +82,22 @@ function mod:OnEnable()
 		local chat = _G["ChatFrame"..i]
 		local tab = _G["ChatFrame"..i.."Tab"]
 		tab:SetHeight(mod.db.profile.height)
-		
 		-- local flash = _G["ChatFrame"..i.."TabFlash"]
 		-- flash:GetRegions():SetTexture(nil)
-		
 		_G["ChatFrame"..i.."TabLeft"]:Hide()
 		_G["ChatFrame"..i.."TabMiddle"]:Hide()
 		_G["ChatFrame"..i.."TabRight"]:Hide()
-		
-		_G["ChatFrame"..i.."TabSelectedLeft"]:SetTexture(nil)
-		_G["ChatFrame"..i.."TabSelectedMiddle"]:SetTexture()
-		_G["ChatFrame"..i.."TabSelectedRight"]:SetTexture(nil)
-
-		_G["ChatFrame"..i.."TabHighlightLeft"]:SetTexture(nil)
-		_G["ChatFrame"..i.."TabHighlightMiddle"]:SetTexture([[BUTTONS\CheckButtonGlow]])
-		_G["ChatFrame"..i.."TabHighlightRight"]:SetTexture(nil)
-		_G["ChatFrame"..i.."TabHighlightMiddle"]:SetTexCoord(0, 0, 1, 0.5)
-		
-
+		tab.leftSelectedTexture:SetAlpha(0)
+		tab.rightSelectedTexture:SetAlpha(0)
+		tab.middleSelectedTexture:SetAlpha(0)
+		tab.leftHighlightTexture:SetTexture(nil)
+		tab.rightHighlightTexture:SetTexture(nil)
+		tab.middleHighlightTexture:SetTexture([[BUTTONS\CheckButtonGlow]])
+		tab.middleHighlightTexture:SetWidth(76)
+		tab.middleHighlightTexture:SetTexCoord(0, 0, 1, 0.5)
+		tab.leftSelectedTexture:SetAlpha(0)
+		tab.rightSelectedTexture:SetAlpha(0)
+		tab.middleSelectedTexture:SetAlpha(0)
 		--[[ TODO: Grum @ 18/10/2008
 		    There seems to be a bug with certain fonts/fontObjects which prevents
 		    tab:GetNormalFontObject() to return anything sensible
@@ -84,13 +112,11 @@ function mod:OnEnable()
 		--self:HookScript(tab, "OnLeave")
 		self:HookScript(tab, "OnMouseWheel")
 		--self:HookScript(tab, "OnClick")
-		
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
 		end
 		-- self:RawHook(tab, "SetAlpha", true)
 		-- self:RawHook(tab, "Hide", true)
-		
 		-- tab:GetTextFontObject():SetJustifyV("BOTTOM")
 		--tab:SetTextColor(1, 1, 1)
 		-- tab:GetHighlightTexture():SetTexture(nil)
@@ -100,29 +126,61 @@ function mod:OnEnable()
 		end
 		]]--
 	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local chat = _G[name]
+		local tab = _G[name.."Tab"]
+		tab:SetHeight(mod.db.profile.height)
+		_G[name.."TabLeft"]:Hide()
+		_G[name.."TabMiddle"]:Hide()
+		_G[name.."TabRight"]:Hide()
+		tab.leftSelectedTexture:SetAlpha(0)
+		tab.rightSelectedTexture:SetAlpha(0)
+		tab.middleSelectedTexture:SetAlpha(0)
+		tab.leftHighlightTexture:SetTexture(nil)
+		tab.rightHighlightTexture:SetTexture(nil)
+		tab.middleHighlightTexture:SetTexture([[BUTTONS\CheckButtonGlow]])
+		tab.middleHighlightTexture:SetWidth(76)
+		tab.middleHighlightTexture:SetTexCoord(0, 0, 1, 0.5)
+		tab.leftSelectedTexture:SetAlpha(0)
+		tab.rightSelectedTexture:SetAlpha(0)
+		tab.middleSelectedTexture:SetAlpha(0)
+		tab:EnableMouseWheel(true)
+		if not self:IsHooked(tab,"OnMouseWheel") then
+			self:HookScript(tab, "OnMouseWheel")
+		end
+		if (mod.db.profile.chattabs) then
+			mod:HideTab(tab)
+		end
+	end
 end
 
 function mod:OnDisable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G["ChatFrame"..i]
 		local tab = _G["ChatFrame"..i.."Tab"]
-		
 		-- local flash = _G["ChatFrame"..i.."TabFlash"]
 		-- flash:GetRegions():SetTexture([[Interface\ChatFrame\UI-ChatIcon-BlinkHilight]])
-
 		tab:SetHeight(32)
 		_G["ChatFrame"..i.."TabLeft"]:Show()
 		_G["ChatFrame"..i.."TabMiddle"]:Show()
 		_G["ChatFrame"..i.."TabRight"]:Show()
-
 		-- tab:GetTextFontObject():SetJustifyV("MIDDLE")
 		-- TODO: Check other TODO's
 		--local f, s, m = font:GetFont()
 		--tab:SetFont(f, s, m)
-
 		tab:EnableMouseWheel(false)
 		--tab:SetTextColor(1, 0.82, 0)
 		-- tab:GetHighlightTexture():SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
+		tab:Hide()
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local chat = _G[name]
+		local tab = _G[name.."Tab"]
+		tab:SetHeight(32)
+		_G[name.."TabLeft"]:Show()
+		_G[name.."TabMiddle"]:Show()
+		_G[name.."TabRight"]:Show()
+		tab:EnableMouseWheel(false)
 		tab:Hide()
 	end
 end
@@ -140,6 +198,16 @@ end
 function mod:ToggleTabShow()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local tab = _G["ChatFrame"..i.."Tab"]
+		if (mod.db.profile.chattabs) then
+			tab:SetScript("OnShow", function(...) tab:Hide() end)
+		else
+			tab:SetScript("OnShow", function(...) tab:Show() end)
+		end
+		tab:Show()
+		tab:Hide()
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local tab = _G[name.."Tab"]
 		if (mod.db.profile.chattabs) then
 			tab:SetScript("OnShow", function(...) tab:Hide() end)
 		else

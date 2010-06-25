@@ -495,7 +495,7 @@ end
 
 function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then 
-		text = text:gsub("(|Hplayer:([^|:]+)([:%d+]*)[^|:]*|h%[([^%]]+)%]|h)(.-)$", changeName)
+		text = text:gsub("(|Hplayer:([^|:]+)([:%d+]*)[^|]*|h%[([^%]]+)%]|h)(.-)$", changeName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

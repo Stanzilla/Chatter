@@ -25,7 +25,7 @@ end
 function mod:OnTextChanged(obj)
 	local text = obj:GetText()
 	if text:sub(1, 4) == "/tt " then
-		self:TellTarget(obj:GetParent(), text:sub(5))
+		self:TellTarget(obj.chatFrame, text:sub(5))
 	end
 	self.hooks[obj].OnTextChanged(obj)
 end

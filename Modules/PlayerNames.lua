@@ -424,7 +424,7 @@ function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 	channels[chan:lower()][name] = nil
 end
 
-local function changeName(msgHeader, name, msgCnt, displayName, msgBody)
+local function changeName(msgHeader, name, extra, msgCnt,displayName, msgBody)
 	if name ~= player then
 		if emphasizeSelfInText then
 			msgBody = msgBody:gsub("("..player..")" , "|cffffff00>|r%1|cffffff00<|r"):gsub("("..player:lower()..")" , "|cffffff00>|r%1|cffffff00<|r")
@@ -463,7 +463,7 @@ local function changeName(msgHeader, name, msgCnt, displayName, msgBody)
 		end
 	end
 
-	return ("|Hplayer:%s%s|h%s%s%s|h%s"):format(name, msgCnt, leftBracket, displayName, rightBracket, msgBody)
+	return ("|Hplayer:%s%s%s|h%s%s%s|h%s"):format(name, extra, msgCnt, leftBracket, displayName, rightBracket, msgBody)
 end
 
 function mod:ColorName( name )
@@ -495,7 +495,7 @@ end
 
 function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then 
-		text = text:gsub("(|Hplayer:([^|:]+)([:%d+]*)[^|]*|h%[([^%]]+)%]|h)(.-)$", changeName)
+		text = text:gsub("(|Hplayer:([^|:]+)([:%d+]*)([^|]*)|h%[([^%]]+)%]|h)(.-)$", changeName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

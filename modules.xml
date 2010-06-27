@@ -27,6 +27,7 @@
 	<Script file="Modules\Scrollback.lua" />
 	<Script file="Modules\EditBoxHistory.lua" />
 	<Script file="Modules\DelayGMOTD.lua" />
+	<Script file="Modules\AutoPopup.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
 	<!-- <Include file="Modules\SplitText.lua" /> //-->
 	<!-- <Script file="Modules\ChannelBindings.lua" /> //-->

@@ -104,7 +104,7 @@ end
 local tabComplete
 do
 	function tabComplete(t, text, pos)
-		local word = text:sub(pos) --ChatEdit_GetLastActiveWindow
+		local word = text:sub(pos)
 		if #word == 0 then return end
 		local cf = ChatEdit_GetActiveWindow()
 		local channel = cf:GetAttribute("chatType")

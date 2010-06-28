@@ -82,8 +82,6 @@ function mod:OnEnable()
 		local chat = _G["ChatFrame"..i]
 		local tab = _G["ChatFrame"..i.."Tab"]
 		tab:SetHeight(mod.db.profile.height)
-		-- local flash = _G["ChatFrame"..i.."TabFlash"]
-		-- flash:GetRegions():SetTexture(nil)
 		_G["ChatFrame"..i.."TabLeft"]:Hide()
 		_G["ChatFrame"..i.."TabMiddle"]:Hide()
 		_G["ChatFrame"..i.."TabRight"]:Hide()
@@ -108,23 +106,10 @@ function mod:OnEnable()
 		    For now I just disabled all the font-changing mechanics.
 		--]]
 		tab:EnableMouseWheel(true)
-		--self:HookScript(tab, "OnEnter")
-		--self:HookScript(tab, "OnLeave")
 		self:HookScript(tab, "OnMouseWheel")
-		--self:HookScript(tab, "OnClick")
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
 		end
-		-- self:RawHook(tab, "SetAlpha", true)
-		-- self:RawHook(tab, "Hide", true)
-		-- tab:GetTextFontObject():SetJustifyV("BOTTOM")
-		--tab:SetTextColor(1, 1, 1)
-		-- tab:GetHighlightTexture():SetTexture(nil)
-		--[[
-		if chat.isDocked or chat:IsVisible() then
-			tab:Show()
-		end
-		]]--
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local chat = _G[name]
@@ -158,19 +143,11 @@ function mod:OnDisable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G["ChatFrame"..i]
 		local tab = _G["ChatFrame"..i.."Tab"]
-		-- local flash = _G["ChatFrame"..i.."TabFlash"]
-		-- flash:GetRegions():SetTexture([[Interface\ChatFrame\UI-ChatIcon-BlinkHilight]])
 		tab:SetHeight(32)
 		_G["ChatFrame"..i.."TabLeft"]:Show()
 		_G["ChatFrame"..i.."TabMiddle"]:Show()
 		_G["ChatFrame"..i.."TabRight"]:Show()
-		-- tab:GetTextFontObject():SetJustifyV("MIDDLE")
-		-- TODO: Check other TODO's
-		--local f, s, m = font:GetFont()
-		--tab:SetFont(f, s, m)
 		tab:EnableMouseWheel(false)
-		--tab:SetTextColor(1, 0.82, 0)
-		-- tab:GetHighlightTexture():SetTexture([[Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight]])
 		tab:Hide()
 	end
 	for index,name in ipairs(self.TempChatFrames) do
@@ -198,6 +175,7 @@ end
 function mod:ToggleTabShow()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local tab = _G["ChatFrame"..i.."Tab"]
+		local chat = _G["ChatFrame"..i]
 		if (mod.db.profile.chattabs) then
 			tab:SetScript("OnShow", function(...) tab:Hide() end)
 		else
@@ -205,9 +183,13 @@ function mod:ToggleTabShow()
 		end
 		tab:Show()
 		tab:Hide()
+		if chat.isDocked or chat:IsVisible() then
+			tab:Show()
+		end
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local tab = _G[name.."Tab"]
+		local chat = _G[name]
 		if (mod.db.profile.chattabs) then
 			tab:SetScript("OnShow", function(...) tab:Hide() end)
 		else
@@ -215,11 +197,18 @@ function mod:ToggleTabShow()
 		end
 		tab:Show()
 		tab:Hide()
+		if chat.isDocked or chat:IsVisible() then
+			tab:Show()
+		end
 	end
 end
 
 function mod:HideTab(tab)
 	tab:SetScript("OnShow", function(...) tab:Hide() end)
+	tab:Show()
+	if tab:IsVisible() then
+		tab:Hide()
+	end
 end
 
 function mod:OnMouseWheel(frame, dir)

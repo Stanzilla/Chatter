@@ -104,11 +104,12 @@ end
 local tabComplete
 do
 	function tabComplete(t, text, pos)
-		local word = text:sub(pos)
+		local word = text:sub(pos) --ChatEdit_GetLastActiveWindow
 		if #word == 0 then return end
-		local channel = ChatFrameEditBox:GetAttribute("chatType")
+		local cf = ChatEdit_GetActiveWindow()
+		local channel = cf:GetAttribute("chatType")
 		if channel == "CHANNEL" then
-			channel = select(2, GetChannelName(ChatFrameEditBox:GetAttribute("channelTarget"))):lower()
+			channel = select(2, GetChannelName(cf:GetAttribute("channelTarget"))):lower()
 		elseif channel == "OFFICER" then
 			channel = "GUILD"
 		elseif channel == "RAID_WARNING" or channel == "RAID_LEADER" or channel == "BATTLEGROUND" or channel == "BATTLEGROUND_LEADER" then

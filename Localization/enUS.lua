@@ -42,6 +42,9 @@ L["Enables you to right-click a person's name in chat and set a note on them to 
 L["alt2"] = true
 L["alt3"] = true
 
+--./Modules/AutoPopup.lua
+L["Automatic Whisper Windows"] = true
+
 -- ./Modules/AutoLogChat.lua
 L["Chat Autolog"] = true
 L["Automatically turns on chat logging."] = true

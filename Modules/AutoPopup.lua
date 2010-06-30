@@ -23,6 +23,6 @@ function mod:ProcessWhisper(event,message,sender,language,channelString,target,f
 		type = "BN_WHISPER"
 	end
 	if FCFManager_GetNumDedicatedFrames(type, sender) == 0 then
-		FCF_OpenTemporaryWindow(type,sender)
+		local f = FCF_OpenTemporaryWindow(type,sender)
 	end
 end

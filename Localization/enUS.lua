@@ -49,6 +49,9 @@ L["Automatic Whisper Windows"] = true
 L["Chat Autolog"] = true
 L["Automatically turns on chat logging."] = true
 
+--./Modules/Bnet.lua
+L["RealID Polish"] = true
+
 -- ./Modules/Buttons.lua
 L["Disable Buttons"] = true
 L["Show bottom when scrolled"] = true

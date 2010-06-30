@@ -163,7 +163,10 @@ end
 function mod:SetFrameFont(cf, font, size, outline)
 	local f = "FRAME_" .. cf:GetName():match("%d+")
 	local prof = self.db.profile.frames[f]
-	local profFont = prof.font
+	local profFont = nil
+	if prof then
+		profFont = prof.font
+	end
 	if profFont == "Default" then
 		profFont = nil
 	end

@@ -192,6 +192,7 @@ function Chatter:FCF_OpenTemporaryWindow(chatType, chatTarget, sourceChatFrame, 
 		frame.isDecorated = true
 	end
 	FCFDock_ForceReanchoring(GENERAL_CHAT_DOCK)
+	return frame
 end
 
 function Chatter:OpenConfig(input)

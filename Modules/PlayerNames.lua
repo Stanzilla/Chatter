@@ -245,6 +245,13 @@ function mod:OnInitialize()
 	end
 end
 
+function mod:Decorate(frame)
+	if not self:IsHooked(frame,"AddMessage") then
+		self:RawHook(frame, "AddMessage", true)
+	end
+end
+
+
 function mod:OnEnable()
 	self:RegisterEvent("RAID_ROSTER_UPDATE")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED")
@@ -263,12 +270,17 @@ function mod:OnEnable()
 		GuildRoster()
 	end
 
-	for i = 1, 2 do
+	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
 		if cf ~= COMBATLOG then
 			self:RawHook(cf, "AddMessage", true)
 		end
 	end
+	for index,frame in ipairs(self.TempChatFrames) do
+		local cf = _G[frame]
+		self:RawHook(cf, "AddMessage", true)
+	end
+
 	self:RAID_ROSTER_UPDATE()
 	self:PARTY_MEMBERS_CHANGED()
 	if self.db.profile.useTabComplete then

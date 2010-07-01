@@ -332,14 +332,15 @@ function mod:OnEnable()
 		local font, s, m = f:GetFont()
 		f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
 	end
+	-- make sure they all show
+	for index,frame in ipairs(self.frames) do
+		frame:Show()
+	end
 	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
-	
 	self:SecureHook("ChatEdit_DeactivateChat")
 	self:SecureHook("ChatEdit_SetLastActiveWindow")
-	
 	self:SetBackdrop()
 	self:UpdateHeight()
-	
 	if self.db.profile.colorByChannel then
 		self:RawHook("ChatEdit_UpdateHeader", "SetBorderByChannel", true)
 	end
@@ -470,6 +471,7 @@ do
 			end
 			if not w or w < 10 then w = 100 end
 			frame:ClearAllPoints()
+			-- Turn off clamping
 			if val ~= "FREE" then
 				frame:SetMovable(false)
 				frame.lDrag:EnableMouse(false)

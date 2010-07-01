@@ -132,6 +132,8 @@ function mod:OnEnable()
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
 		end
+		tab.noMousealpha=0
+		tab:SetAlpha(0)
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local chat = _G[name]
@@ -158,6 +160,8 @@ function mod:OnEnable()
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
 		end
+		tab.noMousealpha=0
+		tab:SetAlpha(0)
 	end
 	self:DecorateTabs()
 end
@@ -172,6 +176,8 @@ function mod:OnDisable()
 		_G["ChatFrame"..i.."TabRight"]:Show()
 		tab:EnableMouseWheel(false)
 		tab:Hide()
+		tab.noMousealpha=0.2
+		tab:SetAlpha(0.2)
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local chat = _G[name]
@@ -182,6 +188,8 @@ function mod:OnDisable()
 		_G[name.."TabRight"]:Show()
 		tab:EnableMouseWheel(false)
 		tab:Hide()
+		tab.noMousealpha=0.2
+		tab:SetAlpha(0.2)
 	end
 	self:UndecorateTabs()
 end

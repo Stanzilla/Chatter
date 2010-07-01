@@ -26,10 +26,13 @@ local defaults = {
 			[L["LookingForGroup"]] = "[LFG]",
 			[L["Battleground"]] = "[BG]",
 			[L["Battleground Leader"]] = "[BL]",
-			
 			-- Not localized here intentionally
 			["Whisper From"] = "[W:From]",
-			["Whisper To"] = "[W:To]"
+			["Whisper To"] = "[W:To]",
+			["BN Whisper From"] = "[BN:From]",
+			["BN Whisper To"] = "[BN:To]",
+			["away BN Whisper To"] = "<Away>[BN:To]",
+			["busy BN Whisper To"] = "<Busy>[BN:To]"
 		},
 		addSpace = true
 	}	
@@ -173,6 +176,10 @@ function mod:AddMessage(frame, text, ...)
 	if not Chatter.loading then -- During scrollback reloading, for some reason channels upvalue gets dorked, and the values are all nil
 		text = gsub(text, L["To (|Hplayer.-|h):"], channels["Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
 		text = gsub(text, L["(|Hplayer.-|h) whispers:"], channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+		text = gsub(text, L["To (|HBNplayer.-|h):"], channels["BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+		text = gsub(text, L["To <Away>(|HBNplayer.-|h):"], channels["away BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+		text = gsub(text, L["To <Busy>(|HBNplayer.-|h):"], channels["busy BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+		text = gsub(text, L["(|HBNplayer.-|h) whispers:"], channels["BN Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

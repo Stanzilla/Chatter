@@ -51,6 +51,13 @@ L["Automatically turns on chat logging."] = true
 
 --./Modules/Bnet.lua
 L["RealID Polish"] = true
+L["Show Toast Icons"] = true
+L["Show toast icons in the chat frames"] = true
+L["Toast X offset"] = true
+L["Move the Toast X offset to ChatFrame1"] = true
+L["Toast Y offset"] = true
+L["Move the Toast Y offset, relative to ChatFrame1"] = true
+L["Test"] = true
 
 -- ./Modules/Buttons.lua
 L["Disable Buttons"] = true
@@ -85,6 +92,10 @@ L["Replace this channel name with..."] = true
 L["To (|Hplayer.-|h):"] = true
 L["(|Hplayer.-|h) whispers:"] = true
 L["Enables you to replace channel names with your own names. You can use '%s' to force an empty string."] = true
+L["To (|HBNplayer.-|h):"] = true
+L["To <Away>(|HBNplayer.-|h):"] = true
+L["To <Busy>(|HBNplayer.-|h):"] = true
+L["(|HBNplayer.-|h) whispers:"] = true
 
 -- ./Modules/ChatFading.lua
 L["Disable Fading"] = true

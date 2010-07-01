@@ -100,6 +100,7 @@ end
 
 function mod:OnEnable()
 	-- self:Hook("FCF_Close", true)
+	self:DecorateTabs()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G["ChatFrame"..i]
 		local tab = _G["ChatFrame"..i.."Tab"]
@@ -132,7 +133,7 @@ function mod:OnEnable()
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
 		end
-		tab.noMousealpha=0
+		tab.noMouseAlpha=0
 		tab:SetAlpha(0)
 	end
 	for index,name in ipairs(self.TempChatFrames) do
@@ -160,10 +161,9 @@ function mod:OnEnable()
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
 		end
-		tab.noMousealpha=0
+		tab.noMouseAlpha=0
 		tab:SetAlpha(0)
 	end
-	self:DecorateTabs()
 end
 
 function mod:OnDisable()

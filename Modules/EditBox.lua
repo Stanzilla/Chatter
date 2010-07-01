@@ -265,11 +265,18 @@ function mod:OnInitialize()
 end
 
 function mod:Decorate(chatframe)
+	-- prevent duplicate creation
+	for index,f in ipairs(self.frames) do
+		if f.owner == chatframe then
+			return nil
+		end
+	end
 	local parent = _G[chatframe:GetName().."EditBox"]
 	local frame = CreateFrame("Frame", nil, parent)
 	frame:SetFrameStrata("DIALOG")
 	frame:SetFrameLevel(parent:GetFrameLevel() - 1)
 	frame:SetAllPoints(parent)
+	frame.owner = chatframe
 	frame:Hide()
 	parent.lDrag = CreateFrame("Frame", nil, parent)
 	parent.lDrag:SetWidth(15)

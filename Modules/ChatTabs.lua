@@ -76,6 +76,28 @@ function mod:Decorate(frame)
 	end
 end
 
+function mod:DecorateTabs()
+	CHAT_FRAME_FADE_OUT_TIME = 0.5
+	CHAT_TAB_HIDE_DELAY = 0
+	CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA = 1
+	CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 0
+	CHAT_FRAME_TAB_ALERTING_MOUSEOVER_ALPHA = 1
+	CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 0
+	CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 1
+	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0
+end
+
+function mod:UndecorateTabs()
+	CHAT_FRAME_FADE_OUT_TIME = 2
+	CHAT_TAB_HIDE_DELAY = 1
+	CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA = 1
+	CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 0.4
+	CHAT_FRAME_TAB_ALERTING_MOUSEOVER_ALPHA = 1
+	CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 1
+	CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 0.6
+	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0.2
+end
+
 function mod:OnEnable()
 	-- self:Hook("FCF_Close", true)
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -137,6 +159,7 @@ function mod:OnEnable()
 			mod:HideTab(tab)
 		end
 	end
+	self:DecorateTabs()
 end
 
 function mod:OnDisable()
@@ -160,6 +183,7 @@ function mod:OnDisable()
 		tab:EnableMouseWheel(false)
 		tab:Hide()
 	end
+	self:UndecorateTabs()
 end
 
 function mod:FCF_Close(f)

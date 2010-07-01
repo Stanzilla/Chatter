@@ -121,7 +121,7 @@ end
 
 function mod:ParseLinks(text)
 	if not text then return nil end
-	if not mod.db.profile.showToast then return text end
+	if mod.db.profile.showToast then return text end
 	text = gsub(text, "(|TInterface(.*)ToastIcons(.*)|t)", "")
 	return text
 end

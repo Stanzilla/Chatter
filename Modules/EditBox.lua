@@ -132,9 +132,8 @@ local options = {
 		values = VALID_ATTACH_POINTS,
 		set = function(info, v)
 			mod.db.profile.attach = v
-			for i = 1, NUM_CHAT_WINDOWS do
-				mod:SetAttach()
-			end
+			-- we loop in set attach anyways
+			mod:SetAttach()
 		end
 	},
 	colorByChannel = {
@@ -301,7 +300,7 @@ function mod:Decorate(chatframe)
 	self.frames[#self.frames]:Show()
 	local font, s, m = f:GetFont()
 	f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
-	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
+	self:SetAttach(f, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 end
 
 function mod:OnEnable()
@@ -319,7 +318,6 @@ function mod:OnEnable()
 		self.frames[i]:Show()
 		local font, s, m = f:GetFont()
 		f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)					
-		self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local f = _G[name.."EditBox"]
@@ -333,8 +331,8 @@ function mod:OnEnable()
 		self.frames[NUM_CHAT_WINDOWS+index]:Show()
 		local font, s, m = f:GetFont()
 		f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
-		self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	end
+	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	
 	self:SecureHook("ChatEdit_DeactivateChat")
 	self:SecureHook("ChatEdit_SetLastActiveWindow")
@@ -493,6 +491,9 @@ do
 				frame:SetPoint("TOPLEFT", frame.chatFrame, "BOTTOMLEFT", 0, -8)
 				frame:SetPoint("TOPRIGHT", frame.chatFrame, "BOTTOMRIGHT", 0, -8)
 			elseif val == "FREE" then
+				if i == 1 then
+					frame:SetFrameLevel(frame:GetFrameLevel()+1)
+				end
 				frame:EnableMouse(true)
 				frame:SetMovable(true)
 				frame:SetResizable(true)

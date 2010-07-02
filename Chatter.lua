@@ -48,13 +48,7 @@ local defaults = {
 			["Disable Fading"] = false,
 			["Chat Autolog"] = false,
 			["Automatic Whisper Windows"] = false,
-		},
-		windowdata = {
-			['*'] = {
-				-- Blizzard defaults
-				width = 430,
-				height = 120,
-			}
+			["Server Positioning"] = false,
 		}
 	}
 }
@@ -233,15 +227,6 @@ do
 	end
 end
 
-function Chatter:UpdateWindowData()
-	for id, name in pairs(CHAT_FRAMES) do
-		local frame = _G[name]
-		if frame and type(frame.GetID) == "function" then
-			FloatingChatFrame_Update(frame:GetID())
-		end
-	end
-end
-
 function Chatter:UpdateConfig()
 	for k, v in self:IterateModules() do
 		if v:IsEnabled() then
@@ -266,39 +251,7 @@ function Chatter:OnEnable()
  		options.args.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 		self.lastConfig = ACD3:AddToBlizOptions("Chatter", L["Profiles"], "Chatter", "Profiles")
 	end
-	self:RawHook('SetChatWindowSavedPosition', true)
-	self:RawHook('GetChatWindowSavedPosition', true)
-	self:RawHook('SetChatWindowSavedDimensions', true)
-	self:RawHook('GetChatWindowSavedDimensions', true)
-	self:UpdateWindowData()
-end
-
-function Chatter:SetChatWindowSavedPosition(id, point, xOffset, yOffset)
-	local data = self.db.profile.windowdata[id]
-	data.point, data.xOffset, data.yOffset = point, xOffset, yOffset
-end
-
-function Chatter:GetChatWindowSavedPosition(id)
-	local data = self.db.profile.windowdata[id]
-	if not data.point then
-		data.point, data.xOffset, data.yOffset = self.hooks.GetChatWindowSavedPosition(id)
-	end
-	return data.point, data.xOffset, data.yOffset
-end
-
-function Chatter:SetChatWindowSavedDimensions(id, width, height)
-	local data = self.db.profile.windowdata[id]
-	data.width, data.height = width, height
-end
-
-function Chatter:GetChatWindowSavedDimensions(id)
-	local data = self.db.profile.windowdata[id]
-	if not data.width then
-		data.width, data.height = self.hooks.GetChatWindowSavedDimensions(id)
-	end
-	return data.width, data.height
 end
 
 function Chatter:OnDisable()
-	self:UpdateWindowData()
 end

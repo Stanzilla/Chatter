@@ -129,6 +129,10 @@ L["Gives you finer control over the chat frame's background and border colors"] 
 L["Chat Link"] = true
 L["Lets you link items, enchants, spells, talents, achievements and quests in custom channels."] = true
 
+-- ./Module/chatPosition.lua
+L["Disable server side storage of chat frame position and size."] = true
+L["Server Positioning"] = true
+
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = true
 L["Scroll lines"] = true

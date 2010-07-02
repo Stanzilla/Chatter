@@ -29,6 +29,7 @@
 	<Script file="Modules\DelayGMOTD.lua" />
 	<Script file="Modules\AutoPopup.lua" />
 	<Script file="Modules\BNet.lua" />
+	<Script file="Modules\ServerStorage.lua" />
 	<Include file="Modules\ChatFrameBorders.xml" />
 	<!-- <Include file="Modules\SplitText.lua" /> //-->
 	<!-- <Script file="Modules\ChannelBindings.lua" /> //-->

@@ -16,15 +16,15 @@ local VALID_ATTACH_POINTS = {
 	LOCK = L["Free-floating, Locked"]
 }
 
-local function updateEditBox(method, args)
+local function updateEditBox(method, ...)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i .. "EditBox"]
-		f[method](f, args)
+		f[method](f, ...)
 	end
 	for index,name in ipairs(mod.TempChatFrames) do
 		local cf = _G[name.."EditBox"]
 		if cf then
-			cf[method](cf,args)
+			cf[method](cf,...)
 		end
 	end
 end

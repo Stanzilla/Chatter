@@ -339,6 +339,7 @@ function mod:OnEnable()
 	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	self:SecureHook("ChatEdit_DeactivateChat")
 	self:SecureHook("ChatEdit_SetLastActiveWindow")
+	self:SecureHook("ChatEdit_ActivateChat")
 	self:SetBackdrop()
 	self:UpdateHeight()
 	if self.db.profile.colorByChannel then
@@ -377,13 +378,14 @@ end
 function mod:ChatEdit_SetLastActiveWindow(frame)
 	if self.db.profile.hideDialog and frame:IsShown() then
 		frame:SetAlpha(0)
-		--frame:EnableMouse(false)
 	end
+	frame:EnableMouse(true)
 end
 
 function mod:ChatEdit_DeactivateChat(frame)
 	if self.db.profile.hideDialog and frame:IsShown() then
 		frame:SetAlpha(0)
+		frame:EnableMouse(false)
 	end
 end
 

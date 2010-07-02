@@ -345,6 +345,14 @@ function mod:OnEnable()
 	if self.db.profile.colorByChannel then
 		self:RawHook("ChatEdit_UpdateHeader", "SetBorderByChannel", true)
 	end
+	self:SecureHook("FCF_Tab_OnClick")
+end
+
+function mod:FCF_Tab_OnClick(frame,button)
+	if self.db.profile.attach == "TOP" then
+		local chatFrame = _G["ChatFrame"..frame:GetID()];
+		ChatEdit_DeactivateChat(chatFrame.editBox)
+	end
 end
 
 function mod:OnDisable()
@@ -493,6 +501,7 @@ do
 			end
 			
 			if val == "TOP" then
+				-- When on top we need to prevent left clicking from activating the edit box.
 				frame:SetPoint("BOTTOMLEFT", frame.chatFrame, "TOPLEFT", 0, 3)
 				frame:SetPoint("BOTTOMRIGHT", frame.chatFrame, "TOPRIGHT", 0, 3)
 			elseif val == "BOTTOM" then			

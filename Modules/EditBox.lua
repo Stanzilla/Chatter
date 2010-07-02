@@ -151,7 +151,9 @@ local options = {
 				if mod:IsHooked("ChatEdit_UpdateHeader") then
 					mod:Unhook("ChatEdit_UpdateHeader")
 					local c = mod.db.profile.borderColor
-					mod.frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
+					for _, frame in ipairs(self.frames) do
+						frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
+					end
 				end
 			end
 		end

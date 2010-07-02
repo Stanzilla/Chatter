@@ -24,6 +24,9 @@ local InsetBackdrop  = {
 	insets = { left = 3, right = 3, top = 5, bottom = 3 }
 }
 
+local buttons = {}
+local tex = select(3, GetSpellInfo(586))
+
 function mod:OnInitialize()
 	local frame = CreateFrame("Frame", "ChatterCopyFrame", UIParent)
 	tinsert(UISpecialFrames, "ChatterCopyFrame")
@@ -55,14 +58,81 @@ function mod:OnInitialize()
 	
 	local close = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
 	close:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
+	-- Add back in copy button
+	for i = 1, NUM_CHAT_WINDOWS do
+		local cf = _G["ChatFrame" .. i]
+		local button = CreateFrame("Button", nil, cf)
+		button:SetPoint("BOTTOMRIGHT", cf, "BOTTOMRIGHT", 0, -5)
+		button:SetHeight(10)
+		button:SetWidth(10)
+		button:SetNormalTexture(tex)
+		button:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
+		button:SetScript("OnClick", function()
+			mod:Copy(cf)
+		end)
+		button:SetScript("OnEnter", function(self)
+			self:SetHeight(28)
+			self:SetWidth(28)
+			GameTooltip:SetOwner(self)
+			GameTooltip:ClearLines()
+			GameTooltip:AddLine(L["Copy text from this frame."])
+			GameTooltip:Show()
+		end)
+		button:SetScript("OnLeave", function(self)
+			button:SetHeight(10)
+			button:SetWidth(10)
+			GameTooltip:Hide()
+		end)
+		button:Hide()
+		tinsert(buttons, button)
+	end
+end
+
+function mod:Decorate(frame)
+	for i,b in ipairs(buttons) do
+		if b:GetParent() == frame then
+			return nil
+		end
+	end
+	local button = CreateFrame("Button", nil, frame)
+	button:SetPoint("BOTTOMRIGHT", cf, "BOTTOMRIGHT", 0, -5)
+	button:SetHeight(10)
+	button:SetWidth(10)
+	button:SetNormalTexture(tex)
+	button:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
+	button:SetScript("OnClick", function()
+		mod:Copy(cf)
+	end)
+	button:SetScript("OnEnter", function(self)
+		self:SetHeight(28)
+		self:SetWidth(28)
+		GameTooltip:SetOwner(self)
+		GameTooltip:ClearLines()
+		GameTooltip:AddLine(L["Copy text from this frame."])
+		GameTooltip:Show()
+	end)
+	button:SetScript("OnLeave", function(self)
+		button:SetHeight(10)
+		button:SetWidth(10)
+		GameTooltip:Hide()
+	end)
+	button:Hide()
+	tinsert(buttons, button)
 end
 
 function mod:OnEnable()
 	Chatter:AddMenuHook(self, "Menu")
+	for i = 1, #buttons do
+		buttons[i]:Show()
+	end
 end
 
 function mod:OnDisable()
 	Chatter:RemoveMenuHook(self)
+	-- disable the button we added
+	for i = 1, #buttons do
+		buttons[i]:Hide()
+	end
 end
 
 local menuButtons = {}

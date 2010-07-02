@@ -159,6 +159,7 @@ L["Gives you more flexibility in how you invite people to your group."] = true
 L["Copy Chat"] = true
 L["Copy Text"] = true
 L["Lets you copy text out of your chat frames."] = true
+L["Copy text from this frame."] = true
 
 -- ./Modules/DelayGMOTD.lua
 -- no localization

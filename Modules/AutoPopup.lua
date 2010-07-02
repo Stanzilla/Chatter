@@ -26,18 +26,20 @@ function mod:ProcessWhisper(event,message,sender,language,channelString,target,f
 		local f = FCF_OpenTemporaryWindow(type,sender)
 		-- Copy over the conversation data
 		local accessID = ChatHistory_GetAccessID(f.chatType, f.chatTarget);
+		local foundSrc = false
 		for i= 1,NUM_CHAT_WINDOWS do
 			local cf = _G["ChatFrame"..i]
-			for i = 1, cf:GetNumMessages(accessID) do
-				local text, accessID, lineID, extraData = cf:GetMessageInfo(i, accessID);
-				local cType, cTarget = ChatHistory_GetChatType(extraData);
-				local info = ChatTypeInfo[cType];
-				Chatter.loading = true
-				f:AddMessage(text, info.r, info.g, info.b, lineID, false, accessID, extraData);
-				Chatter.loading = false
+			if not foundSrc then
+				for i = 1, cf:GetNumMessages(accessID) do
+					local text, accessID, lineID, extraData = cf:GetMessageInfo(i, accessID);
+					local cType, cTarget = ChatHistory_GetChatType(extraData);
+					local info = ChatTypeInfo[cType];
+					Chatter.loading = true
+					f:AddMessage(text, info.r, info.g, info.b, lineID, false, accessID, extraData);
+					Chatter.loading = false
+					foundSrc = true
+				end
 			end
-			--Remove the messages from the old frame.
-			cf:RemoveMessagesByAccessID(accessID);
 		end
 	end
 end

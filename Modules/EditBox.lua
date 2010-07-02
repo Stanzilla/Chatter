@@ -339,7 +339,6 @@ function mod:OnEnable()
 	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	self:SecureHook("ChatEdit_DeactivateChat")
 	self:SecureHook("ChatEdit_SetLastActiveWindow")
-	self:SecureHook("ChatEdit_ActivateChat")
 	self:SetBackdrop()
 	self:UpdateHeight()
 	if self.db.profile.colorByChannel then

@@ -269,6 +269,8 @@ function mod:OnEnable()
 	if IsInGuild() then
 		GuildRoster()
 	end
+	self:RAID_ROSTER_UPDATE()
+	self:PARTY_MEMBERS_CHANGED()
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
@@ -280,9 +282,6 @@ function mod:OnEnable()
 		local cf = _G[frame]
 		self:RawHook(cf, "AddMessage", true)
 	end
-
-	self:RAID_ROSTER_UPDATE()
-	self:PARTY_MEMBERS_CHANGED()
 	if self.db.profile.useTabComplete then
 		AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
 	end
@@ -307,7 +306,6 @@ end
 
 function mod:AddPlayer(name, class, level, save)
 	if name and class and class ~= UNKNOWN then
-		-- print("AddPlayer:",name,":",level,class)
 		if save or self.db.realm.names[name] then	-- if we already have an entry saved from elsewhere, we update it regardless of the requested "save" type - nothing else makes sense
 			self.db.realm.names[name] = self.db.realm.names[name] or {}
 			self.db.realm.names[name].class = class

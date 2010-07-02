@@ -386,6 +386,8 @@ end
 function mod:ChatEdit_SetLastActiveWindow(frame)
 	if self.db.profile.hideDialog and frame:IsShown() then
 		frame:SetAlpha(0)
+	else
+		frame:SetAlpha(1)
 	end
 	frame:EnableMouse(true)
 end

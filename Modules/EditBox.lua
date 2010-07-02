@@ -349,7 +349,7 @@ function mod:OnEnable()
 end
 
 function mod:FCF_Tab_OnClick(frame,button)
-	if self.db.profile.attach == "TOP" GetCVar("chatStyle") ~= "classic" then
+	if self.db.profile.attach == "TOP" and GetCVar("chatStyle") ~= "classic" then
 		local chatFrame = _G["ChatFrame"..frame:GetID()];
 		ChatEdit_DeactivateChat(chatFrame.editBox)
 	end

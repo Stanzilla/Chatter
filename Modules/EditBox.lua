@@ -212,6 +212,7 @@ local defaults = {
 		height = 22,
 		attach = "BOTTOM",
 		colorByChannel = true,
+		useAlt = false,
 		font = (function()
 			for i = 1, NUM_CHAT_WINDOWS do
 				local ff = _G["ChatFrame"..i.."EditBox"]
@@ -468,7 +469,11 @@ do
 			local frame = _G["ChatFrame" .. i .. "EditBox"]
 			local val = val or self.db.profile.attach
 			if not x and val == "FREE" then
-				x, y, w = frame:GetLeft(), frame:GetTop(), max(frame:GetWidth(), (frame:GetRight() or 0) - (frame:GetLeft() or 0))
+				if self.db.profile.editX and self.db.profile.editY then
+					x, y, w = self.db.profile.editX, self.db.profile.editY, self.db.profile.editW
+				else
+					x, y, w = frame:GetLeft(), frame:GetTop(), max(frame:GetWidth(), (frame:GetRight() or 0) - (frame:GetLeft() or 0))
+				end
 			end
 			if not w or w < 10 then w = 100 end
 			frame:ClearAllPoints()

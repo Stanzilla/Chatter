@@ -24,7 +24,7 @@ local function updateEditBox(method, args)
 	for index,name in ipairs(mod.TempChatFrames) do
 		local cf = _G[name.."EditBox"]
 		if cf then
-			cf[method](f,args)
+			cf[method](cf,args)
 		end
 	end
 end

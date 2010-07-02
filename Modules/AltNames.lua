@@ -149,8 +149,8 @@ StaticPopupDialogs['MENUITEM_SET_MAIN'] = {
 		_G[this:GetName().."EditBox"]:SetFocus()
 	end,
 	OnHide = function()
-		if ( ChatFrameEditBox:IsShown() ) then
-			ChatFrameEditBox:SetFocus();
+		if ( _G[this:GetName().."EditBox"]:IsShown() ) then
+			_G[this:GetName().."EditBox"]:SetFocus();
 		end
 		_G[this:GetName().."EditBox"]:SetText("");
 	end,

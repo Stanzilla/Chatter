@@ -29,7 +29,7 @@ function mod:AlwaysDecorate(frame)
 				chatFrame = cf
 			end
 		end
-		if chatFrame ~= nil then
+		if chatFrame then
 			Chatter.loading = true
 			for i = 1, chatFrame:GetNumMessages(accessID) do
 				local text, accessID, lineID, extraData = chatFrame:GetMessageInfo(i, accessID);
@@ -51,6 +51,7 @@ function mod:ProcessWhisper(event,message,sender,language,channelString,target,f
 	end
 	if FCFManager_GetNumDedicatedFrames(type, sender) == 0 then
 		local chatFrame = nil
+		local foundSrc = false
 		local accessID = ChatHistory_GetAccessID(type, sender)
 		for i= 1,NUM_CHAT_WINDOWS do
 			local cf = _G["ChatFrame"..i]

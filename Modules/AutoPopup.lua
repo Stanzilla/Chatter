@@ -61,6 +61,9 @@ function mod:ProcessWhisper(event,message,sender,language,channelString,target,f
 				end
 			end
 		end
+		if not chatFrame then
+			return true
+		end
 		Chatter.loading = true
 		local t = FCF_OpenTemporaryWindow(type, sender, chatFrame, true)
 		-- lets hand copy the shit over

@@ -16,6 +16,33 @@ function mod:OnDisable()
 	self:UnregisterEvent("CHAT_MSG_BNWHISPER_INFORM")
 end
 
+function mod:AlwaysDecorate(frame)
+	if not self:IsEnabled() then
+		local t = frame.chatType
+		local a = frame.chatTarget
+		local accessID = ChatHistory_GetAccessID(t, a)
+		local chatFrame = nil
+		for i= 1,NUM_CHAT_WINDOWS do
+			local cf = _G["ChatFrame"..i]
+			local i = cf:GetNumMessages(accessID)
+			if i > 0 then
+				chatFrame = cf
+			end
+		end
+		if chatFrame ~= nil then
+			Chatter.loading = true
+			for i = 1, chatFrame:GetNumMessages(accessID) do
+				local text, accessID, lineID, extraData = chatFrame:GetMessageInfo(i, accessID);
+				local cType, cTarget = ChatHistory_GetChatType(extraData);
+				local info = ChatTypeInfo[cType];
+				frame:AddMessage(text, info.r, info.g, info.b, lineID, false, accessID, extraData);
+			end
+			Chatter.loading = false
+		end
+	end
+end
+
+
 function mod:ProcessWhisper(event,message,sender,language,channelString,target,flags,arg7,arg8,...)
 	-- Do we have a temp window already for this target
 	local type = "WHISPER"
@@ -24,15 +51,27 @@ function mod:ProcessWhisper(event,message,sender,language,channelString,target,f
 	end
 	if FCFManager_GetNumDedicatedFrames(type, sender) == 0 then
 		local chatFrame = nil
+		local accessID = ChatHistory_GetAccessID(type, sender)
 		for i= 1,NUM_CHAT_WINDOWS do
 			local cf = _G["ChatFrame"..i]
 			if not foundSrc then
 				for i = 1, cf:GetNumMessages(accessID) do
 					chatFrame = cf
+					foundSrc = true
 				end
 			end
 		end
+		Chatter.loading = true
 		local t = FCF_OpenTemporaryWindow(type, sender, chatFrame, true)
+		-- lets hand copy the shit over
+		for i = 1, chatFrame:GetNumMessages(accessID) do
+			local text, accessID, lineID, extraData = chatFrame:GetMessageInfo(i, accessID);
+			local cType, cTarget = ChatHistory_GetChatType(extraData);
+			local info = ChatTypeInfo[cType];
+			t:AddMessage(text, info.r, info.g, info.b, lineID, false, accessID, extraData);
+		end
+		--
+		Chatter.loading = false
 		for i=1,NUM_CHAT_WINDOWS do
 			local cf = _G["ChatFrame"..i.."EditBox"]
 			cf:Show()

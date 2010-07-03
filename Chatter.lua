@@ -61,6 +61,7 @@ local proto = {
 	Popout = function(self,chatframe,srcChatFrame) end,
 	TempChatFrames = {},
 	AddTempChat = function(self,name) table.insert(self.TempChatFrames,name) end,
+	AlwaysDecorate = function(self,chatframe) end,
 }
 
 Chatter:SetDefaultModulePrototype(proto)
@@ -190,6 +191,7 @@ function Chatter:FCF_OpenTemporaryWindow(chatType, chatTarget, sourceChatFrame, 
 			if v:IsEnabled() then
 				v:Popout(frame,sourceChatFrame or DEFAULT_CHAT_FRAME)
 			end
+			v:AlwaysDecorate(frame)
 		end
 		frame.isDecorated = true
 	end

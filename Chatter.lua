@@ -184,7 +184,9 @@ function Chatter:FCF_OpenTemporaryWindow(chatType, chatTarget, sourceChatFrame, 
 	local frame = self.hooks.FCF_OpenTemporaryWindow(chatType, chatTarget, sourceChatFrame, selectWindow)
 	if frame then
 		for k, v in self:IterateModules() do
-			v:AddTempChat(frame:GetName())
+			if not frame.isDecorated then
+				v:AddTempChat(frame:GetName())
+			end
 			if v:IsEnabled() and not frame.isDecorated then
 				v:Decorate(frame)
 			end

@@ -267,19 +267,11 @@ function mod:OnInitialize()
 end
 
 function mod:Decorate(chatframe)
-	-- prevent duplicate creation
-	for index,f in ipairs(self.frames) do
-		if f.owner == chatframe then
-			return nil
-		end
-	end
 	local parent = _G[chatframe:GetName().."EditBox"]
 	local frame = CreateFrame("Frame", nil, parent)
 	frame:SetFrameStrata("DIALOG")
 	frame:SetFrameLevel(parent:GetFrameLevel() - 1)
 	frame:SetAllPoints(parent)
-	frame.owner = chatframe
-	frame:Hide()
 	parent.lDrag = CreateFrame("Frame", nil, parent)
 	parent.lDrag:SetWidth(15)
 	parent.lDrag:SetPoint("TOPLEFT", parent, "TOPLEFT")
@@ -300,10 +292,12 @@ function mod:Decorate(chatframe)
 	_G[name.."EditBoxFocusRight"]:SetTexture(nil)
 	_G[name.."EditBoxFocusMid"]:SetTexture(nil)
 	f:Hide()
-	self.frames[#self.frames]:Show()
+	frame:Show()
 	local font, s, m = f:GetFont()
 	f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
-	self:SetAttach(f, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
+	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
+	self:SetBackdrop()
+	self:UpdateHeight()
 end
 
 function mod:OnEnable()
@@ -321,6 +315,7 @@ function mod:OnEnable()
 		self.frames[i]:Show()
 		local font, s, m = f:GetFont()
 		f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)					
+		self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local f = _G[name.."EditBox"]
@@ -334,12 +329,12 @@ function mod:OnEnable()
 		self.frames[NUM_CHAT_WINDOWS+index]:Show()
 		local font, s, m = f:GetFont()
 		f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
+		self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	end
 	-- make sure they all show
 	for index,frame in ipairs(self.frames) do
 		frame:Show()
 	end
-	self:SetAttach(nil, self.db.profile.editX, self.db.profile.editY, self.db.profile.editW)
 	self:SecureHook("ChatEdit_DeactivateChat")
 	self:SecureHook("ChatEdit_SetLastActiveWindow")
 	self:SetBackdrop()
@@ -354,6 +349,7 @@ function mod:FCF_Tab_OnClick(frame,button)
 	if self.db.profile.attach == "TOP" and GetCVar("chatStyle") ~= "classic" then
 		local chatFrame = _G["ChatFrame"..frame:GetID()];
 		ChatEdit_DeactivateChat(chatFrame.editBox)
+		print("Executing top anchor fix")
 	end
 end
 
@@ -363,7 +359,6 @@ function mod:OnDisable()
 		_G["ChatFrame"..i.."EditBoxLeft"]:Show()
 		_G["ChatFrame"..i.."EditBoxRight"]:Show()
 		_G["ChatFrame"..i.."EditBoxMid"]:Show()
-		
 		f:SetAltArrowKeyMode(true)
 		f:EnableMouse(true)
 		f.frame:Hide()
@@ -559,11 +554,11 @@ do
 				frame.rDrag:SetScript("OnMouseUp", nil)
 			end
 			if val == "TOP" then
-				frame:SetPoint("BOTTOMLEFT", frame.chatFrame, "TOPLEFT", 0, 3)
-				frame:SetPoint("BOTTOMRIGHT", frame.chatFrame, "TOPRIGHT", 0, 3)
+				frame:SetPoint("BOTTOMLEFT", _G[name], "TOPLEFT", 0, 3)
+				frame:SetPoint("BOTTOMRIGHT", _G[name], "TOPRIGHT", 0, 3)
 			elseif val == "BOTTOM" then
-				frame:SetPoint("TOPLEFT", frame.chatFrame, "BOTTOMLEFT", 0, -8)
-				frame:SetPoint("TOPRIGHT", frame.chatFrame, "BOTTOMRIGHT", 0, -8)
+				frame:SetPoint("TOPLEFT", _G[name], "BOTTOMLEFT", 0, -8)
+				frame:SetPoint("TOPRIGHT", _G[name], "BOTTOMRIGHT", 0, -8)
 			elseif val == "FREE" then
 				frame:EnableMouse(true)
 				frame:SetMovable(true)

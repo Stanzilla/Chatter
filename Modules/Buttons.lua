@@ -138,6 +138,9 @@ function mod:Info()
 end
 
 function mod:ApplyBottomButton(frame)
+	if self:IsHooked(frame,"ScrollUp") then
+		return nil
+	end
 	self:Hook(frame, "ScrollUp", true)
 	self:Hook(frame, "ScrollToTop", "ScrollUp", true)
 	self:Hook(frame, "PageUp", "ScrollUp", true)

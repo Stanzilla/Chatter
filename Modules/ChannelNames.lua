@@ -173,14 +173,12 @@ function mod:AddMessage(frame, text, ...)
 	end
 	text = gsub(text, "^|Hchannel:(%S-)|h(%[([%d. ]*)([^%]]+)%])|h ", replaceChannel)
 	text = gsub(text, "^(%[(" .. L["Raid Warning"] .. ")%]) ", replaceChannelRW)
-	if not Chatter.loading then -- During scrollback reloading, for some reason channels upvalue gets dorked, and the values are all nil
-		text = gsub(text, L["To (|Hplayer.-|h):"], self.db.profile.channels["Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
-		text = gsub(text, L["(|Hplayer.-|h) whispers:"], self.db.profile.channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
-		text = gsub(text, L["To (|HBNplayer.-|h):"], self.db.profile.channels["BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
-		text = gsub(text, L["To <Away>(|HBNplayer.-|h):"], self.db.profile.channels["away BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
-		text = gsub(text, L["To <Busy>(|HBNplayer.-|h):"], self.db.profile.channels["busy BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
-		text = gsub(text, L["(|HBNplayer.-|h) whispers:"], self.db.profile.channels["BN Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
-	end
+	text = gsub(text, L["To (|Hplayer.-|h):"], mod.db.profile.channels["Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	text = gsub(text, L["(|Hplayer.-|h) whispers:"], mod.db.profile.channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	text = gsub(text, L["To (|HBNplayer.-|h):"], mod.db.profile.channels["BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	text = gsub(text, L["To <Away>(|HBNplayer.-|h):"], mod.db.profile.channels["away BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	text = gsub(text, L["To <Busy>(|HBNplayer.-|h):"], mod.db.profile.channels["busy BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
+	text = gsub(text, L["(|HBNplayer.-|h) whispers:"], mod.db.profile.channels["BN Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
 

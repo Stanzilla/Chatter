@@ -201,6 +201,20 @@ function mod:LibSharedMedia_Registered()
 	end
 end
 
+function mod:Decorate(cf)
+	local frame = CreateFrame("Frame", nil, cf, "ChatFrameBorderTemplate")
+	frame:EnableMouse(false)
+	cf:SetFrameStrata("LOW")
+	frame:SetFrameStrata("BACKGROUND")
+	frame:SetFrameLevel(1)
+	frame:Hide()
+	frame.id = "FRAME_1"
+	tinsert(frames, frame)
+	self:SetBackdrops()
+	frame:Show()
+	mod:SetAnchors(frame, self.db.profile.frames["FRAME_1"].combatLogFix)
+end
+
 function mod:OnEnable()
 	self:LibSharedMedia_Registered()
 	self:SetBackdrops()

@@ -19,6 +19,10 @@ L["Chatter Settings"] = true
 L["Welcome to Chatter! Type /chatter to configure."] = true
 L["Profiles"] = true
 
+-- ./Modules/AllResize
+L["Allows you to use the edge for resizing, instead of just the lower right corner."] = true
+L["All Edge resizing"] = true
+
 -- ./Modules/AltNames.lua
 L["Alt Linking"] = true
 L["Use PlayerNames coloring"] = true

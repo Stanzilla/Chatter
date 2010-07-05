@@ -25,6 +25,8 @@ local InsetBackdrop  = {
 }
 
 local tex = select(3, GetSpellInfo(586))
+local buttons = {}
+
 function mod:OnInitialize()
 	local frame = CreateFrame("Frame", "ChatterCopyFrame", UIParent)
 	tinsert(UISpecialFrames, "ChatterCopyFrame")
@@ -58,12 +60,69 @@ function mod:OnInitialize()
 	close:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 end
 
+function mod:Decorate(frame)
+	local button = self:MakeCopyButton(frame)
+	local tab = _G["ChatFrame" .. frame:GetID() .. "Tab"]
+	self:HookScript(tab, "OnShow")
+	self:HookScript(tab, "OnHide")
+	tab.copyButton = button
+end
 function mod:OnEnable()
 	Chatter:AddMenuHook(self, "Menu")
+	for i = 1, NUM_CHAT_WINDOWS do
+		local cf = _G["ChatFrame" .. i]
+		self:MakeCopyButton(cf)
+	end
+	for index,f in ipairs(self.TempChatFrames) do
+		local cf = _G[f]
+		self:MakeCopyButton(cf)
+	end
+	for i = 1, #buttons do
+		local p = buttons[i]:GetParent()
+		local tab = _G["ChatFrame" .. p:GetID() .. "Tab"]
+		self:HookScript(tab, "OnShow")
+		self:HookScript(tab, "OnHide")
+		tab.copyButton = buttons[i]
+		tab.copyButton:Show()
+	end
 end
 
 function mod:OnDisable()
 	Chatter:RemoveMenuHook(self)
+	for i = 1, #buttons do
+		buttons[i]:Hide()
+	end
+end
+
+function mod:MakeCopyButton(frame)
+	for index,cb in ipairs(buttons) do
+		if cb:GetParent() == frame then
+			return nil
+		end
+	end
+	local button = CreateFrame("Button", nil, frame)
+	button:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, -5)
+	button:SetHeight(10)
+	button:SetWidth(10)
+	button:SetNormalTexture(tex)
+	button:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
+	button:SetScript("OnClick", function() mod:Copy(frame) end)
+	button:SetScript("OnEnter", function(self)
+		self:SetHeight(28)
+		self:SetWidth(28)
+		GameTooltip:SetOwner(self)
+		GameTooltip:ClearLines()
+		GameTooltip:AddLine(L["Copy text from this frame."])
+		GameTooltip:Show()
+	end)
+	button:SetScript("OnLeave", function(self)
+		button:SetHeight(10)
+		button:SetWidth(10)
+		GameTooltip:Hide()
+	end)
+	button:Hide()
+	tinsert(buttons, button)
+	return button
 end
 
 local menuButtons = {}
@@ -102,6 +161,20 @@ function mod:GetLines(...)
 		end
 	end
 	return ct - 1
+end
+
+function mod:OnShow(cft)
+	local cfn = cft:GetName():match("ChatFrame%d")
+	if cfn and _G[cfn]:IsVisible() then
+		cft.copyButton:Show()
+	end
+end
+
+function mod:OnHide(cft)
+	local cfn = cft:GetName():match("ChatFrame%d")
+	if cfn and _G[cfn]:IsVisible() then
+		cft.copyButton:Hide()
+	end
 end
 
 function mod:Info()

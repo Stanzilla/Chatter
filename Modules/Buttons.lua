@@ -204,23 +204,28 @@ end
 
 function mod:ScrollUp(frame)
 	frame.downButton:Show()
+	frame.downButton:UnlockHighlight()
 end
 
 function mod:ScrollDown(frame)
 	if frame:GetCurrentScroll() == 0 then
 		frame.downButton:Hide()
+		frame.downButton:UnlockHighlight()
 	end
 end
 
 function mod:ScrollDownForce(frame)
 	frame.downButton:Hide()
+	frame.downButton:UnlockHighlight()
 end
 
 function mod:AddMessage(frame, text, ...)
 	if frame:GetCurrentScroll() > 0 then
 		frame.downButton:Show()
+		frame.downButton:LockHighlight()
 	else
 		frame.downButton:Hide()
+		frame.downButton:UnlockHighlight()
 	end
 end
 

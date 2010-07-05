@@ -171,8 +171,14 @@ function mod:AddMessage(frame, text, ...)
 	if not text then 
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
-	text = gsub(text, "|Hchannel:(%S-)|h(%[([%d. ]*)([^%]]+)%])|h ", replaceChannel)
-	text = gsub(text, "^(%[(" .. L["Raid Warning"] .. ")%]) ", replaceChannelRW)
+	-- removed the start of check, since blizz timestamps inject themselves in front of the line
+	if (CHAT_TIMESTAMP_FORMAT) then
+		text = gsub(text, "|Hchannel:(%S-)|h(%[([%d. ]*)([^%]]+)%])|h ", replaceChannel)
+		text = gsub(text, "(%[(" .. L["Raid Warning"] .. ")%]) ", replaceChannelRW)
+	else
+		text = gsub(text, "^|Hchannel:(%S-)|h(%[([%d. ]*)([^%]]+)%])|h ", replaceChannel)
+		text = gsub(text, "^(%[(" .. L["Raid Warning"] .. ")%]) ", replaceChannelRW)
+	end
 	text = gsub(text, L["To (|Hplayer.-|h):"], mod.db.profile.channels["Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
 	text = gsub(text, L["(|Hplayer.-|h) whispers:"], mod.db.profile.channels["Whisper From"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))
 	text = gsub(text, L["To (|HBNplayer.-|h):"], mod.db.profile.channels["BN Whisper To"] .. (mod.db.profile.addSpace and " %1:" or "%1:"))

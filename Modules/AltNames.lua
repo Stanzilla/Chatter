@@ -270,8 +270,6 @@ end
 
 function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then 
-		-- local t = {text:match("(|Hplayer:([^:]+)[:%d+]*|h%[.-%]|h)")}
-		-- local d = table.concat(t, ", ")
 		text = text:gsub("(|Hplayer:([^:]+)[:%d+]*|h.-|h)", pName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
@@ -280,11 +278,6 @@ end
 function mod:Info()
 	return L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name. Can also scan guild notes for character names to display, if no note has been manually set."]
 end
-
-
-
-
-
 
 function mod:EnableGuildNotes(enable)
 	GUILDNOTES={}

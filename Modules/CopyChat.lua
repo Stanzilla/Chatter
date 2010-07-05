@@ -24,6 +24,7 @@ local InsetBackdrop  = {
 	insets = { left = 3, right = 3, top = 5, bottom = 3 }
 }
 
+local tex = select(3, GetSpellInfo(586))
 function mod:OnInitialize()
 	local frame = CreateFrame("Frame", "ChatterCopyFrame", UIParent)
 	tinsert(UISpecialFrames, "ChatterCopyFrame")

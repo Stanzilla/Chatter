@@ -26,8 +26,15 @@ local InsetBackdrop  = {
 
 local tex = select(3, GetSpellInfo(586))
 local buttons = {}
+local defaults = {
+	profile = {
+		copyIcon = false,
+	}
+}
 
 function mod:OnInitialize()
+	self.db = Chatter.db:RegisterNamespace("CopyChat", defaults)
+
 	local frame = CreateFrame("Frame", "ChatterCopyFrame", UIParent)
 	tinsert(UISpecialFrames, "ChatterCopyFrame")
 	frame:SetBackdrop(PaneBackdrop)
@@ -60,12 +67,35 @@ function mod:OnInitialize()
 	close:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 end
 
+local options
+function mod:GetOptions()
+	options = options or {
+		guildNotes = {
+			order=100,
+			type = "toggle",
+			name = L["Show copy icon"],
+			desc = L["Toggle the copy icon on the chat frame."],
+			get = function()
+				return mod.db.profile.copyIcon
+			end,
+			set = function(info, v)
+				mod.db.profile.copyIcon = v
+				mod:HideCopyButton(v)
+			end,
+		},
+	}
+	return options
+end
+
 function mod:Decorate(frame)
 	local button = self:MakeCopyButton(frame)
 	local tab = _G["ChatFrame" .. frame:GetID() .. "Tab"]
 	self:HookScript(tab, "OnShow")
 	self:HookScript(tab, "OnHide")
 	tab.copyButton = button
+	if self.db.profile.copyIcon then
+		tab.copyButton:Show()
+	end
 end
 function mod:OnEnable()
 	Chatter:AddMenuHook(self, "Menu")
@@ -83,7 +113,11 @@ function mod:OnEnable()
 		self:HookScript(tab, "OnShow")
 		self:HookScript(tab, "OnHide")
 		tab.copyButton = buttons[i]
-		tab.copyButton:Show()
+		if self.db.profile.copyIcon then
+			tab.copyButton:Show()
+		else
+			tab.copyButton:Hide()
+		end
 	end
 end
 
@@ -91,6 +125,18 @@ function mod:OnDisable()
 	Chatter:RemoveMenuHook(self)
 	for i = 1, #buttons do
 		buttons[i]:Hide()
+	end
+end
+
+function mod:HideCopyButton(val)
+	if not val then
+		for i = 1, #buttons do
+			buttons[i]:Hide()
+		end
+	else
+		for i = 1, #buttons do
+			buttons[i]:Show()
+		end
 	end
 end
 
@@ -165,7 +211,7 @@ end
 
 function mod:OnShow(cft)
 	local cfn = cft:GetName():match("ChatFrame%d")
-	if cfn and _G[cfn]:IsVisible() then
+	if cfn and _G[cfn]:IsVisible() and self.db.profile.copyIcon then
 		cft.copyButton:Show()
 	end
 end

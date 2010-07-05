@@ -168,7 +168,8 @@ L["Copy Chat"] = true
 L["Copy Text"] = true
 L["Lets you copy text out of your chat frames."] = true
 L["Copy text from this frame."] = true
-
+L["Show copy icon"] = true
+L["Toggle the copy icon on the chat frame."] = true
 -- ./Modules/DelayGMOTD.lua
 -- no localization
 

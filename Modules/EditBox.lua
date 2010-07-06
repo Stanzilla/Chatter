@@ -370,7 +370,7 @@ function mod:OnEnable()
 	end
 	self:SecureHook("FCF_Tab_OnClick")
 	local checkSkins = false
-	self:RegisterEvent("PLAYER_ENTERING_WORLD","ReSkin")
+	self:RegisterEvent("PLAYER_LOGIN","ReSkin")
 end
 
 function mod:FCF_Tab_OnClick(frame,button)

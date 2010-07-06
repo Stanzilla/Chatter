@@ -1,4 +1,4 @@
-local mod = Chatter:NewModule("Edit Box Polish", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatter:NewModule("Edit Box Polish", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Edit Box Polish"]
 
@@ -227,42 +227,31 @@ local defaults = {
 	}
 }
 
-function mod:ReSkin()
-	for _, frame in ipairs(self.frames) do
-		local f = frame:GetParent()
-		if f then
-			local font, s, m = f:GetFont()
-			f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
-		end
-	end
-	self:SetBackdrop()
-	self.checkSkins = true
-end
-
-function mod:LibSharedMedia_Registered()
+function mod:LibSharedMedia_Registered(mediaType, key)
 	for k, v in pairs(Media:List("background")) do
 		backgrounds[v] = v
-		if self.checkSkins then
-			self:SetBackdrop()
-		end
 	end
 	for k, v in pairs(Media:List("border")) do
 		borders[v] = v
-		if self.checkSkins then
-			self:SetBackdrop()
-		end
 	end
 	for k, v in pairs(Media:List("font")) do
 		fonts[v] = v
-		if self.checkSkins then
-			for _, frame in ipairs(self.frames) do
-				local f = frame:GetParent()
-				if f then
-					local font, s, m = f:GetFont()
-					f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
-				end
+	end
+	-- If we were missing this media, reset it now
+	if mediaType == "font" and key = self.db.profile.font then
+		for _, frame in ipairs(self.frames) do
+			local f = frame:GetParent()
+			if f then
+				local font, s, m = f:GetFont()
+				f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
 			end
 		end
+	end
+	if mediaType == "border" and key = self.db.profile.border then
+		self:SetBackdrop()
+	end
+	if mediaType == "background" and key = self.db.profile.background then
+		self:SetBackdrop()
 	end
 end
 
@@ -369,8 +358,6 @@ function mod:OnEnable()
 		self:RawHook("ChatEdit_UpdateHeader", "SetBorderByChannel", true)
 	end
 	self:SecureHook("FCF_Tab_OnClick")
-	local checkSkins = false
-	self:RegisterEvent("PLAYER_LOGIN","ReSkin")
 end
 
 function mod:FCF_Tab_OnClick(frame,button)
@@ -403,7 +390,6 @@ function mod:OnDisable()
 		self:SetAttach("BOTTOM")
 		f:SetFont(Media:Fetch("font", defaults.profile.font), 14)
 	end
-	checkSkins = false
 end
 
 -- changed the Hide to SetAlpha(0), the new ChatSystem OnHide handlers go though some looping

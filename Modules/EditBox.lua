@@ -231,12 +231,21 @@ local defaults = {
 function mod:LibSharedMedia_Registered()
 	for k, v in pairs(Media:List("background")) do
 		backgrounds[v] = v
+		self:SetBackdrop()
 	end
 	for k, v in pairs(Media:List("border")) do
 		borders[v] = v
+		self:SetBackdrop()
 	end
 	for k, v in pairs(Media:List("font")) do
 		fonts[v] = v
+		for _, frame in ipairs(self.frames) do
+			local f = frame:GetParent()
+			if f then
+				local font, s, m = f:GetFont()
+				f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
+			end
+		end
 	end
 end
 

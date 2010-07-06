@@ -227,22 +227,34 @@ local defaults = {
 	}
 }
 
+function mod:ReSkin()
+	for _, frame in ipairs(self.frames) do
+		local f = frame:GetParent()
+		if f then
+			local font, s, m = f:GetFont()
+			f:SetFont(Media:Fetch("font", self.db.profile.font), s, m)
+		end
+	end
+	self:SetBackdrop()
+	self.checkSkins = true
+end
+
 function mod:LibSharedMedia_Registered()
 	for k, v in pairs(Media:List("background")) do
 		backgrounds[v] = v
-		if self.db.profile.background == v then
+		if self.checkSkins then
 			self:SetBackdrop()
 		end
 	end
 	for k, v in pairs(Media:List("border")) do
 		borders[v] = v
-		if self.db.profile.border == v then
+		if self.checkSkins then
 			self:SetBackdrop()
 		end
 	end
 	for k, v in pairs(Media:List("font")) do
 		fonts[v] = v
-		if v == self.db.profile.font then
+		if self.checkSkins then
 			for _, frame in ipairs(self.frames) do
 				local f = frame:GetParent()
 				if f then
@@ -357,6 +369,8 @@ function mod:OnEnable()
 		self:RawHook("ChatEdit_UpdateHeader", "SetBorderByChannel", true)
 	end
 	self:SecureHook("FCF_Tab_OnClick")
+	local checkSkins = false
+	self:RegisterEvent("PLAYER_LOGIN","ReSkin")
 end
 
 function mod:FCF_Tab_OnClick(frame,button)

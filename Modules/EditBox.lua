@@ -238,7 +238,7 @@ function mod:LibSharedMedia_Registered(mediaType, key)
 		fonts[v] = v
 	end
 	-- If we were missing this media, reset it now
-	if mediaType == "font" and key = self.db.profile.font then
+	if mediaType == "font" and key == self.db.profile.font then
 		for _, frame in ipairs(self.frames) do
 			local f = frame:GetParent()
 			if f then
@@ -247,10 +247,10 @@ function mod:LibSharedMedia_Registered(mediaType, key)
 			end
 		end
 	end
-	if mediaType == "border" and key = self.db.profile.border then
+	if mediaType == "border" and key == self.db.profile.border then
 		self:SetBackdrop()
 	end
-	if mediaType == "background" and key = self.db.profile.background then
+	if mediaType == "background" and key == self.db.profile.background then
 		self:SetBackdrop()
 	end
 end

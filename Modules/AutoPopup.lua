@@ -1,4 +1,4 @@
-local mod = Chatter:NewModule("Auto Popup", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatter:NewModule("Automatic Whisper Windows", "AceHook-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Automatic Whisper Windows"]
 

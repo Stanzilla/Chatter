@@ -137,7 +137,6 @@ function mod:OnEnable()
 	self:LibSharedMedia_Registered()
 	words = self.db.profile.words
 	self:RegisterEvent("CHAT_MSG_SAY", "ParseChat")
-	
 	self:RegisterEvent("CHAT_MSG_GUILD", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_BATTLEGROUND", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_BATTLEGROUND_LEADER", "ParseChat")
@@ -151,7 +150,6 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_BN_WHISPER", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_BN_CONVERSATION", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_CHANNEL", "ParseChat")
-	self:RegisterEvent("CHAT_MSG_WHISPER", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_YELL", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	self:AddCustomChannels(GetChannelList())
@@ -165,7 +163,9 @@ function mod:OnEnable()
 		"SAY", L["Say"],
 		"BATTLEGROUND", L["Battleground"],
 		"BATTLEGROUND_LEADER", L["Battleground"],
-		"WHISPER", L["Whisper"]
+		"WHISPER", L["Whisper"],
+		"BN_WHISPER", L["RealID Whisper"],
+		"BN_CONVERSATION", L["RealID Conversation"]
 	)
 end
 

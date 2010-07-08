@@ -74,11 +74,11 @@ function mod:ProcessWhisper(event,message,sender,language,channelString,target,f
 			local info = ChatTypeInfo[cType];
 			t:AddMessage(text, info.r, info.g, info.b, lineID, false, accessID, extraData);
 		end
-		--
 		Chatter.loading = false
-		for i=1,NUM_CHAT_WINDOWS do
-			local cf = _G["ChatFrame"..i.."EditBox"]
-			cf:Show()
-		end
+		-- was a fix for an issue in the editbox, no longer needed
+		--for i=1,NUM_CHAT_WINDOWS do
+		--	local cf = _G["ChatFrame"..i.."EditBox"]
+		--	cf:Show()
+		--end
 	end
 end

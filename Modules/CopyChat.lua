@@ -89,7 +89,7 @@ end
 
 function mod:Decorate(frame)
 	local button = self:MakeCopyButton(frame)
-	local tab = _G["ChatFrame" .. frame:GetID() .. "Tab"]
+	local tab = _G["ChatFrame" .. frame:GetID()]
 	self:HookScript(tab, "OnShow")
 	self:HookScript(tab, "OnHide")
 	tab.copyButton = button
@@ -109,7 +109,7 @@ function mod:OnEnable()
 	end
 	for i = 1, #buttons do
 		local p = buttons[i]:GetParent()
-		local tab = _G["ChatFrame" .. p:GetID() .. "Tab"]
+		local tab = _G["ChatFrame" .. p:GetID()]
 		self:HookScript(tab, "OnShow")
 		self:HookScript(tab, "OnHide")
 		tab.copyButton = buttons[i]

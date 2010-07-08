@@ -170,6 +170,7 @@ L["Lets you copy text out of your chat frames."] = true
 L["Copy text from this frame."] = true
 L["Show copy icon"] = true
 L["Toggle the copy icon on the chat frame."] = true
+
 -- ./Modules/DelayGMOTD.lua
 -- no localization
 
@@ -217,6 +218,8 @@ L["Play a sound when a message is received in this channel"] = true
 L["[%s] %s: %s"] = true
 L["%s said '%s' in %s"] = true
 L["Alerts you when someone says a keyword or speaks in a specified channel."] = true
+L["RealID Whisper"] = true
+L["RealID Conversation"] = true
 
 -- ./Modules/Justify.lua
 L["Text Justification"] = true

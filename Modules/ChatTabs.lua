@@ -5,12 +5,14 @@ mod.modName = L["Chat Tabs"]
 
 local defaults = {
 	profile = {
-		height = 29
+		height = 29,
+		tabFlash = true
 	}
 }
 
 local options = {
 	height = {
+		order = 101,
 		type = "range",
 		name = L["Button Height"],
 		desc = L["Button's height, and text offset from the frame"],
@@ -27,11 +29,22 @@ local options = {
 		disabled = function() return not mod:IsEnabled() end
 	},
 	hidetabs = {
+		order = 102,
 		type = "toggle",
 		name = L["Hide Tabs"],
 		desc = L["Hides chat frame tabs"],
 		get = function() return mod.db.profile.chattabs end,
 		set = function(info, v) mod.db.profile.chattabs = not mod.db.profile.chattabs; mod:ToggleTabShow() end,
+		disabled = function() return not mod:IsEnabled() end
+	},
+	hideflash = {
+		order = 103,
+		type = "toggle",
+		name = L["Enable Tab Flashing"],
+		desc = L["Enables the Tab to flash when you miss a message"],
+		get = function() return mod.db.profile.tabFlash end,
+		set = function(info, v) mod.db.profile.tabFlash = not mod.db.profile.tabFlash; mod:DecorateTabs() end,
+		disabled = function() return not mod:IsEnabled() end
 	}
 }
 
@@ -82,7 +95,11 @@ function mod:DecorateTabs()
 	CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA = 1
 	CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 0
 	CHAT_FRAME_TAB_ALERTING_MOUSEOVER_ALPHA = 1
-	--CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 0
+	if self.db.profile.tabFlash then
+		CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 1
+	else
+		CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 0
+	end
 	CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 1
 	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0
 end
@@ -93,7 +110,7 @@ function mod:UndecorateTabs()
 	CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA = 1
 	CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 0.4
 	CHAT_FRAME_TAB_ALERTING_MOUSEOVER_ALPHA = 1
-	--CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 1
+	CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 1
 	CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 0.6
 	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0.2
 end

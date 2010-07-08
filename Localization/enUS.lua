@@ -149,6 +149,8 @@ L["Button Height"] = true
 L["Button's height, and text offset from the frame"] = true
 L["Hide Tabs"] = true
 L["Hides chat frame tabs"] = true
+L["Enable Tab Flashing"] = true
+L["Enables the Tab to flash when you miss a message"] = true
 
 -- ./Modules/ClickInvite.lua
 L["Invite Links"] = true

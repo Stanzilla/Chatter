@@ -110,8 +110,6 @@ function mod:OnEnable()
 		end
 	end
 	self:Hook("BNToastFrame_Close",true)
-	-- Force re-archor at load to setup the vars
-	BNToastFrame_UpdateAnchor(true)
 	self:UpdateToastOffsets()
 end
 

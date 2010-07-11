@@ -44,7 +44,9 @@ function mod:OnEnable()
 		"RAID_WARNING", L["Raid Warning"],
 		"BATTLEGROUND", L["Battleground"],
 		"BATTLEGROUND_LEADER", L["Battleground Leader"],
-		"WHISPER", L["Whisper"]
+		"WHISPER", L["Whisper"],
+		"BN_WHISPER", L["RealID Whisper"],
+		"BN_CONVERSATION", L["RealID Conversation"]
 	)
 end
 

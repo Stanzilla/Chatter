@@ -75,7 +75,9 @@ function mod:UpdateToastOffsets()
 	if self:IsEnabled() then
 		local cf = DEFAULT_CHAT_FRAME
 		local bside = cf.buttonSide
-		local offscreen = cf.buttonFrame:GetTop() + BNToastFrame:GetHeight() + BN_TOAST_TOP_OFFSET + BN_TOAST_TOP_BUFFER > GetScreenHeight();
+		local cfTop = cf.buttonFrame:GetTop() or 0
+		local bnH = BNToastFrame:GetHeight() or 0
+		local offscreen = cfTop + bnH + BN_TOAST_TOP_OFFSET + BN_TOAST_TOP_BUFFER > GetScreenHeight();
 		BN_TOAST_LEFT_OFFSET = 1 + self.db.profile.toastx
 		if bside == "right" then
 			BN_TOAST_RIGHT_OFFSET = -1 + self.db.profile.toastx

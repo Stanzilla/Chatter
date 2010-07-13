@@ -224,7 +224,6 @@ do
 		end
 	end
 	function Chatter:SetUpdateConfig()
-		self:UpdateWindowData()
 		t = 0
 		timer = timer or CreateFrame("Frame", nil, UIParent)
 		timer:SetScript("OnUpdate", update)

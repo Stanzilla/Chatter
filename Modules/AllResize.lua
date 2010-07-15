@@ -27,6 +27,7 @@ local function ChatFrame_StopResizing(self)
 		FCF_DockUpdate()
 	end
 	chatFrame.resizing = nil
+	FCF_SavePositionAndDimensions(chatFrame);
 end
 
 function mod:SetChatWindowLocked(index, locked, ...)

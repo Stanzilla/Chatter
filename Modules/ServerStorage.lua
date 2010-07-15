@@ -65,7 +65,7 @@ function mod:GetChatWindowSavedDimensions(id)
 end
 
 function mod:UpdateWindowData()
-	for i=1,NUM_CHAT_FRAMES do
+	for i = 1,NUM_CHAT_WINDOWS do
 		local frame = _G["ChatFrame"..i]
 		if frame and type(frame.GetID) == "function" then
 			FloatingChatFrame_Update(frame:GetID())

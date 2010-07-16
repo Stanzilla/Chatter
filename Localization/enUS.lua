@@ -100,7 +100,7 @@ L["To (|HBNplayer.-|h):"] = true
 L["To <Away>(|HBNplayer.-|h):"] = true
 L["To <Busy>(|HBNplayer.-|h):"] = true
 L["(|HBNplayer.-|h) whispers:"] = true
-
+L["Dungeon Guide"] = true
 -- ./Modules/ChatFading.lua
 L["Disable Fading"] = true
 L["Makes old text disappear rather than fade out"] = true

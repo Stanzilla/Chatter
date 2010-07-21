@@ -3,8 +3,8 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Chat Font"]
 
 local Media = LibStub("LibSharedMedia-3.0")
-local fonts = {}
-local fonts_and_default = {Default = "Default"}
+--local fonts = {}
+--local fonts_and_default = {Default = "Default"}
 local pairs = _G.pairs
 local player_entered_world = false
 
@@ -22,7 +22,7 @@ local options = {
 		name = L["Font"],
 		desc = L["Font"],
 		dialogControl = 'LSM30_Font',
-		values = fonts,
+		values = Media:HashTable("font"),
 		get = function() return mod.db.profile.font end,
 		set = function(info, v) 
 			mod.db.profile.font = v
@@ -87,7 +87,7 @@ function mod:OnInitialize()
 					name = L["Font"],
 					desc = L["Font"],
 					dialogControl = 'LSM30_Font',
-					values = fonts_and_default,
+					values = Media:HashTable("font"),
 					get = function() return mod.db.profile.frames["FRAME_" .. i].font or mod.db.profile.font end,
 					set = function(info, v) 
 						mod.db.profile.frames["FRAME_" .. i].font = v
@@ -112,10 +112,10 @@ function mod:OnInitialize()
 end
 
 function mod:LibSharedMedia_Registered()
-	for k, v in pairs(Media:List("font")) do
-		fonts[v] = v
-		fonts_and_default[v] = v
-	end
+	--for k, v in pairs(Media:List("font")) do
+	--	fonts[v] = v
+	--	fonts_and_default[v] = v
+	--end
 	self:SetFont()
 end
 

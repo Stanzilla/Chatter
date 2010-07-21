@@ -23,7 +23,7 @@ local defaults = {
 			[player:lower()] = player
 		},
 		sound = true,
-		soundFile = nil,
+		soundFile = "None",
 		useSink = true,
 		rerouteMessage = true,
 		customChannels = {},
@@ -84,7 +84,8 @@ local options = {
 					mod.db.profile.soundFile = v
 					PlaySoundFile(Media:Fetch("sound", v))
 				end,
-				values = sounds,
+				dialogControl = "LSM30_Sound",
+				values = Media:HashTable("sound"),
 				disabled = function() return not mod.db.profile.sound end
 			},
 			addWord = {

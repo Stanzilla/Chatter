@@ -34,7 +34,8 @@ local options = {
 		type = "select",
 		name = L["Background texture"],
 		desc = L["Background texture"],
-		values = backgrounds,
+		values = Media:HashTable("background"),
+		dialogControl = "LSM30_Background",
 		get = function() return mod.db.profile.background end,
 		set = function(info, v)
 			mod.db.profile.background = v
@@ -45,7 +46,8 @@ local options = {
 		type = "select",
 		name = L["Border texture"],
 		desc = L["Border texture"],
-		values = borders,
+		dialogControl = "LSM30_Border",
+		values = Media:HashTable("border"),
 		get = function() return mod.db.profile.border end,
 		set = function(info, v)
 			mod.db.profile.border = v
@@ -173,8 +175,9 @@ local options = {
 	font = {
 		type = "select",
 		name = L["Font"],
+		dialogControl = "LSM30_Font",
 		desc = L["Select the font to use for the edit box"],
-		values = fonts,
+		values = Media:HashTable("font"),
 		get = function() return mod.db.profile.font end,
 		set = function(i, v)
 			mod.db.profile.font = v
@@ -228,15 +231,15 @@ local defaults = {
 }
 
 function mod:LibSharedMedia_Registered(mediaType, key)
-	for k, v in pairs(Media:List("background")) do
-		backgrounds[v] = v
-	end
-	for k, v in pairs(Media:List("border")) do
-		borders[v] = v
-	end
-	for k, v in pairs(Media:List("font")) do
-		fonts[v] = v
-	end
+	--for k, v in pairs(Media:List("background")) do
+	--	backgrounds[v] = v
+	--end
+	--for k, v in pairs(Media:List("border")) do
+	--	borders[v] = v
+	--end
+	--for k, v in pairs(Media:List("font")) do
+	--	fonts[v] = v
+	--end
 	-- If we were missing this media, reset it now
 	if mediaType == "font" and key == self.db.profile.font then
 		for _, frame in ipairs(self.frames) do

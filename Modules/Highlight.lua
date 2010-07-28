@@ -173,7 +173,7 @@ function mod:AddCustomChannels(...)
 			options.config.args[name:gsub(" ", "_")] = {
 				type = "select",
 				name = name,
-				values = sounds,
+				values = Media:HashTable("sound"),
 				desc = L["Play a sound when a message is received in this channel"],
 				order = type(id) == "number" and 103 or 102,
 				get = function() return self.db.profile.customChannels[id] or "None" end,

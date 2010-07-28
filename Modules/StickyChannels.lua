@@ -11,6 +11,7 @@ local channels = {
 	OFFICER = L["Officer"],
 	RAID_WARNING = L["Raid Warning"],
 	WHISPER = L["Whisper"],
+	BN_WHISPER = L["RealID Whisper"],
 	CHANNEL = L["Custom channels"]
 }
 local options = {}
@@ -46,6 +47,7 @@ function mod:OnDisable()
 	ChatTypeInfo.RAID_WARNING.sticky = 0
 	ChatTypeInfo.WHISPER.sticky = 0
 	ChatTypeInfo.CHANNEL.sticky = 0
+	ChatTypeInfo.BN_WHISPER.sticky = 0
 end
 
 function mod:GetOptions()

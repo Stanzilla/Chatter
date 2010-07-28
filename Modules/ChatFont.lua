@@ -3,8 +3,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Chat Font"]
 
 local Media = LibStub("LibSharedMedia-3.0")
---local fonts = {}
---local fonts_and_default = {Default = "Default"}
 local pairs = _G.pairs
 local player_entered_world = false
 
@@ -112,10 +110,6 @@ function mod:OnInitialize()
 end
 
 function mod:LibSharedMedia_Registered()
-	--for k, v in pairs(Media:List("font")) do
-	--	fonts[v] = v
-	--	fonts_and_default[v] = v
-	--end
 	self:SetFont()
 end
 

@@ -3,7 +3,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Highlights"]
 
 local Media = LibStub("LibSharedMedia-3.0")
-local sounds = {}
 local PlaySoundFile = _G.PlaySoundFile
 local UnitName = _G.UnitName
 local pairs = _G.pairs
@@ -121,21 +120,13 @@ local options = {
 
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("Highlight", defaults)
-	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	self:AddCustomChannels(GetChannelList())
 	self:SetSinkStorage(self.db.profile.sinkOptions)
 	options.output = self:GetSinkAce3OptionsDataTable()
 end
 
-function mod:LibSharedMedia_Registered()
-	for k, v in pairs(Media:List("sound")) do
-		sounds[v] = v
-	end
-end
-
 local words
 function mod:OnEnable()
-	self:LibSharedMedia_Registered()
 	words = self.db.profile.words
 	self:RegisterEvent("CHAT_MSG_SAY", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_GUILD", "ParseChat")

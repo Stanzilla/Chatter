@@ -3,7 +3,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Borders/Background"]
 
 local Media = LibStub("LibSharedMedia-3.0")
---local backgrounds, borders = {}, {}
 local CreateFrame = _G.CreateFrame
 local pairs = _G.pairs
 local tinsert = _G.tinsert
@@ -195,12 +194,7 @@ function mod:OnInitialize()
 end
 
 function mod:LibSharedMedia_Registered()
---	for k, v in pairs(Media:List("background")) do
---		backgrounds[v] = v
---	end
---	for k, v in pairs(Media:List("border")) do
---		borders[v] = v
---	end
+	mod:SetBackdrops()
 end
 
 function mod:Decorate(cf)
@@ -224,6 +218,7 @@ function mod:OnEnable()
 		frames[i]:Show()
 		mod:SetAnchors(frames[i], self.db.profile.frames["FRAME_" .. i].combatLogFix)
 	end
+	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 end
 
 function mod:OnDisable()

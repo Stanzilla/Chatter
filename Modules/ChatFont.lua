@@ -160,6 +160,8 @@ function mod:SetFrameFont(cf, font, size, outline)
 	local profFont = nil
 	if prof then
 		profFont = prof.font
+	else
+		prof = {}
 	end
 	if profFont == "Default" then
 		profFont = nil

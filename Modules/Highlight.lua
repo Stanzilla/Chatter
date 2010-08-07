@@ -10,7 +10,7 @@ local select = _G.select
 local type = _G.type
 local gsub = _G.string.gsub
 local ChatFrame_GetMessageEventFilters = _G.ChatFrame_GetMessageEventFilters
-
+local defSound = {["None"] = [[Interface\Quiet.mp3]]}
 Media:Register("sound", "Loot Chime", [[Sound\interface\igLootCreature.wav]])
 Media:Register("sound", "Whisper Ping", [[Sound\interface\iTellMessage.wav]])
 Media:Register("sound", "Magic Click", [[Sound\interface\MagicClick.wav]])
@@ -84,7 +84,7 @@ local options = {
 					PlaySoundFile(Media:Fetch("sound", v))
 				end,
 				dialogControl = "LSM30_Sound",
-				values = Media:HashTable("sound"),
+				values = function () if Media:HashTable("sound") then return Media:HashTable("sound") else return defSound end end,
 				disabled = function() return not mod.db.profile.sound end
 			},
 			addWord = {
@@ -173,7 +173,7 @@ function mod:AddCustomChannels(...)
 			options.config.args[name:gsub(" ", "_")] = {
 				type = "select",
 				name = name,
-				values = Media:HashTable("sound"),
+				values = Media:HashTable("sound") or {},
 				desc = L["Play a sound when a message is received in this channel"],
 				order = type(id) == "number" and 103 or 102,
 				get = function() return self.db.profile.customChannels[id] or "None" end,

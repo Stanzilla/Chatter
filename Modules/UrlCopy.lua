@@ -144,21 +144,21 @@ StaticPopupDialogs["ChatterUrlCopyDialog"] = {
 	button2 = CLOSE,
 	hasEditBox = 1,
 	hasWideEditBox = 1,
-	OnShow = function()
-		local editBox = _G[this:GetName().."WideEditBox"]
+	OnShow = function(frame)
+		local editBox = _G[frame:GetName().."WideEditBox"]
 		if editBox then
 			editBox:SetText(currentLink)
 			editBox:SetFocus()
 			editBox:HighlightText(0)
 		end
-		local button = _G[this:GetName().."Button2"]
+		local button = _G[frame:GetName().."Button2"]
 		if button then
 			button:ClearAllPoints()
 			button:SetWidth(200)
 			button:SetPoint("CENTER", editBox, "CENTER", 0, -30)
 		end
 	end,
-	EditBoxOnEscapePressed = function() this:GetParent():Hide() end,
+	EditBoxOnEscapePressed = function(frame) frame:GetParent():Hide() end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = 1,

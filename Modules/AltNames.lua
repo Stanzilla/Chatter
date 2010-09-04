@@ -132,10 +132,10 @@ end
 
 
 local accept = function(self, char)
-	local editBox = _G[this:GetParent():GetName().."EditBox"]
+	local editBox = _G[self:GetParent():GetName().."EditBox"]
 	local main = editBox:GetText()
 	mod:AddAlt(char, main)
-	this:GetParent():Hide()
+	self:GetParent():Hide()
 end
 
 StaticPopupDialogs['MENUITEM_SET_MAIN'] = {
@@ -145,18 +145,18 @@ StaticPopupDialogs['MENUITEM_SET_MAIN'] = {
 	hasEditBox	= 1,
 	maxLetters	= 128,
 	exclusive	= 0,
-	OnShow = function()
-		_G[this:GetName().."EditBox"]:SetFocus()
+	OnShow = function(frame)
+		_G[frame:GetName().."EditBox"]:SetFocus()
 	end,
-	OnHide = function()
-		if ( _G[this:GetName().."EditBox"]:IsShown() ) then
-			_G[this:GetName().."EditBox"]:SetFocus();
+	OnHide = function(frame)
+		if ( _G[frame:GetName().."EditBox"]:IsShown() ) then
+			_G[frame:GetName().."EditBox"]:SetFocus();
 		end
-		_G[this:GetName().."EditBox"]:SetText("");
+		_G[frame:GetName().."EditBox"]:SetText("");
 	end,
 	OnAccept = accept,
 	EditBoxOnEnterPressed = accept,
-	EditBoxOnEscapePressed = function() this:GetParent():Hide() end,
+	EditBoxOnEscapePressed = function(frame) frame:GetParent():Hide() end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = 1

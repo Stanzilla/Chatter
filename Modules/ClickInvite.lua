@@ -95,7 +95,7 @@ function mod:OnEnable()
 		end
 	end
 	self:RawHook(nil, "SetItemRef", true)
-	self:RawHook("ChatFrame_MessageEventHandler", true)1
+	self:RawHook("ChatFrame_MessageEventHandler", true)
 end
 
 local style = "|cffffffff|Hinvite:%s|h[%s]|h|r"

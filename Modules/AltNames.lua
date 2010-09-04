@@ -226,7 +226,7 @@ function mod.GetMainName()
 	local popup = StaticPopup_Show("MENUITEM_SET_MAIN", alt)
 	if popup then 
 		popup.data = alt 
-		local editbox = getglobal(popup:GetName().."EditBox")
+		local editbox = _G[popup:GetName().."EditBox"]
 		editbox:SetText(NAMES[alt] or GUILDNOTES[alt] or "")
 		editbox:HighlightText()
 	end
@@ -298,7 +298,7 @@ function mod:GUILD_ROSTER_UPDATE(event,arg1)
 	-- arg1 gets set for SOME changes to the guild, but notably not for player notes.. doh  (unless you're the one editing them yourself)
 	-- we force a scan when the guild frame is actually visible (i.e. when we know the player is actually interested in seeing changes)
 	-- i'd like to be able to not have the guildframe check there, but there's plenty of stupid-ass addons that spam GuildRoster() every 10/15/20 seconds, so ... no.
-	if arg1 or GuildFrame:IsVisible() or doscan then
+	if arg1 or (GuildFrame and GuildFrame:IsVisible()) or doscan then
 		doscan=false
 		mod:ScanGuildNotes()
 	end

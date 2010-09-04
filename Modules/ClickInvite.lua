@@ -1,4 +1,4 @@
-local mod = Chatter:NewModule("Invite Links", "AceHook-3.0")
+local mod = Chatter:NewModule("Invite Links", "AceHook-3.0","AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 mod.modName = L["Invite Links"]
 
@@ -52,12 +52,28 @@ local defaults = {
 
 local words
 
+local valid_events = {
+	CHAT_MSG_SAY = true,
+	CHAT_MSG_CHANNEL = true,
+	CHAT_MSG_WHISPER = true,
+	CHAT_MSG_OFFICER = true,
+	CHAT_MSG_GUILD = true
+}
+
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace(self:GetName(), defaults)
 end
 
 function mod:Decorate(frame)
 	self:RawHook(frame, "AddMessage", true)
+end
+
+local chatEvent, chatEventTarget
+
+function mod:ChatFrame_MessageEventHandler(frame, event, ...)
+	chatEvent = event
+	arg1,chatEventTarget = ...
+	return self.hooks["ChatFrame_MessageEventHandler"](frame, event, ...)
 end
 
 function mod:OnEnable()
@@ -79,20 +95,14 @@ function mod:OnEnable()
 		end
 	end
 	self:RawHook(nil, "SetItemRef", true)
+	self:RawHook("ChatFrame_MessageEventHandler", true)1
 end
 
 local style = "|cffffffff|Hinvite:%s|h[%s]|h|r"
-local valid_events = {
-	CHAT_MSG_SAY = true,
-	CHAT_MSG_CHANNEL = true,
-	CHAT_MSG_WHISPER = true,
-	CHAT_MSG_OFFICER = true,
-	CHAT_MSG_GUILD = true
-}
 
 local function addLinks(m, t, p)
 	if words[t:lower()] and p ~= "_" then
-		t = fmt(style, arg2, t)
+		t = fmt(style, chatEventTarget, t)
 		return t .. p
 	end
 	return m
@@ -102,8 +112,7 @@ function mod:AddMessage(frame, text, ...)
 	if not text then 
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
-
-	if valid_events[event] and type(arg2) == "string" then
+	if valid_events[chatEvent] and type(chatEventTarget) == "string" then
 		text = gsub(text, "((%w+)(.?))", addLinks)
 	end
 		

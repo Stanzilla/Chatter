@@ -216,7 +216,7 @@ end
 
 do
 	local timer, t = nil, 0
-	local function update()
+	local function update(arg1)
 		t = t + arg1
 		if t > 0.5 then
 			timer:SetScript("OnUpdate", nil)

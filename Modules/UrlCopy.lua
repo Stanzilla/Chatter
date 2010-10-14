@@ -240,13 +240,9 @@ end
 
 
 function mod:SetItemRef(link, text, button)
-  print(link)
 	if sub(link, 1, 3) == "url" then
 		currentLink = sub(link, 5)
-    print(currentLink)
 		currentLink = mangleLinkForVoiceChat(currentLink)
-    print(currentLink)
-
 		StaticPopup_Show("ChatterUrlCopyDialog")
 		return
 	end

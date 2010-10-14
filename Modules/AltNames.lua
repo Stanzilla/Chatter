@@ -131,11 +131,11 @@ end
 
 
 
-local accept = function(self, char)
-	local editBox = _G[self:GetParent():GetName().."EditBox"]
+local accept = function(frame, char)
+	local editBox = _G[frame:GetName().."EditBox"]
 	local main = editBox:GetText()
 	mod:AddAlt(char, main)
-	self:GetParent():Hide()
+	frame:GetParent():Hide()
 end
 
 StaticPopupDialogs['MENUITEM_SET_MAIN'] = {

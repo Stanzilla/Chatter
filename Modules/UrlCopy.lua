@@ -143,9 +143,9 @@ StaticPopupDialogs["ChatterUrlCopyDialog"] = {
 	text = "URL - Ctrl-C to copy",
 	button2 = CLOSE,
 	hasEditBox = 1,
-	hasWideEditBox = 1,
+	editBoxWidth = 400,
 	OnShow = function(frame)
-		local editBox = _G[frame:GetName().."WideEditBox"]
+		local editBox = _G[frame:GetName().."EditBox"]
 		if editBox then
 			editBox:SetText(currentLink)
 			editBox:SetFocus()
@@ -240,9 +240,12 @@ end
 
 
 function mod:SetItemRef(link, text, button)
+  print(link)
 	if sub(link, 1, 3) == "url" then
 		currentLink = sub(link, 5)
+    print(currentLink)
 		currentLink = mangleLinkForVoiceChat(currentLink)
+    print(currentLink)
 
 		StaticPopup_Show("ChatterUrlCopyDialog")
 		return

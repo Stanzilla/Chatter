@@ -188,18 +188,19 @@ function mod:LA_SetAlt(event,main,alt,source)
 	if not source then
 		NAMES[alt] = main
 	end
-	if IsInGuild() then
-		if source == LA.GUILD_PREFIX..(GetGuildInfo("player")) then
-			GUILDNOTES[alt] = main
-		end
-	end
+--	if IsInGuild() then
+--		local gname = (GetGuildInfo("player"))
+--		if gname and source == LA.GUILD_PREFIX..gname then
+--			GUILDNOTES[alt] = main
+--		end
+--	end
 end
 
 function mod:LA_RemoveAlt(event,main,alt,source)
 	if not source then
 		NAMES[alt] = nil
 	end
-	if IsInGuild() then
+	if IsInGuild() and source:find(LA.GUILD_PREFIX) then
 		if source == LA.GUILD_PREFIX..(GetGuildInfo("player")) then
 			GUILDNOTES[alt] = nil
 		end
@@ -369,7 +370,7 @@ function mod:ScanGuildNotes()
 		local success
 		for word in gmatch(strlower(note), "[%a\128-\255]+") do
 			if names[word] then
-				--GUILDNOTES[name] = names[word]
+				GUILDNOTES[name] = names[word]
 				LA:SetAlt(name,names[word],LA.GUILD_PREFIX..gName)
 				success = true
 				--DBG n=n+1
@@ -382,7 +383,7 @@ function mod:ScanGuildNotes()
 			if strfind(rank, "alt") or
 				strfind(rank, L["alt2"]) or
 				strfind(rank, L["alt3"]) then
-				--GUILDNOTES[name] = note
+				GUILDNOTES[name] = note
 				LA:SetAlt(name,note,LA.GUILD_PREFIX..gName)
 				--DBG print("Fallback: ",note)
 				--DBG nFallback=nFallback+1

@@ -143,7 +143,7 @@ StaticPopupDialogs["ChatterUrlCopyDialog"] = {
 	text = "URL - Ctrl-C to copy",
 	button2 = CLOSE,
 	hasEditBox = 1,
-	hasWideEditBox = 1,
+	editBoxWidth = 400,
 	OnShow = function(frame)
 		local editBox = _G[frame:GetName().."EditBox"]
 		if editBox then

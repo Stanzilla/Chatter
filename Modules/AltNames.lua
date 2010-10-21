@@ -199,11 +199,8 @@ end
 function mod:LA_RemoveAlt(event,main,alt,source)
 	if not source then
 		NAMES[alt] = nil
-	end
-	if IsInGuild() and source:find(LA.GUILD_PREFIX) then
-		if source == LA.GUILD_PREFIX..(GetGuildInfo("player")) then
-			GUILDNOTES[alt] = nil
-		end
+	else
+		GUILDNOTES[alt] = nil
 	end
 end
 
@@ -293,7 +290,7 @@ end
 
 local function pName(msg, name)
 	if name and #name > 0 then
-		local alt = LA:GetAltsForSource(name,nil) or LA:GetAltsForSource(name,LA.GUILD_PREFIX..(GetGuildInfo("player")))--NAMES[name] or GUILDNOTES[name]
+		local alt = NAMES[name] or GUILDNOTES[name]
 		if alt and alt ~= "" then		-- empty notes can be stored to override guildnote data
 			local mode = mod.db.profile.colorMode
 			if mode == "CUSTOM" then				

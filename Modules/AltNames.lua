@@ -1,5 +1,6 @@
 local mod = Chatter:NewModule("Alt Linking", "AceHook-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+local LA
 mod.modName = L["Alt Linking"]
 
 local NAMES
@@ -131,11 +132,12 @@ end
 
 
 
-local accept = function(frame, char)
-	local editBox = _G[frame:GetName().."EditBox"]
-	local main = editBox:GetText()
-	mod:AddAlt(char, main)
-	frame:GetParent():Hide()
+local accept = function(frame, char, editBox)
+	if editBox then
+		local main = editBox:GetText()
+		mod:AddAlt(char, main, frame.data)
+	end
+	frame:Hide()
 end
 
 StaticPopupDialogs['MENUITEM_SET_MAIN'] = {
@@ -154,8 +156,12 @@ StaticPopupDialogs['MENUITEM_SET_MAIN'] = {
 		end
 		_G[frame:GetName().."EditBox"]:SetText("");
 	end,
-	OnAccept = accept,
-	EditBoxOnEnterPressed = accept,
+	OnAccept = function(popup,char)
+		accept(popup,char,_G[popup:GetName().."EditBox"])
+	end,
+	EditBoxOnEnterPressed = function(popup,char)
+		accept(popup,char,_G[popup:GetName().."EditBox"])
+	end,
 	EditBoxOnEscapePressed = function(frame) frame:GetParent():Hide() end,
 	timeout = 0,
 	whileDead = 1,
@@ -178,8 +184,36 @@ function mod:Decorate(frame)
 	end
 end
 
+function mod:LA_SetAlt(event,main,alt,source)
+	if not source then
+		NAMES[alt] = main
+	end
+	if IsInGuild() then
+		if source == LA.GUILD_PREFIX..(GetGuildInfo("player")) then
+			GUILDNOTES[alt] = main
+		end
+	end
+end
+
+function mod:LA_RemoveAlt(event,main,alt,source)
+	if not source then
+		NAMES[alt] = nil
+	end
+	if IsInGuild() then
+		if source == LA.GUILD_PREFIX..(GetGuildInfo("player")) then
+			GUILDNOTES[alt] = nil
+		end
+	end
+end
+
 function mod:OnEnable()
+	LA = LibStub("LibAlts-1.0")
+	LA.RegisterCallback( self, "LibAlts_SetAlt","LA_SetAlt")
+	LA.RegisterCallback( self, "LibAlts_RemoveAlt","LA_RemoveAlt")
 	NAMES = self.db.realm
+	for k,v in pairs(NAMES) do
+		LA:SetAlt(v,k,nil)
+	end
 	UnitPopupButtons["SET_MAIN"].func = self.GetMainName
 	tinsert(UnitPopupMenus["SELF"], 	#UnitPopupMenus["SELF"] - 1,	"SET_MAIN")
 	tinsert(UnitPopupMenus["PLAYER"], 	#UnitPopupMenus["PLAYER"] - 1,	"SET_MAIN")
@@ -246,15 +280,19 @@ function mod:AddAlt(alt, main)
 		if GUILDNOTES[alt] then
 			-- let the user store an empty note, meaning "dont show me this main"
 		else
+			NAMES[alt] = nil
+			LA:DeleteAlt(NAMES[alt],alt,nil)
 			main = nil 
 		end
 	end
-	NAMES[alt] = main	
+	if main then
+		LA:SetAlt(main,alt,nil)
+	end
 end
 
 local function pName(msg, name)
 	if name and #name > 0 then
-		local alt = NAMES[name] or GUILDNOTES[name]
+		local alt = LA:GetAltsForSource(name,nil) or LA:GetAltsForSource(name,LA.GUILD_PREFIX..(GetGuildInfo("player")))--NAMES[name] or GUILDNOTES[name]
 		if alt and alt ~= "" then		-- empty notes can be stored to override guildnote data
 			local mode = mod.db.profile.colorMode
 			if mode == "CUSTOM" then				
@@ -313,6 +351,7 @@ function mod:ScanGuildNotes()
 	if not IsInGuild() then
 		return
 	end
+	local gName = (GetGuildInfo("player"))
 	--DBG print("Scanning guildnotes!")
 	--DBG local n,nFallback=0,0
 	local names = {}  -- ["playername"]="Playername"   (note lowercase = uppercase) (yes, this works for 'foreign' letters too in WoW, even though it does not in standard Lua)
@@ -330,7 +369,8 @@ function mod:ScanGuildNotes()
 		local success
 		for word in gmatch(strlower(note), "[%a\128-\255]+") do
 			if names[word] then
-				GUILDNOTES[name] = names[word]
+				--GUILDNOTES[name] = names[word]
+				LA:SetAlt(name,names[word],LA.GUILD_PREFIX..gName)
 				success = true
 				--DBG n=n+1
 				break
@@ -342,7 +382,8 @@ function mod:ScanGuildNotes()
 			if strfind(rank, "alt") or
 				strfind(rank, L["alt2"]) or
 				strfind(rank, L["alt3"]) then
-				GUILDNOTES[name] = note
+				--GUILDNOTES[name] = note
+				LA:SetAlt(name,note,LA.GUILD_PREFIX..gName)
 				--DBG print("Fallback: ",note)
 				--DBG nFallback=nFallback+1
 			end

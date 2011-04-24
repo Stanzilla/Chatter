@@ -18,7 +18,6 @@ function frame:AddMessage(frame, text, ...)
 		gmotd = strmatch(text, pattern)
 	end
 	if gmotd then
-		gmotdData={text,...}
 		self:UnhookAll()
 	else
 		return self.hooks[frame].AddMessage(frame, text, ...)
@@ -28,14 +27,16 @@ end
 frame:RawHook(ChatFrame1, "AddMessage", true)
 
 
-local delay=2.5
+local delay=10
 frame:SetScript("OnUpdate", function(self, expired)
 	delay=delay-expired
 	if delay<0 then
-		self:Hide()
 		self:UnhookAll()
-		if gmotdData then
-			ChatFrame1:AddMessage(unpack(gmotdData))
+		self:Hide()
+		local gmotd = GetGuildRosterMOTD()
+		if gmotd then
+			local r,g,b = GetMessageTypeColor("GUILD")
+			ChatFrame1:AddMessage((GUILD_MOTD_TEMPLATE):format(gmotd), r, g, b)
 			gmotdData=nil
 		end
 	end

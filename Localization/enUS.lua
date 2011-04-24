@@ -287,6 +287,10 @@ L["Exclude level display for max level characters"] = true
 L["Color level by difficulty"] = true
 L["Color Player Names By..."] = true
 L["Select a method for coloring player names"] = true
+L["Strip RealID brackets"] = true
+L["No RealNames"] = true
+L["Show toon names instead of real names"] = true
+L["RealID Brackets"] = true
 
 -- ./Modules/Scrollback.lua
 L["Scrollback"] = true

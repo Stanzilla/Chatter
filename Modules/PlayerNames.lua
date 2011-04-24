@@ -62,14 +62,16 @@ local defaults = {
 		levels = {},
 	},
 	profile = {
-		saveData = false, 
-		nameColoring = "CLASS", 
-		leftBracket = "[", 
-		rightBracket = "]", 
+		saveData = false,
+		nameColoring = "CLASS",
+		leftBracket = "[",
+		rightBracket = "]",
+		bnetBrackets = true,
 		separator = ":",
 		useTabComplete = true,
 		colorSelfInText = true,
 		emphasizeSelfInText = true,
+		noRealNames = false,
 	},
 	global = {
 		classes = {		-- yeah this should be localized by translators but ... they dont. so we also autodiscover on UnitClass() calls
@@ -134,7 +136,7 @@ do
 	local fmod = _G.math.fmod
 	local strbyte = _G.strbyte
 	local t = {}
-	
+
 	-- http://www.tecgraf.puc-rio.br/~mgattass/color/HSVtoRGB.htm
 
 
@@ -192,7 +194,7 @@ do
 	   if not t.b then t.b = 0 end
 	   return t.r,t.g,t.b
 	end
-	
+
 	function getNameColor(name)
 		local seed = 5381 --old seed: 5124
 		local h, s, v = 1, 1, 1
@@ -206,7 +208,7 @@ do
 		   h = h + 60
 		end
 		t.r, t.g, t.b = HSVtoRGB(h, s, v)
-		
+
 		return t
 	end
 end
@@ -227,18 +229,18 @@ end
 
 
 function mod:OnInitialize()
-	
+
 	self.db = Chatter.db:RegisterNamespace("PlayerNames", defaults)
 	for k, v in pairs(self.db.realm.names) do
 		if type(v) == "string" then
 			self.db.realm.names[k] = {class = v}
 		end
 	end
-	
+
 	if self.db.global and self.db.global.names then
 		self.db.global.names = nil	-- get rid of old data
 	end
-	
+
 	-- create reverse map of classes (localized -> system)
 	for sys,loc in pairs(self.db.global.classes) do
 		localizedToSystemClass[loc]=sys
@@ -251,6 +253,7 @@ function mod:Decorate(frame)
 	end
 end
 
+local storedName = nil
 
 function mod:OnEnable()
 	self:RegisterEvent("RAID_ROSTER_UPDATE")
@@ -263,7 +266,7 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_CHANNEL_JOIN")
 	self:RegisterEvent("CHAT_MSG_CHANNEL_LEAVE")
 	self:RegisterEvent("CHAT_MSG_CHANNEL", "CHAT_MSG_CHANNEL_JOIN")
-	
+
 	leftBracket, rightBracket, separator = self.db.profile.leftBracket, self.db.profile.rightBracket, self.db.profile.separator
 	colorSelfInText, emphasizeSelfInText = self.db.profile.colorSelfInText, self.db.profile.emphasizeSelfInText
 	if IsInGuild() then
@@ -285,9 +288,17 @@ function mod:OnEnable()
 	if self.db.profile.useTabComplete then
 		AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
 	end
-	
+
 	if CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS.RegisterCallback then
 		CUSTOM_CLASS_COLORS:RegisterCallback(wipeCache)
+	end
+	if self.db.profile.noRealNames then
+		storedName = {}
+		local _, n = BNGetNumFriends()
+		for i=1, n do
+			local _, _, _, toon, id = BNGetFriendInfo(i)
+			storedName[id] = toon
+		end
 	end
 end
 
@@ -332,49 +343,17 @@ function mod:FRIENDLIST_UPDATE(evt)
 	end
 end
 
---[[
 function mod:GUILD_ROSTER_UPDATE(evt)
-	local n = GetNumGuildMembers()
-	if not n or n == 0 then
-		return
-	end
-
-	local offline = GetGuildRosterShowOffline()
-	local selection = GetGuildRosterSelection()
-	self:UnregisterEvent("GUILD_ROSTER_UPDATE")
-	
-	SetGuildRosterShowOffline(true)
-	SetGuildRosterSelection(0)
-	GetGuildRosterInfo(0)
-	n = GetNumGuildMembers()
-	for k, v in pairs(channels.GUILD) do
-		channels.GUILD[k] = nil
-	end
-	for i = 1, n do
+	if not IsInGuild() then return end
+	wipe( channels.GUILD )
+	for i = 1, GetNumGuildMembers() do
 		local name, _, _, level, _, _, _, _, online, _, class = GetGuildRosterInfo(i)
 		if online then
 			channels.GUILD[name] = name
 		end
 		self:AddPlayer(name, class, level, self.db.profile.saveGuild)
 	end
-	SetGuildRosterShowOffline(offline)
-	SetGuildRosterSelection(selection)
-	
-	self:RegisterEvent("GUILD_ROSTER_UPDATE")
 end
-]]
-
-function mod:GUILD_ROSTER_UPDATE(evt)
-	if not IsInGuild() then return end
-	wipe( channels.GUILD )
-	for i = 1, GetNumGuildMembers() do 
-		local name, _, _, level, _, _, _, _, online, _, class = GetGuildRosterInfo(i) 
-		if online then 
-			channels.GUILD[name] = name 
-		end 
-		self:AddPlayer(name, class, level, self.db.profile.saveGuild) 
-	end 
-end 
 
 function mod:RAID_ROSTER_UPDATE(evt)
 	wipe(channels.RAID)
@@ -390,7 +369,7 @@ end
 
 function mod:PARTY_MEMBERS_CHANGED(evt)
 	wipe(channels.PARTY)
-	
+
 	for i = 1, GetNumPartyMembers() do
 		local n = UnitName("party" .. i)
 		local _, c = UnitClass("party" .. i)
@@ -433,6 +412,60 @@ end
 function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 	if not channels[chan:lower()] then return end
 	channels[chan:lower()][name] = nil
+end
+
+function mod:GetColor(className, isLocal)
+	if isLocal then
+		local found
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do
+			if v == className then className = k found = true break end
+		end
+		if not found then
+			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do
+				if v == className then className = k break end
+			end
+		end
+	end
+	local tbl = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[className] or RAID_CLASS_COLORS[className]
+	local color = ("%02x%02x%02x"):format(tbl.r*255, tbl.g*255, tbl.b*255)
+	return color
+end
+
+--[[
+	Taken from Basic Chat Mods since funkeh already did the work
+--]]
+local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
+	local _, charName, _, _, _, _, englishClass = BNGetToonInfo(id)
+	if charName ~= "" then
+		if storedName then storedName[id] = charName end --Store name for logoff events, if enabled
+		--Replace real name with charname if enabled
+		fakeName = mod.db.profile.noRealNames and charName or fakeName
+	else
+		--Replace real name with stored charname if enabled, for logoff events
+		if mod.db.profile.noRealNames and storedName and storedName[id] then
+			fakeName = storedName[id]
+			storedName[id] = nil
+		end
+	end
+
+	bleftBracket = ""
+	brightBracket = ""
+
+	if mod.db.profile.bnetBrackets then
+		bleftBracket = leftBracket
+		brightBracket = rightBracket
+	end
+	if englishClass ~= "" then --Friend logging off/Starcraft 2
+		if not strmatch( fakeName, "|cff" ) then
+			-- Handle coloring here
+			if mod.db.profile.nameColoring == "CLASS" then
+				fakeName = "|cFF"..mod:GetColor(englishClass, true)..fakeName.."|r"
+			elseif mod.db.profile.nameColoring == "NAME" then
+				fakeName = mod:ColorName(fakeName)
+			end
+		end
+	end
+	return misc..id..moreMisc..bleftBracket..fakeName..brightBracket..tag..mod.db.profile.separator
 end
 
 local function changeName(msgHeader, name, extra, msgCnt,displayName, msgBody)
@@ -505,8 +538,9 @@ function mod:ColorName( name )
 end
 
 function mod:AddMessage(frame, text, ...)
-	if text and type(text) == "string" then 
+	if text and type(text) == "string" then
 		text = text:gsub("(|Hplayer:([^|:]+)([:%d+]*)([^|]*)|h%[([^%]]+)%]|h)(.-)$", changeName)
+		text = text:gsub("(|HBNplayer:%S-|k:)(%d-)(:%S-|h)%[(%S-)%](|?h?)(:?)", changeBNetName)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end
@@ -628,7 +662,7 @@ function mod:GetOptions()
 					mod.db.profile.rightBracket = v
 					rightBracket = v
 				end
-			},	
+			},
 			separator = {
 				type = "input",
 				name = L["Separator"],
@@ -638,6 +672,24 @@ function mod:GetOptions()
 					mod.db.profile.separator = v
 					separator = v
 				end
+			},
+			bnetBrackets = {
+				type = "toggle",
+				name = L["RealID Brackets"],
+				desc = L["Strip RealID brackets"],
+				get = function() return mod.db.profile.bnetBrackets end,
+				set = function(info,v)
+					mod.db.profile.bnetBrackets = v
+				end,
+			},
+			bnetRealNames = {
+				type = "toggle",
+				name = L["No RealNames"],
+				desc = L["Show toon names instead of real names"],
+				get = function() return mod.db.profile.noRealNames end,
+				set = function(info,v)
+					mod.db.profile.noRealNames = v
+				end,
 			},
 			useTabComplete = {
 				type = "toggle",

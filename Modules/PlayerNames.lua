@@ -465,7 +465,7 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 			end
 		end
 	end
-	return misc..id..moreMisc..bleftBracket..fakeName..brightBracket..tag..mod.db.profile.separator
+	return misc..id..moreMisc..bleftBracket..fakeName..brightBracket..tag..":"
 end
 
 local function changeName(msgHeader, name, extra, msgCnt,displayName, msgBody)

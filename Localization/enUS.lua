@@ -99,7 +99,7 @@ L["Enables you to replace channel names with your own names. You can use '%s' to
 L["To (|HBNplayer.-|h):"] = true
 L["To <Away>(|HBNplayer.-|h):"] = true
 L["To <Busy>(|HBNplayer.-|h):"] = true
-L["(|HBNplayer.-|h) whispers:"] = true
+L["(|HBNplayer.-|h): whispers:"] = true
 L["Dungeon Guide"] = true
 -- ./Modules/ChatFading.lua
 L["Disable Fading"] = true

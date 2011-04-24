@@ -490,7 +490,7 @@ local function changeName(msgHeader, name, extra, msgCnt,displayName, msgBody)
 		level = mod.db.profile.includeLevel and tab.level or nil
 	end
 
-	if level and (level ~= 80 or not mod.db.profile.excludeMaxLevel) then
+	if level and (level ~= MAX_PLAYER_LEVEL or not mod.db.profile.excludeMaxLevel) then
 		if mod.db.profile.levelByDiff then
 			local c = GetQuestDifficultyColor(level)
 			level = ("|cff%02x%02x%02x%s|r"):format(c.r * 255, c.g * 255, c.b * 255, level)

@@ -451,6 +451,13 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 	bleftBracket = ""
 	brightBracket = ""
 
+
+	if strmatch(moreMisc,"BN_INLINE_TOAST_ALERT") then
+		-- We got an alert strip the colon out of the misc its the last char
+		misc = misc:sub(1, -2)
+	end
+
+
 	if mod.db.profile.bnetBrackets then
 		bleftBracket = leftBracket
 		brightBracket = rightBracket

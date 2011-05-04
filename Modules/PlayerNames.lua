@@ -432,15 +432,15 @@ function mod:GetColor(className, isLocal)
 end
 
 
-local function fixLogin(head,id,misc,who,colon)
+local function fixLogin(head,id,misc,who,xtra,colon)
 	if mod.db.profile.bnetBrackets then
 		bleftBracket = leftBracket
 		brightBracket = rightBracket
 	end
 	if strmatch(misc,"BN_INLINE_TOAST_ALERT") then
-		return head..id..misc..bleftBracket..who..brightBracket
+		return head..id..misc..bleftBracket..who..brightBracket..xtra
 	else
-		return head..id..misc..bleftBracket..who..brightBracket..colon
+		return head..id..misc..bleftBracket..who..brightBracket..xtra..colon
 	end
 end
 
@@ -561,8 +561,8 @@ end
 function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then
 		text = text:gsub("(|Hplayer:([^|:]+)([:%d+]*)([^|]*)|h%[([^%]]+)%]|h)(.-)$", changeName)
-		text = text:gsub("(|HBNplayer:%S-|k:)(%d-)(:%S-|h)%[(%S-)%](|?h?)(.?)", changeBNetName)
-		text = text:gsub("(|HBNplayer%S-|k)(%d-)(:%S-BN_INLINE_TOAST_ALERT%S-|h)%[(%S-)%](.?)",fixLogin)
+		text = text:gsub("(|HBNplayer:%S-|k:)(%d-)(:%S-|h)%[(%S-)%](|?h?)(:?)", changeBNetName)
+		text = text:gsub("(|HBNplayer%S-|k)(%d-)(:%S-BN_INLINE_TOAST_ALERT%S-|h)%[(%S-)%](|?h?)(:?)",fixLogin)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

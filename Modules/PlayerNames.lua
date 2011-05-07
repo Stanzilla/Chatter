@@ -472,7 +472,7 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 	end
 
 
-	if mod.db.profile.bnetBrackets then
+	if not mod.db.profile.bnetBrackets then
 		bleftBracket = leftBracket
 		brightBracket = rightBracket
 	end

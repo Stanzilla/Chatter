@@ -239,14 +239,14 @@ do
 end
 
 
-function mod:SetItemRef(link, text, button)
+function mod:SetItemRef(link, text, button,...)
 	if sub(link, 1, 3) == "url" then
 		currentLink = sub(link, 5)
 		currentLink = mangleLinkForVoiceChat(currentLink)
 		StaticPopup_Show("ChatterUrlCopyDialog")
-		return
+		return ...
 	end
-	return self.hooks.SetItemRef(link, text, button)
+	return self.hooks.SetItemRef(link, text, button, ...)
 end
 
 function mod:Info()

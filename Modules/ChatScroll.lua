@@ -50,7 +50,7 @@ local options = {
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace(self:GetName(), defaults)
 	self:RegisterEvent("CVAR_UPDATE", "ChangedVars")
-	self:SecureHook("InterfaceOptionsSocialPanelChatMouseScroll_SetScrolling")
+--	self:SecureHook("InterfaceOptionsSocialPanelChatMouseScroll_SetScrolling")
 end
 
 function mod:InterfaceOptionsSocialPanelChatMouseScroll_SetScrolling()

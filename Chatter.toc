@@ -1,4 +1,4 @@
-## Interface: 40200
+## Interface: 40300
 ## Title: Chatter
 ## Notes: Lightweight Chat Improvements
 ## Notes-zhTW: 一個輕量級的聊天增強插件
@@ -25,7 +25,6 @@ Libs\AceTab-3.0\AceTab-3.0.xml
 Libs\LibSharedMedia-3.0\lib.xml
 Libs\LibSink-2.0\lib.xml
 Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
-Libs\LibBetterBlizzOptions-1.0\lib.xml
 Libs\LibAlts-1.0\lib.xml
 #@end-no-lib-strip@
 

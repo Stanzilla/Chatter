@@ -22,12 +22,11 @@ local GetGuildRosterShowOffline = _G.GetGuildRosterShowOffline
 local GetNumFriends = _G.GetNumFriends
 local GetNumGuildMembers = _G.GetNumGuildMembers
 local mop_500 = select(4,GetBuildInfo()) >= 50000
+local GetNumPartyMembers = _G.GetNumPartyMembers
+local GetNumRaidMembers = _G.GetNumRaidMembers
 if mop_500 then
 	GetNumPartyMembers = _G.GetNumSubgroupMembers
 	GetNumRaidMembers = _G.GetNumGroupMembers
-else
-	GetNumPartyMembers = _G.GetNumPartyMembers
-	GetNumRaidMembers = _G.GetNumRaidMembers
 end
 local GetNumWhoResults = _G.GetNumWhoResults
 local GetWhoInfo = _G.GetWhoInfo

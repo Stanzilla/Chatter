@@ -202,7 +202,10 @@ function mod:GetLines(...)
 	for i = select("#", ...), 1, -1 do
 		local region = select(i, ...)
 		if region:GetObjectType() == "FontString" then
-			lines[ct] = tostring(region:GetText())
+			local line = tostring(region:GetText())
+			-- fix any letover realid data
+			line = string.gsub(line,"%[|K%w+|k(.-)|k%]", "%1")
+			lines[ct] = line			
 			ct = ct + 1
 		end
 	end

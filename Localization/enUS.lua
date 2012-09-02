@@ -151,6 +151,8 @@ L["Hide Tabs"] = true
 L["Hides chat frame tabs"] = true
 L["Enable Tab Flashing"] = true
 L["Enables the Tab to flash when you miss a message"] = true
+L["Tab Alpha"] = true
+L["Sets the alpha value for your chat tabs"] = true
 
 -- ./Modules/ClickInvite.lua
 L["Invite Links"] = true

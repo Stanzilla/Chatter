@@ -499,7 +499,7 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 		end
 	end
 	if waslogin then
-		return misc..moreMisc..bleftBracket..fakeName..brightBracket..tag..":"
+		return misc..moreMisc..bleftBracket..fakeName..brightBracket..tag
 	else
 		return misc..id..moreMisc..bleftBracket..fakeName..brightBracket..tag..":"
 	end

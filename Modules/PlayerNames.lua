@@ -530,7 +530,7 @@ local function changeName(msgHeader, name, extra, msgCnt,displayName, msgBody)
 			if strmatch(displayName, "|cff......") then
 				-- This will seriously fuck up the string if there is already more than 1 color ... FIXME
 				level = gsub(displayName, "((|cff......).-|r)", function (string, color)
-					return format("%s%s|r")
+					return format("%s%s|r",string,color)
 				end)
 			end
 			displayName = format("%s%s%s", displayName, separator, level)

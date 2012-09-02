@@ -475,10 +475,13 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 
 	local bleftBracket = ""
 	local brightBracket = ""
-
+	
+	local waslogin = false
+	
 	if strmatch(moreMisc,"BN_INLINE_TOAST_ALERT") then
 		-- We got an alert strip the colon out of the misc its the last char
 		misc = strsub(misc, 1, -2)
+		waslogin = true
 	end
 
 	if not mod.db.profile.bnetBrackets then
@@ -495,7 +498,11 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 			end
 		end
 	end
-	return misc..id..moreMisc..bleftBracket..fakeName..brightBracket..tag..":"
+	if waslogin then
+		return misc..moreMisc..bleftBracket..fakeName..brightBracket..tag..":"
+	else
+		return misc..id..moreMisc..bleftBracket..fakeName..brightBracket..tag..":"
+	end
 end
 
 local function changeName(msgHeader, name, extra, msgCnt,displayName, msgBody)
@@ -571,7 +578,7 @@ function mod:AddMessage(frame, text, ...)
 	if text and type(text) == "string" then
 		text = gsub(text, "(|Hplayer:([^|:]+)([:%d+]*)([^|]*)|h%[([^%]]+)%]|h)(.-)$", changeName)
 		text = gsub(text, "(|HBNplayer:%S-|k:)(%d-)(:%S-|h)%[(%S-)%](|?h?)(:?)", changeBNetName)
-		text = gsub(text, "(|HBNplayer%S-|k)(%d-)(:%S-BN_INLINE_TOAST_ALERT%S-|h)%[(%S-)%](|?h?)(:?)",fixLogin)
+		text = gsub(text, "(|HBNplayer:%S-|k:)(%d-)(:%S-BN_INLINE_TOAST_ALERT%S-|h)%[(%S-)%](|?h?)(:?)",fixLogin)
 	end
 	return self.hooks[frame].AddMessage(frame, text, ...)
 end

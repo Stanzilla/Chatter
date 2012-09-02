@@ -443,6 +443,7 @@ end
 
 
 local function fixLogin(head,id,misc,who,xtra,colon)
+	local bleftBracket, brightBracket = "",""
 	if mod.db.profile.bnetBrackets then
 		bleftBracket = leftBracket
 		brightBracket = rightBracket
@@ -472,8 +473,8 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 		end
 	end
 
-	bleftBracket = ""
-	brightBracket = ""
+	local bleftBracket = ""
+	local brightBracket = ""
 
 	if strmatch(moreMisc,"BN_INLINE_TOAST_ALERT") then
 		-- We got an alert strip the colon out of the misc its the last char

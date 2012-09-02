@@ -204,6 +204,7 @@ end
 
 function mod:GetLines(...)
 	local ct = 1
+	wipe(lines)
 	for i = select("#", ...), 1, -1 do
 		local region = select(i, ...)
 		if region:GetObjectType() == "FontString" then

@@ -6,7 +6,8 @@ mod.modName = L["Chat Tabs"]
 local defaults = {
 	profile = {
 		height = 29,
-		tabFlash = true
+		tabFlash = true,
+		alpha = 0,
 	}
 }
 
@@ -14,6 +15,8 @@ local options = {
 	height = {
 		order = 101,
 		type = "range",
+		max = 60,
+		min = 16,
 		name = L["Button Height"],
 		desc = L["Button's height, and text offset from the frame"],
 		step = 1,
@@ -45,6 +48,18 @@ local options = {
 		get = function() return mod.db.profile.tabFlash end,
 		set = function(info, v) mod.db.profile.tabFlash = not mod.db.profile.tabFlash; mod:DecorateTabs() end,
 		disabled = function() return not mod:IsEnabled() end
+	},
+	tabalpha = {
+		order = 104,
+		type = "range",
+		name = L["Tab Alpha"],
+		min = 0,
+		max = 1,
+		step = 0.1,
+		desc = L["Sets the alpha value for your chat tabs"],
+		get = function() return mod.db.profile.alpha end,
+		set = function(info,v) mod.db.profile.alpha = v; mod:DecorateTabs();  FCFDock_UpdateTabs(GeneralDockManager, true) end,
+		disabled = function() return not mod:IsEnabled() end
 	}
 }
 
@@ -57,14 +72,14 @@ local function SetFontSizes()
 		local tab = _G["ChatFrame"..i.."Tab"]
 		mod:OnLeave(tab)
 	end
-	for index,name in ipairs(self.TempChatFrames) do
+	for index,name in ipairs(mod.TempChatFrames) do
 		local tab = _G[name.."Tab"]
 		mod:OnLeave(tab)
 	end
 end
 
 function mod:Decorate(frame)
-	local name = "ChatFrame"..frame:GetID();
+	local name = frame:GetName()
 	local tab = _G[name.."Tab"]
 	tab:SetHeight(mod.db.profile.height)
 	_G[name.."TabLeft"]:Hide()
@@ -93,15 +108,33 @@ function mod:DecorateTabs()
 	CHAT_FRAME_FADE_OUT_TIME = 0.5
 	CHAT_TAB_HIDE_DELAY = 0
 	CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA = 1
-	CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 0
+	CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = mod.db.profile.alpha
 	CHAT_FRAME_TAB_ALERTING_MOUSEOVER_ALPHA = 1
 	if self.db.profile.tabFlash then
 		CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 1
 	else
-		CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 0
+		CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = mod.db.profile.alpha
 	end
 	CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 1
-	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0
+	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = mod.db.profile.alpha
+	for i = 1, NUM_CHAT_WINDOWS do
+		local tab = _G["ChatFrame"..i.."Tab"]
+		local chat = _G["ChatFrame"..i]
+		if not chat.dock then
+			tab.mouseOverAlpha = mod.db.profile.alpha
+			tab.noMouseAlpha = mod.db.profile.alpha
+			tab:SetAlpha(mod.db.profile.alpha)
+		end
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local chat = _G[name]
+		local tab = _G[name.."Tab"]
+		if not chat.dock then
+			tab.mouseOverAlpha = mod.db.profile.alpha
+			tab.noMouseAlpha = mod.db.profile.alpha
+			tab:SetAlpha(mod.db.profile.alpha)
+		end		
+	end
 end
 
 function mod:UndecorateTabs()
@@ -113,6 +146,24 @@ function mod:UndecorateTabs()
 	CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 1
 	CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 0.6
 	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0.2
+	for i = 1, NUM_CHAT_WINDOWS do
+		local tab = _G["ChatFrame"..i.."Tab"]
+		local chat = _G["ChatFrame"..i]
+		if not chat.dock then
+			tab.mouseOverAlpha = 1
+			tab.noMouseAlpha = 0.2
+			tab:SetAlpha(0.2)
+		end
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local chat = _G[name]
+		local tab = _G[name.."Tab"]
+		if not chat.dock then
+			tab.mouseOverAlpha = 1
+			tab.noMouseAlpha = 0.2
+			tab:SetAlpha(0.2)
+		end		
+	end
 end
 
 function mod:OnEnable()
@@ -150,8 +201,8 @@ function mod:OnEnable()
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
 		end
-		tab.noMouseAlpha=0
-		tab:SetAlpha(0)
+		tab.noMouseAlpha=mod.db.profile.alpha
+		tab:SetAlpha(mod.db.profile.alpha)
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local chat = _G[name]
@@ -178,9 +229,10 @@ function mod:OnEnable()
 		if (mod.db.profile.chattabs) then
 			mod:HideTab(tab)
 		end
-		tab.noMouseAlpha=0
-		tab:SetAlpha(0)
+		tab.noMouseAlpha=mod.db.profile.alpha
+		tab:SetAlpha(mod.db.profile.alpha)
 	end
+	self:DecorateTabs()
 end
 
 function mod:OnDisable()

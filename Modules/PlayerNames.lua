@@ -214,6 +214,7 @@ end
 
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("PlayerNames", defaults)
+
 	for k, v in pairs(self.db.realm.names) do
 		if type(v) == "string" then
 			self.db.realm.names[k] = {class = v}
@@ -221,7 +222,7 @@ function mod:OnInitialize()
 	end
 
 	if self.db.global and self.db.global.names then
-		self.db.global.names = nil	-- get rid of old data
+		self.db.global.names = {}	-- get rid of old data
 	end
 end
 
@@ -308,8 +309,8 @@ end
 
 function mod:AddPlayer(name, class, level, save)
 	if name and class and class ~= UNKNOWN then
+		if not self.db.realm.names then self.db.realm.names = {} end
 		if save or self.db.realm.names[name] then	-- if we already have an entry saved from elsewhere, we update it regardless of the requested "save" type - nothing else makes sense
-			self.db.realm.names[name] = self.db.realm.names[name] or {}
 			self.db.realm.names[name].class = class
 			if level and level ~= 0 then
 				self.db.realm.names[name].level = level

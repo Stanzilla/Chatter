@@ -308,9 +308,10 @@ function mod:ClearCustomClassColorCache()
 end
 
 function mod:AddPlayer(name, class, level, save)
+	if not self.db.realm.names then self.db.realm.names = {} end
 	if name and class and class ~= UNKNOWN then
-		if not self.db.realm.names then self.db.realm.names = {} end
 		if save or self.db.realm.names[name] then	-- if we already have an entry saved from elsewhere, we update it regardless of the requested "save" type - nothing else makes sense
+			self.db.realm.names[name] = self.db.realm.names[name] or {}
 			self.db.realm.names[name].class = class
 			if level and level ~= 0 then
 				self.db.realm.names[name].level = level

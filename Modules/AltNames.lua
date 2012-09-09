@@ -350,7 +350,11 @@ function mod:ScanGuildNotes()
 	if not IsInGuild() then
 		return
 	end
-	local gName = (GetGuildInfo("player"))
+	local gName,_,_ = GetGuildInfo("player")
+	-- edge case sometimes this comes back as nil dont know why
+	if not gName then
+		return
+	end
 	--DBG print("Scanning guildnotes!")
 	--DBG local n,nFallback=0,0
 	local names = {}  -- ["playername"]="Playername"   (note lowercase = uppercase) (yes, this works for 'foreign' letters too in WoW, even though it does not in standard Lua)

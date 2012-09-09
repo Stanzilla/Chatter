@@ -209,7 +209,8 @@ function mod:GetLines(...)
 		local region = select(i, ...)
 		if region:GetObjectType() == "FontString" then
 			local linez = tostring(region:GetText())
-			lines[ct] = gsub(linez, "(|HBNplayer:%S-|k:)(%d-)(:%S-|h)(%S-)(|?h?)(:)", fixName)			
+			lines[ct] = gsub(linez, "(|HBNplayer:%S-|k:)(%d-)(:%S-|h)(%S-)(|?h?)(:)", fixName)
+			lines[ct] = gsub(lines[ct], "(|TInterface(.*)|t)", "")
 			ct = ct + 1
 		end
 	end

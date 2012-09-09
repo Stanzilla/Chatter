@@ -121,7 +121,7 @@ function mod:DecorateTabs()
 		local tab = _G["ChatFrame"..i.."Tab"]
 		local chat = _G["ChatFrame"..i]
 		if not chat.dock then
-			tab.mouseOverAlpha = mod.db.profile.alpha
+			tab.mouseOverAlpha = 1
 			tab.noMouseAlpha = mod.db.profile.alpha
 			tab:SetAlpha(mod.db.profile.alpha)
 		end
@@ -130,7 +130,7 @@ function mod:DecorateTabs()
 		local chat = _G[name]
 		local tab = _G[name.."Tab"]
 		if not chat.dock then
-			tab.mouseOverAlpha = mod.db.profile.alpha
+			tab.mouseOverAlpha = 1
 			tab.noMouseAlpha = mod.db.profile.alpha
 			tab:SetAlpha(mod.db.profile.alpha)
 		end		

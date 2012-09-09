@@ -1,4 +1,4 @@
-﻿local mod = Chatter:NewModule("Disable Buttons", "AceHook-3.0")
+local mod = Chatter:NewModule("Disable Buttons", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 
 mod.modName = L["Disable Buttons"]

@@ -78,6 +78,7 @@ L["Yell"] = true
 L["Guild"] = true
 L["Officer"] = true
 L["Party"] = true
+L["Party Leader"] = true
 L["Raid"] = true
 L["Raid Leader"] = true
 L["Raid Warning"] = true

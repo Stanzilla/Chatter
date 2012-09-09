@@ -238,10 +238,14 @@ end
 do
 	function mod:SetBackdrop(frame)
 		local profile = self.db.profile.frames[frame.id]
+		local doTile = false
+		if profile and profile.tileSize and profile.tileSize > 1 then
+			doTile = true
+		end
 		frame:SetBackdrop({
 			bgFile = Media:Fetch("background", profile.background),
 			edgeFile = Media:Fetch("border", profile.border),
-			tile = true,
+			tile = doTile,
 			tileSize = profile.tileSize,
 			edgeSize = profile.edgeSize,
 			insets = {left = profile.inset, right = profile.inset, top = profile.inset, bottom = profile.inset}

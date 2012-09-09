@@ -215,7 +215,7 @@ function mod:OnEnable()
 	self:LibSharedMedia_Registered()
 	self:SetBackdrops()
 	for i = 1, #frames do
-		if self.db.profile.frames["FRAME_" .. i].enable then
+		if self.db.profile.frames and self.db.profile.frames["FRAME_" .. i].enable then
 			frames[i]:Show()
 		end
 		mod:SetAnchors(frames[i], self.db.profile.frames["FRAME_" .. i].combatLogFix)

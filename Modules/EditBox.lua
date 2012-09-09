@@ -231,15 +231,6 @@ local defaults = {
 }
 
 function mod:LibSharedMedia_Registered(mediaType, key)
-	--for k, v in pairs(Media:List("background")) do
-	--	backgrounds[v] = v
-	--end
-	--for k, v in pairs(Media:List("border")) do
-	--	borders[v] = v
-	--end
-	--for k, v in pairs(Media:List("font")) do
-	--	fonts[v] = v
-	--end
 	-- If we were missing this media, reset it now
 	if mediaType == "font" and key == self.db.profile.font then
 		for _, frame in ipairs(self.frames) do
@@ -393,6 +384,10 @@ function mod:OnDisable()
 		self:SetAttach("BOTTOM")
 		f:SetFont(Media:Fetch("font", defaults.profile.font), 14)
 	end
+	if self:IsHooked("ChatEdit_UpdateHeader","SetBorderByChannel") then
+		self:Unhook("ChatEdit_UpdateHeader","SetBorderByChannel")
+	end
+	self:Unhook("FCF_Tab_OnClick")
 end
 
 -- changed the Hide to SetAlpha(0), the new ChatSystem OnHide handlers go though some looping

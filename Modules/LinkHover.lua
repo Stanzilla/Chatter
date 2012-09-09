@@ -12,8 +12,10 @@ local linkTypes = {
 }
 
 function mod:Decorate(frame)
-	self:HookScript(frame, "OnHyperlinkEnter", OnHyperlinkEnter)
-	self:HookScript(frame, "OnHyperlinkLeave", OnHyperlinkLeave)
+	if not self:IsHooked(frame,"OnHyperlinkEnter") then
+		self:HookScript(frame, "OnHyperlinkEnter", OnHyperlinkEnter)
+		self:HookScript(frame, "OnHyperlinkLeave", OnHyperlinkLeave)
+	end
 end
 
 function mod:OnEnable()
@@ -27,6 +29,21 @@ function mod:OnEnable()
 		if cf then
 			self:HookScript(cf, "OnHyperlinkEnter", OnHyperlinkEnter)
 			self:HookScript(cf, "OnHyperlinkLeave", OnHyperlinkLeave)
+		end
+	end
+end
+
+function mod:OnDisable()
+	for i = 1, NUM_CHAT_WINDOWS do
+		local frame = _G["ChatFrame"..i]
+		self:Unhook(frame, "OnHyperlinkEnter")
+		self:Unhook(frame, "OnHyperlinkLeave")
+	end
+	for index,name in ipairs(self.TempChatFrames) do
+		local cf = _G[name]
+		if cf then
+			self:Unhook(cf, "OnHyperlinkEnter")
+			self:Unhook(cf, "OnHyperlinkLeave")
 		end
 	end
 end

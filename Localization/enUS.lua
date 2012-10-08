@@ -137,6 +137,7 @@ L["Lets you link items, enchants, spells, talents, achievements and quests in cu
 -- ./Module/chatPosition.lua
 L["Disable server side storage of chat frame position and size."] = true
 L["Server Positioning"] = true
+L["Disable Server Positioning"] = true
 
 -- ./Modules/ChatScroll.lua
 L["Mousewheel Scroll"] = true

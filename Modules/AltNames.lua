@@ -126,7 +126,7 @@ function mod:GetOptions()
 		},
 		guildLeftConstraint = {
 			order = 202,
-			type = "toggle",
+			type = "input",
 			name = L["Left guild note constraint"],
 			desc = L["Enter the starting character for guild note delimiters, or leave blank for none."],
 			hidden = function() return not mod.db.profile.guildNotes end,
@@ -135,7 +135,7 @@ function mod:GetOptions()
 		},	
 		guildRightConstraint = {
 			order = 202,
-			type = "toggle",
+			type = "input",
 			name = L["Right guild note constraint"],
 			desc = L["Enter the ending character for guild note delimiters, or leave blank for none."],
 			hidden = function() return not mod.db.profile.guildNotes end,

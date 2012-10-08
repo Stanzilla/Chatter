@@ -43,8 +43,14 @@ L["Character to use for the right bracket"] = true
 L["Who is %s's main?"] = true
 L["Set Main"] = true
 L["Enables you to right-click a person's name in chat and set a note on them to be displayed in chat, such as their main character's name. Can also scan guild notes for character names to display, if no note has been manually set."] = true
-L["alt2"] = true
-L["alt3"] = true
+L["Output"] = true
+L["Guild Notes"] = true
+L["Left guild note constraint"] = true
+L["Enter the starting character for guild note delimiters, or leave blank for none."] = true
+L["Right guild note constraint"] = true
+L["Enter the ending character for guild note delimiters, or leave blank for none."] = true
+L["Alt Ranks"] = true
+L["Use notes as main character names for this rank."] = true
 
 --./Modules/AutoPopup.lua
 L["Automatic Whisper Windows"] = true

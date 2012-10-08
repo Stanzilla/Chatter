@@ -25,8 +25,8 @@ local defaults = {
 		colorMode = "COLOR_MOD", 
 		color = {0.6, 0.6, 0.6},
 		guildNotes=true,
-		leftGuildConstraint = "",
-		rightGuildConstraint = "",
+		guildprefix = "",
+		guildsuffix = "",
 		guildranks = {}
 	} 
 }
@@ -124,23 +124,29 @@ function mod:GetOptions()
 				mod:EnableGuildNotes(v)
 			end,
 		},
-		guildLeftConstraint = {
+		guildprefix = {
 			order = 202,
 			type = "input",
-			name = L["Left guild note constraint"],
+			name = L["Guild note prefix"],
 			desc = L["Enter the starting character for guild note delimiters, or leave blank for none."],
 			hidden = function() return not mod.db.profile.guildNotes end,
-			get = function() return mod.db.profile.leftGuildConstraint end,
-			set = function(info,v) 	mod.db.profile.leftGuildConstraint = v end,
+			get = function() return mod.db.profile.guildprefix end,
+			set = function(info,v) 
+				mod.db.profile.guildprefix = v 
+				mod:ScanGuildNotes()
+			end,
 		},	
-		guildRightConstraint = {
+		guildsuffix = {
 			order = 202,
 			type = "input",
-			name = L["Right guild note constraint"],
+			name = L["Guild note suffix"],
 			desc = L["Enter the ending character for guild note delimiters, or leave blank for none."],
 			hidden = function() return not mod.db.profile.guildNotes end,
-			get = function() return mod.db.profile.rightGuildConstraint end,
-			set = function(info,v) 	mod.db.profile.rightGuildConstraint = v end,
+			get = function() return mod.db.profile.guildsuffix end,
+			set = function(info,v) 
+				mod.db.profile.guildsuffix = v 
+				mod:ScanGuildNotes()
+			end,
 		},	
 		rankHeader = {
 			order = 204,
@@ -152,6 +158,20 @@ function mod:GetOptions()
 	return options
 end
 
+local function escape(s)
+	return (s:gsub('%%', '%%%%')
+	     	:gsub('%^', '%%%^')
+		:gsub('%$', '%%%$')
+		:gsub('%(', '%%%(')
+		:gsub('%)', '%%%)')
+		:gsub('%.', '%%%.')
+		:gsub('%[', '%%%[')
+		:gsub('%]', '%%%]')
+		:gsub('%*', '%%%*')
+		:gsub('%+', '%%%+')
+		:gsub('%-', '%%%-')
+		:gsub('%?', '%%%?'))
+end
 
 
 local accept = function(frame, char, editBox)
@@ -211,12 +231,6 @@ function mod:LA_SetAlt(event,main,alt,source)
 	if not source then
 		NAMES[alt] = main
 	end
---	if IsInGuild() then
---		local gname = (GetGuildInfo("player"))
---		if gname and source == LA.GUILD_PREFIX..gname then
---			GUILDNOTES[alt] = main
---		end
---	end
 end
 
 function mod:LA_RemoveAlt(event,main,alt,source)
@@ -410,7 +424,9 @@ function mod:ScanGuildNotes()
 		local name, rank, rankIndex, level, class, zone, note, officernote, online, status = GetGuildRosterInfo(i);
 		local success
 		if self.db.profile.guildranks[rankIndex] then
-			for word in gmatch(strlower(note), "[%a\128-\255]+") do
+			for word in gmatch(strlower(note), self.db.profile.guildprefix.."[%a\128-\255]+"..self.db.profile.guildsuffix) do
+				word = gsub(word, "^"..(escape(self.db.profile.guildprefix)), "")
+				word = gsub(word, (escape(self.db.profile.guildsuffix)).."$", "")
 				if names[word] then
 					GUILDNOTES[name] = names[word]
 					LA:SetAlt(name,names[word],LA.GUILD_PREFIX..gName)

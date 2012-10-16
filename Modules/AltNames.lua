@@ -388,8 +388,10 @@ function mod:GUILD_ROSTER_UPDATE(event,arg1)
 	if not guild_available then
 		local check = GetGuildRosterInfo(1)
 		if not check then
-			mod:ScheduleTimer(mod.GUILD_ROSTER_UPDATE, 1)
+			self:ScheduleTimer("GUILD_ROSTER_UPDATE", 0.1, true)
+			return
 		else
+			self:CancelTimer("GUILD_ROSTER_UPDATE", true)
 			guild_available=true
 		end
 	end

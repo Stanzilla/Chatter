@@ -258,8 +258,6 @@ function mod:OnEnable()
 
 	leftBracket, rightBracket = self.db.profile.leftBracket, self.db.profile.rightBracket
 	
-	mod:EnableGuildNotes(mod.db.profile.guildNotes)
-	
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
 		if cf ~= COMBATLOG then
@@ -273,6 +271,7 @@ function mod:OnEnable()
 		end
 	end
 	self.colorMod = Chatter:GetModule("Player Class Colors")
+	mod:EnableGuildNotes(mod.db.profile.guildNotes)
 end
 
 local types = {"SELF", "PLAYER", "FRIEND", "PARTY"}
@@ -356,7 +355,6 @@ end
 function mod:EnableGuildNotes(enable)
 	GUILDNOTES={}
 	if enable then
-		mod:RegisterEvent("GUILD_ROSTER_UPDATE")
 		if IsInGuild() then
 			GuildRoster()
 			local ranks = {}
@@ -378,13 +376,24 @@ function mod:EnableGuildNotes(enable)
 
 		end
 		mod:ScanGuildNotes()	-- Unfortunately we can't count on GuildRoster() triggering the event if someone else triggered it recently. So we try once at first straight off the bat.
+		mod:RegisterEvent("GUILD_ROSTER_UPDATE")
 	else
 		mod:UnregisterEvent("GUILD_ROSTER_UPDATE")
 	end
 end
 
 local doscan=true	-- always the first time we start up
+local guild_available=false
 function mod:GUILD_ROSTER_UPDATE(event,arg1)
+	if not guild_available then
+		local check = GetGuildRosterInfo(1)
+		if not check then
+			mod:GUILD_ROSTER_UPDATE()
+		else
+			guild_available=true
+		end
+	end
+	
 	-- arg1 gets set for SOME changes to the guild, but notably not for player notes.. doh  (unless you're the one editing them yourself)
 	-- we force a scan when the guild frame is actually visible (i.e. when we know the player is actually interested in seeing changes)
 	-- i'd like to be able to not have the guildframe check there, but there's plenty of stupid-ass addons that spam GuildRoster() every 10/15/20 seconds, so ... no.

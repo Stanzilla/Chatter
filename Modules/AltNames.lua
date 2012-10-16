@@ -1,4 +1,4 @@
-local mod = Chatter:NewModule("Alt Linking", "AceHook-3.0", "AceEvent-3.0")
+local mod = Chatter:NewModule("Alt Linking", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
 local LA
 mod.modName = L["Alt Linking"]
@@ -388,7 +388,7 @@ function mod:GUILD_ROSTER_UPDATE(event,arg1)
 	if not guild_available then
 		local check = GetGuildRosterInfo(1)
 		if not check then
-			mod:GUILD_ROSTER_UPDATE()
+			mod:ScheduleTimer(mod.GUILD_ROSTER_UPDATE, 1)
 		else
 			guild_available=true
 		end

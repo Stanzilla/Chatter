@@ -129,7 +129,7 @@ function mod:GetOptions()
 			type = "input",
 			name = L["Guild note prefix"],
 			desc = L["Enter the starting character for guild note delimiters, or leave blank for none."],
-			hidden = function() return not mod.db.profile.guildNotes end,
+			disabled = function() return not mod.db.profile.guildNotes end,
 			get = function() return mod.db.profile.guildprefix end,
 			set = function(info,v) 
 				mod.db.profile.guildprefix = v 
@@ -141,7 +141,7 @@ function mod:GetOptions()
 			type = "input",
 			name = L["Guild note suffix"],
 			desc = L["Enter the ending character for guild note delimiters, or leave blank for none."],
-			hidden = function() return not mod.db.profile.guildNotes end,
+			disabled = function() return not mod.db.profile.guildNotes end,
 			get = function() return mod.db.profile.guildsuffix end,
 			set = function(info,v) 
 				mod.db.profile.guildsuffix = v 
@@ -152,7 +152,6 @@ function mod:GetOptions()
 			order = 204,
 			type = "header",
 			name = L["Alt Ranks"],
-			hidden = function() return not mod.db.profile.guildNotes end,
 		},
 	}
 	return options
@@ -371,6 +370,7 @@ function mod:EnableGuildNotes(enable)
 					order = 205+k,
 					get = function() return self.db.profile.guildranks[k] end,
 					set = function(info,value) self.db.profile.guildranks[k] = value end,
+					disabled = function() return not mod.db.profile.guildNotes end,
 				}
 			end
 

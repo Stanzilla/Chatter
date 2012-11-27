@@ -26,6 +26,8 @@ local defaults = {
 			[L["LookingForGroup"]] = "[LFG]",
 			[L["Battleground"]] = "[BG]",
 			[L["Battleground Leader"]] = "[BL]",
+			[L["Instance"]] = "[I]",
+			[L["Instance Leader"]] = "[IL]",
 			-- Not localized here intentionally
 			["Whisper From"] = "[W:From]",
 			["Whisper To"] = "[W:To]",

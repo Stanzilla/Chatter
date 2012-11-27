@@ -92,7 +92,8 @@ L["Battleground"] = true
 L["Battleground Leader"] = true
 L["Whisper"] = true
 L["Select a color for this channel"] = true
-
+L["Instance Leader"] = true
+L["Instance"] = true
 -- ./Modules/ChannelNames.lua
 L["Channel Names"] = true
 L["$$EMPTY$$"] = true

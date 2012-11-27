@@ -436,6 +436,7 @@ function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 end
 
 function mod:GetColor(className, isLocal)
+	if not className then return end
 	if isLocal then
 		className = localizedToSystemClass[className]
 	end

@@ -491,7 +491,7 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 		bleftBracket = leftBracket
 		brightBracket = rightBracket
 	end
-	if englishClass ~= "" then --Friend logging off/Starcraft 2
+	if engilshClass and englishClass ~= "" then --Friend logging off/Starcraft 2
 		if not strmatch(fakeName, "|cff") then
 			-- Handle coloring here
 			if mod.db.profile.nameColoring == "CLASS" then

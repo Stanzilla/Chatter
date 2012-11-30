@@ -19,7 +19,6 @@ local options = {
 					name = L["Standalone Config"],
 					desc = L["Open a standalone config window. You might consider installing |cffffff00BetterBlizzOptions|r to make the Blizzard UI options panel resizable."],
 					func = function()
-						InterfaceOptionsFrame:Hide()
 						AceConfigDialog:SetDefaultSize("Chatter", 500, 550)
 						AceConfigDialog:Open("Chatter")
 					end

@@ -85,11 +85,7 @@ function mod:ChangedVars(event,cvar,value)
 	end
 end
 
-function mod:InterfaceOptionsSocialPanelChatMouseScroll_SetScrolling()
-	-- NOPE.
-end
 function mod:OnEnable()
-	--self:SecureHook("InterfaceOptionsSocialPanelChatMouseScroll_SetScrolling")
 	if GetCVar("chatMouseScroll") == "1" then
 		return
 	end

@@ -1,5 +1,7 @@
+local addon, private = ...
+local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Player Class Colors", "AceHook-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("Chatter")
+local L = LibStub("AceLocale-3.0"):GetLocale(addon)
 local AceTab = LibStub("AceTab-3.0")
 
 mod.modName = L["Player Names"]
@@ -277,7 +279,7 @@ function mod:OnEnable()
 		self:RawHook(cf, "AddMessage", true)
 	end
 	if self.db.profile.useTabComplete then
-		AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
+		AceTab:RegisterTabCompletion(addon, nil, tabComplete)
 	end
 
 	if CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS.RegisterCallback then
@@ -295,8 +297,8 @@ function mod:OnEnable()
 end
 
 function mod:OnDisable()
-	if AceTab:IsTabCompletionRegistered("Chatter") then
-		AceTab:UnregisterTabCompletion("Chatter")
+	if AceTab:IsTabCompletionRegistered(addon) then
+		AceTab:UnregisterTabCompletion(addon)
 	end
 
 	if CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS.UnregisterCallback then
@@ -738,10 +740,10 @@ function mod:GetOptions()
 				get = function() return mod.db.profile.useTabComplete end,
 				set = function(info, v)
 					mod.db.profile.useTabComplete = v
-					if v and not AceTab:IsTabCompletionRegistered("Chatter") then
-						AceTab:RegisterTabCompletion("Chatter", nil, tabComplete)
-					elseif not v and AceTab:IsTabCompletionRegistered("Chatter") then
-						AceTab:UnregisterTabCompletion("Chatter")
+					if v and not AceTab:IsTabCompletionRegistered(addon) then
+						AceTab:RegisterTabCompletion(addon, nil, tabComplete)
+					elseif not v and AceTab:IsTabCompletionRegistered(addon) then
+						AceTab:UnregisterTabCompletion(addon)
 					end
 				end
 			},

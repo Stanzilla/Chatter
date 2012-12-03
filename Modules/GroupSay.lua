@@ -44,17 +44,15 @@ function mod:SendChatMessage(input)
 end
 
 function mod:GetGroupDistribution(slash)
-	local inInstance, kind = IsInInstance()
-	if inInstance and (kind == "pvp") then
-		return slash and "/bg " or "BATTLEGROUND"
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+		return slash and "/i" or "INSTANCE"
+	elseif IsInRaid(LE_PARTY_CATEGORY_HOME) then
+		return slash and "/ra" or "RAID"
+	elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+		return slash and "/p" or "PARTY"
+	else
+		return slash and "/s " or "SAY"
 	end
-	if IsInRaid() then
-		return slash and "/ra " or "RAID"
-	end
-	if IsInGroup() then
-		return slash and "/p " or "PARTY"
-	end
-	return slash and "/s " or "SAY"
 end
 
 function mod:Info()

@@ -438,7 +438,6 @@ function mod:CHAT_MSG_CHANNEL_LEAVE(evt, _, name, _, _, _, _, _, _, chan)
 end
 
 function mod:GetColor(className, isLocal)
-	if not className then return "7f7f7f" end
 	if isLocal then
 		className = localizedToSystemClass[className]
 	end
@@ -460,12 +459,11 @@ local function fixLogin(head,id,misc,who,xtra,colon)
 	end
 end
 
-
 --[[
 	Taken from Basic Chat Mods since funkeh already did the work
 --]]
 local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
-	local _, charName, _, _, _, _, _, englishClass = BNGetToonInfo(id)
+	local _, charName, _, _, _, _, _, localizedClass = BNGetToonInfo(id)
 	if charName ~= "" then
 		if storedName then storedName[id] = charName end --Store name for logoff events, if enabled
 		--Replace real name with charname if enabled
@@ -493,16 +491,18 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 		bleftBracket = leftBracket
 		brightBracket = rightBracket
 	end
-	if engilshClass and englishClass ~= "" then --Friend logging off/Starcraft 2
+
+	if localizedClass then --Friend logging off/Starcraft 2
 		if not strmatch(fakeName, "|cff") then
 			-- Handle coloring here
 			if mod.db.profile.nameColoring == "CLASS" then
-				fakeName = "|cFF"..mod:GetColor(englishClass, true)..fakeName.."|r"
+				fakeName = "|cFF"..mod:GetColor(localizedClass, true)..fakeName.."|r"
 			elseif mod.db.profile.nameColoring == "NAME" then
 				fakeName = mod:ColorName(fakeName)
 			end
 		end
 	end
+
 	if waslogin then
 		return misc..moreMisc..bleftBracket..fakeName..brightBracket..tag
 	else

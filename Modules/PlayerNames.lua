@@ -442,6 +442,7 @@ function mod:GetColor(className, isLocal)
 		className = localizedToSystemClass[className]
 	end
 	local tbl = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[className] or RAID_CLASS_COLORS[className]
+	if not tbl then return "7f7f7f" end
 	return format("%02x%02x%02x", tbl.r*255, tbl.g*255, tbl.b*255)
 end
 

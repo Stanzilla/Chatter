@@ -133,8 +133,8 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_SAY", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_GUILD", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_OFFICER", "ParseChat")
-	self:RegisterEvent("CHAT_MSG_INSTANCE", "ParseChat")
-	self:RegisterEvent("CHAT_MSG_INSTANCE_LEADER", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_INSTANCE_CHAT", "ParseChat")
+	self:RegisterEvent("CHAT_MSG_INSTANCE_CHAT_LEADER", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_PARTY", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_PARTY_LEADER", "ParseChat")
 	self:RegisterEvent("CHAT_MSG_RAID", "ParseChat")
@@ -151,8 +151,8 @@ function mod:OnEnable()
 		"SAY", CHAT_MSG_SAY,
 		"GUILD", CHAT_MSG_GUILD,
 		"OFFICER", CHAT_MSG_OFFICER,
-		"INSTANCE", INSTANCE_CHAT,
-		"INSTANCE_LEADER", INSTANCE_CHAT_LEADER,
+		"INSTANCE_CHAT", INSTANCE_CHAT,
+		"INSTANCE_CHAT_LEADER", INSTANCE_CHAT_LEADER,
 		"PARTY", CHAT_MSG_PARTY,
 		"PARTY_LEADER", CHAT_MSG_PARTY_LEADER,
 		"RAID", CHAT_MSG_RAID,

@@ -45,7 +45,7 @@ end
 
 function mod:GetGroupDistribution(slash)
 	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
-		return slash and "/i" or "INSTANCE"
+		return slash and "/i" or "INSTANCE_CHAT"
 	elseif IsInRaid(LE_PARTY_CATEGORY_HOME) then
 		return slash and "/ra" or "RAID"
 	elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then

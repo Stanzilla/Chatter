@@ -184,7 +184,7 @@ local accept = function(frame, char, editBox)
 end
 
 StaticPopupDialogs['MENUITEM_SET_MAIN'] = {
-	preferredIndex = 3,
+	preferredindex = STATICPOPUP_NUMDIALOGS,
 	text		= L["Who is %s's main?"],
 	button1		= TEXT(ACCEPT),
 	button2		= TEXT(CANCEL),

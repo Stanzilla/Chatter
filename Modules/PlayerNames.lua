@@ -442,7 +442,7 @@ function mod:GetColor(className, isLocal)
 		className = localizedToSystemClass[className]
 	end
 	local tbl = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[className] or RAID_CLASS_COLORS[className]
-	if not tbl then return "7f7f7f" end
+	if not tbl then return end
 	return format("%02x%02x%02x", tbl.r*255, tbl.g*255, tbl.b*255)
 end
 
@@ -497,7 +497,8 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 		if not strmatch(fakeName, "|cff") then
 			-- Handle coloring here
 			if mod.db.profile.nameColoring == "CLASS" then
-				fakeName = "|cFF"..mod:GetColor(localizedClass, true)..fakeName.."|r"
+				local color = mod:GetColor(localizedClass, true)
+				if color then fakeName = "|cFF"..color..fakeName.."|r" end
 			elseif mod.db.profile.nameColoring == "NAME" then
 				fakeName = mod:ColorName(fakeName)
 			end

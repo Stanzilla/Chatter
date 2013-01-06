@@ -6,7 +6,7 @@
 ## Author: Antiarc
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, LibSink-2.0, LibAlts-1.0, LibDialog-1.0
 ## X-Category: Chat/Communication
-## Version: 1.0
+## Version: @project-version@
 ## SavedVariables: ChatterDB
 
 #@no-lib-strip@

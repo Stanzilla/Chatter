@@ -28,6 +28,7 @@ Libs\LibSink-2.0\lib.xml
 Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 Libs\LibAlts-1.0\lib.xml
 Libs\LibDialog-1.0\lib.xml
+Libs\LibChatAnims\LibChatAnims.xml
 #@end-no-lib-strip@
 
 
@@ -42,3 +43,4 @@ Localization\koKR.lua
 
 Chatter.lua
 modules.xml
+

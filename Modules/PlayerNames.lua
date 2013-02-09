@@ -100,7 +100,7 @@ do
 			channel = strlower(select(2, GetChannelName(cf:GetAttribute("channelTarget"))))
 		elseif channel == "OFFICER" then
 			channel = "GUILD"
-		elseif channel == "RAID_WARNING" or channel == "RAID_LEADER" or channel == "BATTLEGROUND" or channel == "BATTLEGROUND_LEADER" then
+		elseif channel == "RAID_WARNING" or channel == "RAID_LEADER" or channel == "INSTANCE_CHAT" or channel == "INSTANCE_CHAT_LEADER" then
 			channel = "RAID"
 		end
 		if channels[channel] then

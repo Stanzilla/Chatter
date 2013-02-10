@@ -179,6 +179,7 @@ function mod:AddCustomChannels(...)
 				type = "select",
 				name = name,
 				values = Media:HashTable("sound") or {},
+				dialogControl = "LSM30_Sound",
 				desc = L["Play a sound when a message is received in this channel"],
 				order = type(id) == "number" and 103 or 102,
 				get = function() return self.db.profile.customChannels[id] or "None" end,

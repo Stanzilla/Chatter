@@ -235,9 +235,6 @@ function mod:ParseChat(evt, msg, sender, ...)
 			-- check to see if we need to highlight
 			if evt == "CHAT_MSG_CHANNEL" then
 				local num = select(7, ...)
-				if num == 0 then
-					num = select(8,...)
-				end					
 				local hl = self.db.profile.highlights[""..num]
 				if hl then
 					self:Highlight(msg, sender, k, num, evt)

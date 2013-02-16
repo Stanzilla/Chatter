@@ -28,7 +28,8 @@ local defaults = {
 		useSink = true,
 		rerouteMessage = true,
 		customChannels = {},
-		sinkOptions = {}
+		sinkOptions = {},
+		highlights = {}
 	}
 }
 
@@ -176,17 +177,34 @@ function mod:AddCustomChannels(...)
 		local id, name = select(i, ...)
 		if not options[name:gsub(" ", "_")] then
 			options.config.args[name:gsub(" ", "_")] = {
-				type = "select",
+				type = "group",
 				name = name,
-				values = Media:HashTable("sound") or {},
-				dialogControl = "LSM30_Sound",
-				desc = L["Play a sound when a message is received in this channel"],
-				order = type(id) == "number" and 103 or 102,
-				get = function() return self.db.profile.customChannels[id] or "None" end,
-				set = function(info, v)
-					self.db.profile.customChannels[id] = v
-					PlaySoundFile(Media:Fetch("sound", v))
-				end
+				args = {
+					sound = {
+						type = "select",
+						name = L["Use sound"],
+						values = Media:HashTable("sound") or {},
+						dialogControl = "LSM30_Sound",
+						desc = L["Play a sound when a message is received in this channel"],
+						order = type(id) == "number" and 103 or 102,
+						get = function() return self.db.profile.customChannels[id] or "None" end,
+						set = function(info, v)
+							self.db.profile.customChannels[id] = v
+							PlaySoundFile(Media:Fetch("sound", v))
+						end
+					},
+					highlight = {
+						type = "toggle",
+						name = L["Enable"].." "..L["Highlights"],
+						desc = L["Alerts you when someone says a keyword or speaks in a specified channel."],
+						get = function()
+							return self.db.profile.highlights[""..id]
+						end,
+						set = function(info, v)
+							self.db.profile.highlights[""..id] = v
+						end
+					}
+				}
 			}
 		end
 	end
@@ -194,7 +212,6 @@ end
 
 function mod:ParseChat(evt, msg, sender, ...)
 	if sender == player then return end
-
 	local filters = ChatFrame_GetMessageEventFilters(evt)
 	if filters then
 		for i, filterFunc in ipairs(filters) do
@@ -206,30 +223,45 @@ function mod:ParseChat(evt, msg, sender, ...)
 		end
 	end
 
+--[[ No idea why url copy should disable highlighting
 	if self.urlcopy and self.urlcopy:IsEnabled() then
 		local match = self.urlcopy.filterFunc(nil, nil, msg)
 		if not match then return end
 	end
-
+--]]
 	local msg = msg:lower()
 	for k, v in pairs(words) do
 		if msg:find(k) then
-			self:Highlight(msg, sender, k, select(7, ...), evt)
-			return
+			-- check to see if we need to highlight
+			if evt == "CHAT_MSG_CHANNEL" then
+				local num = select(7, ...)
+				local hl = self.db.profile.highlights[""..num]
+				if hl then
+					self:Highlight(msg, sender, k, select(7, ...), evt)
+					return
+				end
+			else
+				local e = evt:gsub("^CHAT_MSG_", "")
+				local hl = self.db.profile.highlights[""..e]
+				if hl then
+					self:Highlight(msg, sender, k, e, evt)
+					return
+				end
+			end
 		end
 	end
 
 	if evt == "CHAT_MSG_CHANNEL" then
-		local num = select(6, ...)
+		local num = select(7, ...)
 		local snd = self.db.profile.customChannels[num]
-		if snd then
+		if snd and self.db.profile.sound then
 			PlaySoundFile(Media:Fetch("sound", snd))
 			return
 		end
 	else
 		local e = evt:gsub("^CHAT_MSG_", "")
 		local snd = self.db.profile.customChannels[e]
-		if snd then
+		if snd and self.db.profile.sound then
 			PlaySoundFile(Media:Fetch("sound", snd))
 			return
 		end
@@ -241,7 +273,13 @@ function mod:Highlight(msg, who, what, where, event)
 		where = _G[event] or event:gsub("CHAT_MSG_", "")
 	end
 	if self.db.profile.sound then
-		PlaySoundFile(Media:Fetch("sound", self.db.profile.soundFile))
+		-- when highlighting is hit we dont use the channels sound and we should. default should be used if
+		-- we didnt explictly set the sound
+		if self.db.profile.customChannels[where] ~= nil then
+			PlaySoundFile(Media:Fetch("sound", self.db.profile.customChannels[where]))
+		else	
+			PlaySoundFile(Media:Fetch("sound", self.db.profile.soundFile))
+		end
 	end
 	if self.db.profile.useSink then
 		if mod.db.profile.rerouteMessage then

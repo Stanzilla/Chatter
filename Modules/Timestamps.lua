@@ -105,9 +105,7 @@ function mod:OnInitialize()
 end
 
 function mod:Decorate(frame)
-	if not self:IsHooked(frame,"AddMessage") then
-		self:RawHook(frame, "AddMessage", true)
-	end
+	self:RawHook(frame, "AddMessage", true)
 end
 
 function mod:OnEnable()

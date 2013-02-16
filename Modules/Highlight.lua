@@ -75,6 +75,7 @@ local options = {
 				end,
 				disabled = function() return not mod.db.profile.useSink end
 			},
+			--[[
 			soundFile = {
 				type = "select",
 				name = L["Sound File"],
@@ -90,6 +91,7 @@ local options = {
 				values = function () if Media:HashTable("sound") then return Media:HashTable("sound") else return defSound end end,
 				disabled = function() return not mod.db.profile.sound end
 			},
+			--]]
 			addWord = {
 				type = "input",
 				name = L["Add Word"],
@@ -231,7 +233,13 @@ function mod:ParseChat(evt, msg, sender, ...)
 --]]
 	local msg = msg:lower()
 	for k, v in pairs(words) do
-		if msg:find(k) then
+		local found = false
+		for item in msg:gmatch("[^%s]+") do
+			if item == k then
+				found = true
+			end
+		end			
+		if found then
 			-- check to see if we need to highlight
 			if evt == "CHAT_MSG_CHANNEL" then
 				local num = select(7, ...)
@@ -250,7 +258,7 @@ function mod:ParseChat(evt, msg, sender, ...)
 			end
 		end
 	end
-
+--[[
 	if evt == "CHAT_MSG_CHANNEL" then
 		local num = select(7, ...)
 		local snd = self.db.profile.customChannels[num]
@@ -266,6 +274,7 @@ function mod:ParseChat(evt, msg, sender, ...)
 			return
 		end
 	end
+--]]
 end
 
 function mod:Highlight(msg, who, what, where, event)

@@ -37,9 +37,7 @@ function mod:TellTarget(frame, msg)
 	if UnitIsPlayer("target") and (UnitIsFriend("player", "target") or UnitIsCharmed("target"))  then
 		unitname, realm = UnitName("target")
 		if unitname then unitname = gsub(unitname, " ", "") end
-		if unitname and not UnitIsSameServer("player", "target") then
-			unitname = unitname .. "-" .. gsub(realm, " ", "")
-		end
+		if realm then unitname = unitname .. "-" .. gsub(realm, " ", "") end
 	end
 	ChatFrame_SendTell((unitname or "InvalidTarget"), frame)
 	_G[frame:GetName() .. "EditBox"]:SetText(msg)

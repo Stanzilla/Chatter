@@ -253,7 +253,7 @@ function mod:SetHyperlink(frame, link, ...)
 		Dialog:Spawn("ChatterUrlCopyDialog", {url=currentLink})
 		return ...
 	end
-	return frame:SetHyperlink(link, ...)
+	return self.hooks[frame].SetHyperlink(frame, link, text, button, ...) 
 end
 
 function mod:Info()

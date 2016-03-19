@@ -421,7 +421,7 @@ end
 	Taken from Basic Chat Mods since funkeh already did the work
 --]]
 local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
-	local _, charName, _, _, _, _, _, localizedClass = BNGetToonInfo(id)
+	local _, charName, _, _, _, _, _, localizedClass = BNGetGameAccountInfo(id)
 	if charName ~= "" then
 		if storedName then storedName[id] = charName end --Store name for logoff events, if enabled
 		--Replace real name with charname if enabled

@@ -274,7 +274,7 @@ function mod:OnEnable()
 		storedName = {}
 		local _, n = BNGetNumFriends()
 		for i=1, n do
-			local _, _, _, toon, id = BNGetFriendInfo(i)
+			local _, _, _, _, toon, id = BNGetFriendInfo(i)
 			storedName[id] = toon
 		end
 	end

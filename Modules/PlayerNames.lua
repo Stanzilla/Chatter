@@ -674,17 +674,6 @@ function mod:GetOptions()
 					wipeCache()
 				end,
 				hidden = function() return not mod.db.profile.includeLevel end
-			},
-			colorBy = {
-				type = "select",
-				name = L["Color Player Names By..."],
-				desc = L["Select a method for coloring player names"],
-				values = colorMethods,
-				get = function() return mod.db.profile.nameColoring end,
-				set = function(info, val)
-					mod.db.profile.nameColoring = val
-					wipeCache()
-				end
 			}
 		}
 

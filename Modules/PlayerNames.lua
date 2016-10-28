@@ -64,7 +64,7 @@ local defaults = {
 	},
 	profile = {
 		saveData = false,
-		nameColoring = "CLASS",
+		blizzardNameColoring = true,
 		leftBracket = "[",
 		rightBracket = "]",
 		bnetBrackets = true,
@@ -193,6 +193,8 @@ function mod:OnEnable()
 			storedName[id] = toon
 		end
 	end
+
+	self:TogglePlayerColors(self.db.profile.blizzardNameColoring)
 end
 
 function mod:OnDisable()
@@ -457,6 +459,35 @@ function mod:Info()
 	return L["Provides options to color player names, add player levels, and add tab completion of player names."]
 end
 
+function mod:TogglePlayerColors(val)
+	ToggleChatColorNamesByClassGroup(val, "SAY")
+	ToggleChatColorNamesByClassGroup(val, "EMOTE")
+	ToggleChatColorNamesByClassGroup(val, "YELL")
+	ToggleChatColorNamesByClassGroup(val, "GUILD")
+	ToggleChatColorNamesByClassGroup(val, "OFFICER")
+	ToggleChatColorNamesByClassGroup(val, "GUILD_ACHIEVEMENT")
+	ToggleChatColorNamesByClassGroup(val, "ACHIEVEMENT")
+	ToggleChatColorNamesByClassGroup(val, "WHISPER")
+	ToggleChatColorNamesByClassGroup(val, "PARTY")
+	ToggleChatColorNamesByClassGroup(val, "PARTY_LEADER")
+	ToggleChatColorNamesByClassGroup(val, "RAID")
+	ToggleChatColorNamesByClassGroup(val, "RAID_LEADER")
+	ToggleChatColorNamesByClassGroup(val, "RAID_WARNING")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL1")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL2")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL3")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL4")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL5")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL6")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL7")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL8")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL9")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL10")
+	ToggleChatColorNamesByClassGroup(val, "CHANNEL11")
+	ToggleChatColorNamesByClassGroup(val, "INSTANCE_CHAT")
+	ToggleChatColorNamesByClassGroup(val, "INSTANCE_CHAT_LEADER")
+end
+
 local options
 function mod:GetOptions()
 	if not options then	-- save RAM / load time
@@ -674,6 +705,16 @@ function mod:GetOptions()
 					wipeCache()
 				end,
 				hidden = function() return not mod.db.profile.includeLevel end
+			},
+			colorBy = {
+				type = "toggle",
+				name = L["Color Player Names By Class"],
+				desc = L["Color Player Names By Class"],
+				get = function() return mod.db.profile.blizzardNameColoring end,
+				set = function(info, val)
+					mod.db.profile.blizzardNameColoring = val
+					mod:TogglePlayerColors(val)
+				end
 			}
 		}
 

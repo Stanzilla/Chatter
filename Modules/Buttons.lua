@@ -86,6 +86,11 @@ function mod:OnEnable()
 	QuickJoinToastButton:SetScript("OnShow", hide)
 	ChatFrameChannelButton:Hide()
 	ChatFrameChannelButton:SetScript("OnShow", hide)
+	ChatFrameToggleVoiceDeafenButton:Hide()
+	ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", hide)
+	ChatFrameToggleVoiceMuteButton:Hide()
+	ChatFrameToggleVoiceMuteButton:SetScript("OnShow", hide)
+
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
 		self:Decorate(f)
@@ -117,6 +122,10 @@ function mod:OnDisable()
 	QuickJoinToastButton:SetScript("OnShow", nil)
 	ChatFrameChannelButton:Show()
 	ChatFrameChannelButton:SetScript("OnShow", nil)
+	ChatFrameToggleVoiceDeafenButton:Show()
+	ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", nil)
+	ChatFrameToggleVoiceMuteButton:Show()
+	ChatFrameToggleVoiceMuteButton:SetScript("OnShow", nil)
 	self:DisableBottomButton()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]

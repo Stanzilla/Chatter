@@ -36,7 +36,7 @@ local defaults = {
 			["busy BN Whisper To"] = "<Busy>[BN:To]"
 		},
 		addSpace = true
-	}	
+	}
 }
 
 local channels
@@ -94,7 +94,7 @@ function mod:OnInitialize()
 	excludeChannels(EnumerateServerChannels())
 	for k, v in pairs(serverChannels) do
 		addChannel(k)
-	end	
+	end
 	self:AddCustomChannels(GetChannelList())
 
 	for k, v in pairs(self.db.profile.channels) do
@@ -105,7 +105,7 @@ function mod:OnInitialize()
 end
 
 function mod:AddCustomChannels(...)
-	for i = 1, select("#", ...), 2 do
+	for i = 1, select("#", ...), 3 do
 		local id, name = select(i, ...)
 		if not serverChannels[name] and not options[name:gsub(" ", "_")] then
 			options[name:gsub(" ", "_")] = {
@@ -167,7 +167,7 @@ local function replaceChannelRW(msg, channel)
 end
 
 function mod:AddMessage(frame, text, ...)
-	if not text then 
+	if not text then
 		return self.hooks[frame].AddMessage(frame, text, ...)
 	end
 	-- removed the start of check, since blizz timestamps inject themselves in front of the line

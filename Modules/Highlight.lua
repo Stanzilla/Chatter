@@ -150,7 +150,7 @@ end
 
 function mod:AddCustomChannels(...)
 	-- excludeChannels(EnumerateServerChannels())
-	for i = 1, select("#", ...), 2 do
+	for i = 1, select("#", ...), 3 do
 		local id, name = select(i, ...)
 		if not options[name:gsub(" ", "_")] then
 			options.config.args[name:gsub(" ", "_")] = {
@@ -200,14 +200,14 @@ function mod:ParseChat(evt, msg, sender, ...)
 		end
 	end
 
-	local msg = msg:lower()
+	msg = msg:lower()
 	for k, v in pairs(words) do
 		local found = false
 		for item in msg:gmatch("[^%s]+") do
 			if item == k then
 				found = true
 			end
-		end			
+		end
 		if found then
 			-- check to see if we need to highlight
 			if evt == "CHAT_MSG_CHANNEL" then

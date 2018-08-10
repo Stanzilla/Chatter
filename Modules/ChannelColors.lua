@@ -35,24 +35,24 @@ function mod:OnEnable()
 	self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	self:AddChannels(GetChannelList())
 	self:AddChannels(
-		"SAY", CHAT_MSG_SAY,
-		"YELL", CHAT_MSG_YELL,
-		"GUILD", CHAT_MSG_GUILD,
-		"OFFICER", CHAT_MSG_OFFICER,
-		"PARTY", CHAT_MSG_PARTY,
-		"PARTY_LEADER", CHAT_MSG_PARTY_LEADER,
-		"RAID", CHAT_MSG_RAID,
-		"RAID_LEADER", CHAT_MSG_RAID_LEADER,
-		"RAID_WARNING", CHAT_MSG_RAID_WARNING,
-		"INSTANCE_CHAT", INSTANCE_CHAT,
-		"INSTANCE_CHAT_LEADER", INSTANCE_CHAT_LEADER,
-		"WHISPER", CHAT_MSG_WHISPER_INFORM,
-		"BN_WHISPER", CHAT_MSG_BN_WHISPER
+		"SAY", CHAT_MSG_SAY, nil,
+		"YELL", CHAT_MSG_YELL, nil,
+		"GUILD", CHAT_MSG_GUILD, nil,
+		"OFFICER", CHAT_MSG_OFFICER, nil,
+		"PARTY", CHAT_MSG_PARTY, nil,
+		"PARTY_LEADER", CHAT_MSG_PARTY_LEADER, nil,
+		"RAID", CHAT_MSG_RAID, nil,
+		"RAID_LEADER", CHAT_MSG_RAID_LEADER, nil,
+		"RAID_WARNING", CHAT_MSG_RAID_WARNING, nil,
+		"INSTANCE_CHAT", INSTANCE_CHAT, nil,
+		"INSTANCE_CHAT_LEADER", INSTANCE_CHAT_LEADER, nil,
+		"WHISPER", CHAT_MSG_WHISPER_INFORM, nil,
+		"BN_WHISPER", CHAT_MSG_BN_WHISPER, nil
 	)
 end
 
 function mod:AddChannels(...)
-	for i = 1, select("#", ...), 2 do
+	for i = 1, select("#", ...), 3 do
 		local id, name = select(i, ...)
 		self.db.profile.colors[name] = self.db.profile.colors[name] or {}
 		if not self.db.profile.colors[name].r then
@@ -87,11 +87,11 @@ function mod:AddChannels(...)
 	end
 end
 
-function mod:CHAT_MSG_CHANNEL_NOTICE(evt, notice, _, _, fullname, _, _, channelType, channelNumber, channelName)	
+function mod:CHAT_MSG_CHANNEL_NOTICE(evt, notice, _, _, fullname, _, _, channelType, channelNumber, channelName)
 	if notice == "YOU_JOINED" then
 		self:AddChannels(GetChannelList())
 		channelName = channelName:match("^(%w+)")
-		local c = self.db.profile.colors[channelName] 
+		local c = self.db.profile.colors[channelName]
 		if c then
 			ChangeChatColor("CHANNEL" .. channelNumber, c.r, c.g, c.b);
 		end

@@ -12,6 +12,7 @@ local pairs = _G.pairs
 local select = _G.select
 
 -- GLOBALS: NUM_CHAT_WINDOWS ChatEdit_DeactivateChat
+-- luacheck: globals NUM_CHAT_WINDOWS ChatEdit_DeactivateChat
 
 local VALID_ATTACH_POINTS = {
 	TOP = L["Top"],
@@ -429,7 +430,7 @@ function mod:SetBackdrop()
 		local c = self.db.profile.backgroundColor
 		frame:SetBackdropColor(c.r, c.g, c.b, c.a)
 
-		local c = self.db.profile.borderColor
+		c = self.db.profile.borderColor
 		frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
 	end
 end
@@ -440,7 +441,7 @@ function mod:SetBorderByChannel(...)
 		local f = _G["ChatFrame"..index.."EditBox"]
 		local attr = f:GetAttribute("chatType")
 		if attr == "CHANNEL" then
-			local chan = f:GetAttribute("channelTarget")
+			local chan = ChatEdit_GetChannelTarget(f)
 			if chan == 0 then
 				local c = self.db.profile.borderColor
 				frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)

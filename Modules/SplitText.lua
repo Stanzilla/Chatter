@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Message Splitting", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Message Split"]
+mod.toggleLabel = L["Message Split"]
 
 function mod:Info()
 	return L["Allows you to type messages longer than normal, and splits message that are too long."]
@@ -71,7 +73,7 @@ function mod:OnEnterPressed(editBox)
 		ChatEdit_OnEnterPressed(editBox)
 		return
 	end
-	
+
 	local first = true
 	for start, chunk in getChunk, text, 1 do
 		editBox:SetText(chunk)
@@ -83,14 +85,14 @@ function mod:OnEnterPressed(editBox)
 	if ( ChatTypeInfo[type].sticky == 1 ) then
 		editBox:SetAttribute("stickyType", type);
 	end
-	
+
 	ChatEdit_OnEscapePressed(editBox);
 end
 
 function mod:OnEnable()
 	ChatFrameEditBox:SetMaxLetters(2048)
 	ChatFrameEditBox:SetMaxBytes(2048)
-	
+
 	self:RawHookScript(ChatFrameEditBox, "OnEnterPressed")
 end
 

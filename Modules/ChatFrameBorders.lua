@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Borders/Background")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Borders/Background"]
+mod.toggleLabel = L["Borders/Background"]
 
 local Media = LibStub("LibSharedMedia-3.0")
 local CreateFrame = _G.CreateFrame
@@ -10,8 +12,7 @@ local pairs = _G.pairs
 local tinsert = _G.tinsert
 local type = _G.type
 
-local options = {
-}
+local options = {}
 
 local defaults = {
 	profile = {
@@ -47,9 +48,9 @@ function mod:OnInitialize()
 		end
 	end
 	defaults.profile.frames.FRAME_2.combatLogFix = true
-	
+
 	self.db = Chatter.db:RegisterNamespace("ChatFrameBorders", defaults)
-	
+
 	Media.RegisterCallback(mod, "LibSharedMedia_Registered")
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
@@ -252,11 +253,11 @@ do
 			edgeSize = profile.edgeSize,
 			insets = {left = profile.inset, right = profile.inset, top = profile.inset, bottom = profile.inset}
 		})
-		local c = profile.backgroundColor
-		frame:SetBackdropColor(c.r, c.g, c.b, c.a)
-		
-		local c = profile.borderColor
-		frame:SetBackdropBorderColor(c.r, c.g, c.b, c.a)
+		local cbackdrop = profile.backgroundColor
+		frame:SetBackdropColor(cbackdrop.r, cbackdrop.g, cbackdrop.b, cbackdrop.a)
+
+		local cborder = profile.borderColor
+		frame:SetBackdropBorderColor(cborder.r, cborder.g, cborder.b, cborder.a)
 	end
 end
 

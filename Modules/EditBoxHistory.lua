@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Editbox History", "AceHook-3.0" )
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Edit Box History"]
+mod.toggleLabel = L["Edit Box History"]
 
 local history, enabled
 local defaults = { realm = { history = { } } }

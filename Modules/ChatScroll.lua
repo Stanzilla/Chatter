@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Mousewheel Scroll", "AceHook-3.0","AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Mousewheel Scroll"]
+mod.toggleLabel = L["Mousewheel Scroll"]
 
 local IsShiftKeyDown = _G.IsShiftKeyDown
 local IsControlKeyDown = _G.IsControlKeyDown
@@ -61,5 +63,3 @@ end
 function mod:GetOptions()
 	return options
 end
-
-

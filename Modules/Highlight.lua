@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Highlights", "AceHook-3.0", "AceEvent-3.0", "LibSink-2.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Highlights"]
+mod.toggleLabel = L["Highlights"]
 
 local Media = LibStub("LibSharedMedia-3.0")
 local PlaySoundFile = _G.PlaySoundFile
@@ -44,19 +46,7 @@ local options = {
 		set = function(info, v)
 			mod.db.profile.sound = v
 		end
-		},
-	--sink = {
-	--	type = "toggle",
-	--	name = L["Show SCT message"],
-	--	desc = L["Show highlights in your SCT mod"],
-	--	order = 21,
-	--	get = function()
-	--		return mod.db.profile.useSink
-	--	end,
-	--	set = function(info, v)
-	--		mod.db.profile.useSink = v
-	--	end
-	--},
+	},
 	rerouteMessage = {
 		type = "toggle",
 		name = L["Reroute whole message to SCT"],
@@ -255,5 +245,3 @@ end
 function mod:GetOptions()
 	return options
 end
-
--- vim: ts=4 noexpandtab

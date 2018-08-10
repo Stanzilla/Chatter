@@ -2,8 +2,10 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("URL Copy", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
-mod.modName = L["URL Copy"]
 local Dialog = LibStub("LibDialog-1.0")
+
+mod.modName = L["URL Copy"]
+mod.toggleLabel = L["URL Copy"]
 
 local gsub = _G.string.gsub
 local ipairs = _G.ipairs
@@ -13,12 +15,14 @@ local sub = _G.string.sub
 
 local tlds
 local style = "|cffffffff|Hurl:%s|h[%s]|h|r"
+
 local function Link(link, ...)
 	if link == nil then
 		return ""
 	end
 	return mod:RegisterMatch(fmt(style, link, link))
 end
+
 local function Link_TLD(link, tld, ...)
 	if link == nil or tld == nil then
 		return ""
@@ -82,17 +86,17 @@ local options = {
 		desc = L["Automatically inject your character's name into Teamspeak 3 links, so you connect with your username prefilled."],
 		get = function() return mod.db.profile.mangleTeamspeak end,
 		set = function(info, v) mod.db.profile.mangleTeamspeak = v end
-	}	
+	}
 }
 
 do
-	
 	local defaults = {
 		profile = {
 			mangleMumble = true,
 			mangleTeamspeak = true
 		}
-	}
+    }
+
 	local events = {
 		"CHAT_MSG_CHANNEL",
 		"CHAT_MSG_EMOTE",
@@ -109,7 +113,8 @@ do
 		"CHAT_MSG_YELL",
 		"CHAT_MSG_BN_WHISPER_INFORM",
 		"CHAT_MSG_BN_INLINE_TOAST_BROADCAST"
-	}
+    }
+
 	function mod:OnInitialize()
 		self.db = Chatter.db:RegisterNamespace("UrlCopy", defaults)
 		Dialog:Register("ChatterUrlCopyDialog", {
@@ -120,7 +125,7 @@ do
 				  on_escape_pressed = function(self, data) self:GetParent():Hide() end,
 				},
 			},
-			on_show = function(self, data) 
+			on_show = function(self, data)
 				self.editboxes[1]:SetText(data.url)
 				self.editboxes[1]:HighlightText()
 				self.editboxes[1]:SetFocus()
@@ -131,13 +136,15 @@ do
 			show_while_dead = true,
 			hide_on_escape = true,
 		})
-	end	
+    end
+
 	function mod:OnEnable()
 		for _,event in ipairs(events) do
 			ChatFrame_AddMessageEventFilter(event, self.filterFunc)
 		end
 		self:RawHook(_G.ItemRefTooltip, "SetHyperlink", true)
-	end
+    end
+
 	function mod:OnDisable()
 		for _,event in ipairs(events) do
 			ChatFrame_RemoveMessageEventFilter(event, self.filterFunc)
@@ -173,7 +180,7 @@ do
 	mumble://foo:bar@192.168.1.102:50008?version=1.2.0
 	mumble://:bar@192.168.1.102:50008?version=1.2.0
 	]]--
-	
+
 	-- Messes with Mumble links to inject our own username. Nifty magical!
 	local function injectCharacterNameForMumble(scheme, connstr)
 		local pre, post = strsplit("@", connstr, 2)
@@ -191,7 +198,7 @@ do
 		end
 		return scheme .. new
 	end
-	
+
 	local buff = {}
 	local function addTS3Nickname(...)
 		wipe(buff)
@@ -212,14 +219,14 @@ do
 		end
 		return table.concat(buff, "&")
 	end
-	
+
 	--[[
 		ts3server://ts3.hoster.com
 		ts3server://ts3.hoster.com?
 		ts3server://ts3.hoster.com?port=9987&
 		ts3server://ts3.hoster.com?port=9987&nickname=UserNickname&password=serverPassword
 	]]--
-	
+
 	local function injectCharacterNameForTeamspeak(scheme, connstr)
 		local url, query = strsplit("?", connstr, 2)
 		if query then
@@ -229,7 +236,7 @@ do
 		end
 		return scheme .. url .. "?" .. query
 	end
-	
+
 	function mangleLinkForVoiceChat(text)
 		if mod.db.profile.mangleMumble then
 			text = text:gsub("^(mumble://)([^/?]+)", injectCharacterNameForMumble)
@@ -241,7 +248,6 @@ do
 	end
 end
 
-
 function mod:SetHyperlink(frame, link, ...)
 	if sub(link, 1, 3) == "url" then
 		local currentLink = sub(link, 5)
@@ -252,7 +258,7 @@ function mod:SetHyperlink(frame, link, ...)
 		Dialog:Spawn("ChatterUrlCopyDialog", {url=currentLink})
 		return ...
 	end
-	return self.hooks[frame].SetHyperlink(frame, link, text, button, ...) 
+	return self.hooks[frame].SetHyperlink(frame, link, text, button, ...)
 end
 
 function mod:Info()

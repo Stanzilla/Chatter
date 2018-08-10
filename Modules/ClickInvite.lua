@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Invite Links", "AceHook-3.0","AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Invite Links"]
+mod.toggleLabel = L["Invite Links"]
 
 local gsub = _G.string.gsub
 local ipairs = _G.ipairs

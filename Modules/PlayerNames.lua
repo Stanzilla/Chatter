@@ -5,6 +5,8 @@ local L = LibStub("AceLocale-3.0"):GetLocale(addon)
 local AceTab = LibStub("AceTab-3.0")
 
 mod.modName = L["Player Names"]
+mod.toggleLabel = L["Player Names"]
+
 
 local format = _G.string.format
 local gsub = _G.string.gsub
@@ -75,12 +77,14 @@ local defaults = {
 		noRealNames = false,
 	},
 }
-local default_nick_color = { ["r"] = 0.627, ["g"] = 0.627, ["b"] = 0.627 }
 
+local default_nick_color = { ["r"] = 0.627, ["g"] = 0.627, ["b"] = 0.627 }
 local localizedToSystemClass = {}
+
 for sys, loc in pairs(LOCALIZED_CLASS_NAMES_MALE) do
 	localizedToSystemClass[loc] = sys
 end
+
 for sys, loc in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do
 	localizedToSystemClass[loc] = sys
 end
@@ -437,7 +441,7 @@ function mod:ColorName(name)
 			if coloring == "CLASS" then
 				c = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class] or default_nick_color
 			elseif coloring == "NAME" then
-				c = getNameColor(name)
+				c = mod:ColorName(name)
 			end
 
 			name = format("|cff%02x%02x%02x%s|r", c.r * 255, c.g * 255, c.b * 255, name)

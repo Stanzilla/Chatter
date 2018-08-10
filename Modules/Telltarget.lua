@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Tell Target (/tt)", "AceHook-3.0", "AceEvent-3.0", "AceConsole-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Tell Target (/tt)"]
+mod.toggleLabel = L["Tell Target (/tt)"]
 
 local UnitIsPlayer = _G.UnitIsPlayer
 local UnitCanAssist = _G.UnitCanAssist

@@ -2,8 +2,11 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("ChatTabs", "AceHook-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
-local font = GameFontNormalSmall
+
 mod.modName = L["Chat Tabs"]
+mod.toggleLabel = L["Chat Tabs"]
+
+local font = GameFontNormalSmall
 
 local defaults = {
 	profile = {
@@ -135,7 +138,7 @@ function mod:DecorateTabs()
 			tab.mouseOverAlpha = 1
 			tab.noMouseAlpha = mod.db.profile.alpha
 			tab:SetAlpha(mod.db.profile.alpha)
-		end		
+		end
 	end
 end
 
@@ -164,7 +167,7 @@ function mod:UndecorateTabs()
 			tab.mouseOverAlpha = 1
 			tab.noMouseAlpha = 0.2
 			tab:SetAlpha(0.2)
-		end		
+		end
 	end
 end
 
@@ -195,7 +198,7 @@ function mod:OnEnable()
 		    The buttons now have font objects. If you change the size on one it will change on
 		    the other tabs as well. However assigning a new font object seems to go wrong with
 		    the default ChatFrame$Tab font-object. This will need further investigation
-		
+
 		    For now I just disabled all the font-changing mechanics.
 		--]]
 		tab:EnableMouseWheel(true)
@@ -271,7 +274,7 @@ end
 
 function mod:OnClick(f, button, ...)
 	if button == "LeftButton" then
-		SetFontSizes(f)		
+		SetFontSizes(f)
 	end
 end
 
@@ -317,7 +320,7 @@ end
 function mod:OnMouseWheel(frame, dir)
 	local chat = _G["ChatFrame" .. frame:GetID()]
 	if not chat.isDocked then return end
-	
+
 	local t
 	for i = 1, #GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES do
 		if GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES[i]:IsVisible() then
@@ -325,7 +328,7 @@ function mod:OnMouseWheel(frame, dir)
 			break
 		end
 	end
-	
+
 	if t == 1 and dir > 0 then
 		t = #GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES
 	elseif t == #GENERAL_CHAT_DOCK.DOCKED_CHAT_FRAMES and dir < 0 then

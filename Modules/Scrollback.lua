@@ -2,6 +2,7 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Scrollback")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Scrollback"]
 mod.toggleLabel = L["Enable Scrollback length modification"]
 
@@ -27,7 +28,7 @@ local function reclaim(t)
 end
 
 local function setlines(frame, lines)
-	if frame:GetMaxLines() ~= lines then 
+	if frame:GetMaxLines() ~= lines then
 		local history = acquire()
 		for regions = frame:GetNumRegions(),1,-1 do
 			local region = select(regions, frame:GetRegions())

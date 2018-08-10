@@ -13,7 +13,7 @@ local pattern = GUILD_MOTD_TEMPLATE:
 local gmotdData
 
 function frame:AddMessage(frame, text, ...)
-	local gmotd 
+	local gmotd
 	if text then
 		gmotd = strmatch(text, pattern)
 	end
@@ -26,7 +26,6 @@ function frame:AddMessage(frame, text, ...)
 end
 
 frame:RawHook(ChatFrame1, "AddMessage", true)
-
 
 local delay=10
 frame:SetScript("OnUpdate", function(self, expired)

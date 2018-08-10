@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("All Edge resizing","AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["All Edge resizing"]
+mod.toggleLabel = L["All Edge resizing"]
 
 function mod:Info()
 	return L["Allows you to use the edge for resizing, instead of just the lower right corner."]
@@ -24,10 +26,12 @@ end
 
 local function ChatFrame_StopResizing(self)
 	local chatFrame = self:GetParent()
-	chatFrame:StopMovingOrSizing()
+    chatFrame:StopMovingOrSizing()
+
 	if chatFrame == DEFAULT_CHAT_FRAME then
 		FCF_DockUpdate()
-	end
+    end
+
 	chatFrame.resizing = nil
 	FCF_SavePositionAndDimensions(chatFrame);
 end
@@ -104,13 +108,13 @@ function mod:HideResizers(f)
 	f.resizeLeft:Hide()
 end
 --[[
-	Decorate new popuut windows with resizers
+	Decorate new popout windows with resizers
 --]]
 function mod:Decorate(frame)
 	self:MakeResizers(frame)
 	local b = _G[("ChatFrame%dResizeButton"):format(frame:GetID())]
 	b:SetScript("OnShow", b.Hide)
-	b:Hide()	
+	b:Hide()
 end
 
 function mod:OnEnable()

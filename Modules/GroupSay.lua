@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Group Say (/gr)", "AceHook-3.0", "AceConsole-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Group Say (/gr)"]
+mod.toggleLabel = L["Group Say (/gr)"]
 
 local IsInInstance = _G.IsInInstance
 local SendChatMessage = _G.SendChatMessage
@@ -16,14 +18,14 @@ end
 function mod:OnEnable()
 	for i = 1, 10 do
 		self:HookScript(_G["ChatFrame" .. i .. "EditBox"], "OnTextChanged")
-	end	
+	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local cf = _G[name.."EditBox"]
 		if cf then
 			self:HookScript(cf, "OnTextChanged")
 		end
 	end
-	
+
 	if not self.slashCommandRegistered then
 		self:RegisterChatCommand("gr", "SendChatMessage")
 		self.slashCommandRegistered = true

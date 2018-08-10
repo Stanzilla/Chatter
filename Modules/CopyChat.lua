@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Chat Copy", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Copy Chat"]
+mod.toggleLabel = L["Copy Chat"]
 
 local lines = {}
 local table_concat = _G.table.concat
@@ -99,6 +101,7 @@ function mod:Decorate(frame)
 		tab.copyButton:Show()
 	end
 end
+
 function mod:OnEnable()
 	Chatter:AddMenuHook(self, "Menu")
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -188,7 +191,7 @@ function mod:Menu(chatTab, button)
 	return info
 end
 
-function clean(msg)
+local function clean(msg)
 	msg = gsub(msg, "(|TInterface(.*)|t)", "")
 	msg = gsub(msg, "(|c%x%x%x%x%x%x%x%x", "")
 	return msg

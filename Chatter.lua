@@ -251,7 +251,7 @@ function Chatter:OnEnable()
 	end
 
 	if not options.args.Profiles then
- 		options.args.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+        options.args.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 		self.lastConfig = ACD3:AddToBlizOptions("Chatter", L["Profiles"], "Chatter", "Profiles")
 	end
 end

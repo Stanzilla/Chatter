@@ -3,7 +3,9 @@ local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Alt Linking", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
 local LA
+
 mod.modName = L["Alt Linking"]
+mod.toggleLabel = L["Alt Linking"]
 
 local NAMES
 local GUILDNOTES
@@ -32,6 +34,7 @@ local defaults = {
 		guildranks = {}
 	}
 }
+
 local colorModes = {
 	COLOR_MOD = L["Use PlayerNames coloring"],
 	CUSTOM = L["Use custom color"],
@@ -174,7 +177,6 @@ local function escape(s)
 		:gsub('%?', '%%%?'))
 end
 
-
 local accept = function(frame, char, editBox)
 	if editBox then
 		local main = editBox:GetText()
@@ -287,7 +289,6 @@ function mod:OnDisable()
 	end
 	mod:EnableGuildNotes(false)
 end
-
 
 function mod.GetMainName()
 	local alt = UIDROPDOWNMENU_INIT_MENU.name
@@ -431,7 +432,6 @@ function mod:ScanGuildNotes()
 	-- #2: scan all words in all guild notes, see if a name is mentioned
 	for i=1, GetNumGuildMembers(true) do
 		local name, rank, rankIndex, level, class, zone, note, officernote, online, status = GetGuildRosterInfo(i)
-		local success
 		if self.db.profile.guildranks[rankIndex] then
 			for word in gmatch(strlower(note), self.db.profile.guildprefix.."[%a\128-\255]+"..self.db.profile.guildsuffix) do
 				word = gsub(word, "^"..(escape(self.db.profile.guildprefix)), "")
@@ -439,7 +439,6 @@ function mod:ScanGuildNotes()
 				if names[word] then
 					GUILDNOTES[name] = names[word]
 					LA:SetAlt(name, names[word], LA.GUILD_PREFIX..gName)
-					success = true
 					break
 				end
 			end

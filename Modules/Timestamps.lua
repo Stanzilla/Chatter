@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Timestamps", "AceHook-3.0","AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Timestamps"]
+mod.toggleLabel = L["Timestamps"]
 
 local date = _G.date
 
@@ -64,7 +66,7 @@ local options = {
 			mod.db.profile.customFormat = v
 			SELECTED_FORMAT = v
 		end,
-		order = 101		
+		order = 101
 	},
 	color = {
 		type = "color",
@@ -112,7 +114,7 @@ end
 
 function mod:OnEnable()
 	SELECTED_FORMAT = mod.db.profile.customFormat or ("[" .. self.db.profile.format .. "]")
-	local c = self.db.profile.color	
+	local c = self.db.profile.color
 	COLOR = ("%02x%02x%02x"):format(c.r * 255, c.g * 255, c.b * 255)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
@@ -132,7 +134,7 @@ function mod:AddMessage(frame, text, ...)
 	local id = frame:GetID()
 	if id and self.db.profile.frames["Frame"..id] and not(CHAT_TIMESTAMP_FORMAT) then
 		if not Chatter.loading then
-			if not text then 
+			if not text then
 				return self.hooks[frame].AddMessage(frame, text, ...)
 			end
 			if self.db.profile.colorByChannel then

@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Sticky Channels")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Sticky Channels"]
+mod.toggleLabel = L["Sticky Channels"]
 
 local pairs = _G.pairs
 
@@ -16,6 +18,7 @@ local channels = {
 	BN_WHISPER = L["RealID Whisper"],
 	CHANNEL = L["Custom channels"]
 }
+
 local options = {}
 local defaults = {profile = {}}
 

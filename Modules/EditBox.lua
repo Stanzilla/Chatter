@@ -2,7 +2,9 @@ local addon, private = ...
 local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Edit Box Polish", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
+
 mod.modName = L["Edit Box Polish"]
+mod.toggleLabel = L["Edit Box Polish"]
 
 local Media = LibStub("LibSharedMedia-3.0")
 local backgrounds, borders, fonts = {}, {}, {}
@@ -10,9 +12,6 @@ local CreateFrame = _G.CreateFrame
 local max = _G.max
 local pairs = _G.pairs
 local select = _G.select
-
--- GLOBALS: NUM_CHAT_WINDOWS ChatEdit_DeactivateChat
--- luacheck: globals NUM_CHAT_WINDOWS ChatEdit_DeactivateChat
 
 local VALID_ATTACH_POINTS = {
 	TOP = L["Top"],

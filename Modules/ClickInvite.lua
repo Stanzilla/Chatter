@@ -72,11 +72,11 @@ function mod:Decorate(frame)
 	self:RawHook(frame, "AddMessage", true)
 end
 
-local arg1, chatEvent, chatEventTarget
+local _, chatEvent, chatEventTarget
 
 function mod:ChatFrame_MessageEventHandler(frame, event, ...)
 	chatEvent = event
-	arg1, chatEventTarget = ...
+	_, chatEventTarget = ...
 	return self.hooks["ChatFrame_MessageEventHandler"](frame, event, ...)
 end
 

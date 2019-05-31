@@ -95,7 +95,8 @@ globals = {
     "UnitPopupMenus",
 
 	-- framexml misc
-	"C_Timer",
+    "C_Timer",
+    "C_FriendList",
 	"CooldownFrame_Set",
 	"DEFAULT_CHAT_FRAME",
 	"GameTooltip_Hide",

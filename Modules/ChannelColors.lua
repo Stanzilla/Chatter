@@ -3,7 +3,6 @@ local Chatter = LibStub("AceAddon-3.0"):GetAddon(addon)
 local mod = Chatter:NewModule("Channel Colors", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(addon)
 mod.modName = L["Channel Colors"]
-
 local GetChannelList = _G.GetChannelList
 local GetChannelName = _G.GetChannelName
 local GetMessageTypeColor = _G.GetMessageTypeColor

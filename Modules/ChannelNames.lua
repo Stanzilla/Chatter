@@ -62,8 +62,8 @@ local function excludeChannels(...)
 		serverChannels[name] = true
 	end
 end
-
 local functions = {}
+
 local function addChannel(name)
 	options[name:gsub(" ", "_")] = {
 		type = "input",

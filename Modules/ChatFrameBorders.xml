@@ -1,6 +1,5 @@
 <Ui>
 	<Script file="ChatFrameBorders.lua" />
-	
 	<Frame name="ChatFrameBorderTemplate" virtual="true" enableMouse="false">
 		<Backdrop bgFile="Interface\\ChatFrame\\ChatFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>

@@ -74,6 +74,7 @@ function mod:GetOptions()
 	return options
 end
 
+
 function mod:UpdateToastOffsets()
 	if self:IsEnabled() then
 		local cf = DEFAULT_CHAT_FRAME

@@ -23,15 +23,16 @@ local type = _G.type
 
 local GetQuestDifficultyColor = _G.GetQuestDifficultyColor
 local GetChannelName = _G.GetChannelName
-local GetFriendInfo = _G.GetFriendInfo
+local GetFriendInfo = C_FriendList.GetFriendInfo
 local GetGuildRosterInfo = _G.GetGuildRosterInfo
 local GetGuildRosterSelection = _G.GetGuildRosterSelection
 local GetGuildRosterShowOffline = _G.GetGuildRosterShowOffline
-local GetNumFriends = _G.GetNumFriends
+local GetNumFriends = C_FriendList.GetNumFriends
+local GetNumOnlineFriends= C_FriendList.GetNumOnlineFriends
 local GetNumGuildMembers = _G.GetNumGuildMembers
 local GetNumGroupMembers = _G.GetNumGroupMembers
 local GetNumWhoResults = _G.GetNumWhoResults
-local GetWhoInfo = _G.GetWhoInfo
+local GetWhoInfo = C_FriendList.GetWhoInfo
 local GuildRoster = _G.GuildRoster
 local SetGuildRosterSelection = _G.SetGuildRosterSelection
 local SetGuildRosterShowOffline = _G.SetGuildRosterShowOffline
@@ -292,8 +293,8 @@ function mod:UPDATE_MOUSEOVER_UNIT(evt)
 end
 
 function mod:WHO_LIST_UPDATE(evt)
-	if GetNumWhoResults() <= 3 or self.db.profile.saveAllWho then
-		for i = 1, GetNumWhoResults() do
+	if C_FriendList.GetNumWhoResults() <= 3 or self.db.profile.saveAllWho then
+		for i = 1, C_FriendList.GetNumWhoResults() do
 			local name, _, level, _, _, _, class = GetWhoInfo(i)
 			if class then
 				self:AddPlayer(name, class, level, self.db.profile.saveWho)

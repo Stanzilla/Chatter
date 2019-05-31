@@ -13,6 +13,8 @@ local max = _G.max
 local pairs = _G.pairs
 local select = _G.select
 
+-- GLOBALS: NUM_CHAT_WINDOWS ChatEdit_DeactivateChat
+
 local VALID_ATTACH_POINTS = {
 	TOP = L["Top"],
 	BOTTOM = L["Bottom"],
@@ -320,10 +322,12 @@ function mod:OnEnable()
 		local f = _G["ChatFrame"..i.."EditBox"]
 		_G["ChatFrame"..i.."EditBoxLeft"]:Hide()
 		_G["ChatFrame"..i.."EditBoxRight"]:Hide()
-		_G["ChatFrame"..i.."EditBoxMid"]:Hide()
-		_G["ChatFrame"..i.."EditBoxFocusLeft"]:SetTexture(nil)
-		_G["ChatFrame"..i.."EditBoxFocusRight"]:SetTexture(nil)
-		_G["ChatFrame"..i.."EditBoxFocusMid"]:SetTexture(nil)
+        _G["ChatFrame"..i.."EditBoxMid"]:Hide()
+        if not Chatter.IsClassic then
+            _G["ChatFrame"..i.."EditBoxFocusLeft"]:SetTexture(nil)
+            _G["ChatFrame"..i.."EditBoxFocusRight"]:SetTexture(nil)
+            _G["ChatFrame"..i.."EditBoxFocusMid"]:SetTexture(nil)
+        end
 		f:Hide()
 		self.frames[i]:Show()
 		local font, s, m = f:GetFont()
@@ -334,10 +338,12 @@ function mod:OnEnable()
 		local f = _G[name.."EditBox"]
 		_G[name.."EditBoxLeft"]:Hide()
 		_G[name.."EditBoxRight"]:Hide()
-		_G[name.."EditBoxMid"]:Hide()
-		_G[name.."EditBoxFocusLeft"]:SetTexture(nil)
-		_G[name.."EditBoxFocusRight"]:SetTexture(nil)
-		_G[name.."EditBoxFocusMid"]:SetTexture(nil)
+        _G[name.."EditBoxMid"]:Hide()
+        if not Chatter.IsClassic then
+            _G[name.."EditBoxFocusLeft"]:SetTexture(nil)
+            _G[name.."EditBoxFocusRight"]:SetTexture(nil)
+            _G[name.."EditBoxFocusMid"]:SetTexture(nil)
+        end
 		f:Hide()
 		self.frames[NUM_CHAT_WINDOWS+index]:Show()
 		local font, s, m = f:GetFont()

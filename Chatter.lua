@@ -6,6 +6,9 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local CreateFrame = _G.CreateFrame
 local UIParent = _G.UIParent
 
+local IsClassic = select(4, GetBuildInfo()) < 20000
+Chatter.IsClassic = IsClassic
+
 local optFrame
 
 local options = {

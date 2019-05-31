@@ -75,24 +75,24 @@ end
 function mod:ApplyFrameChanges(f)
 	f:SetClampRectInsets(0, 0, 0, 0)
 	local ff = _G[f:GetName() .. "ButtonFrame"]
-	ff:Hide()
-	ff:SetScript("OnShow", hide)
+    ff:SetScript("OnShow", hide)
+    ff:Hide()
 end
 
 function mod:OnEnable()
-	ChatFrameMenuButton:Hide()
     ChatFrameMenuButton:SetScript("OnShow", hide)
+	ChatFrameMenuButton:Hide()
     if not Chatter.IsClassic then
-        QuickJoinToastButton:Hide()
         QuickJoinToastButton:SetScript("OnShow", hide)
+        QuickJoinToastButton:Hide()
     end
-	ChatFrameChannelButton:Hide()
     ChatFrameChannelButton:SetScript("OnShow", hide)
+	ChatFrameChannelButton:Hide()
     if not Chatter.IsClassic then
-        ChatFrameToggleVoiceDeafenButton:Hide()
         ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", hide)
-        ChatFrameToggleVoiceMuteButton:Hide()
+        ChatFrameToggleVoiceDeafenButton:Hide()
         ChatFrameToggleVoiceMuteButton:SetScript("OnShow", hide)
+        ChatFrameToggleVoiceMuteButton:Hide()
     end
 
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -115,9 +115,9 @@ end
 function mod:UnDecorate(frame)
 	frame:SetClampRectInsets(-35, 35, 26, -50)
 	-- Reset the postion so if the buttons were offscreen frame goes to where it should be
-	if frame:IsMovable() then
-		FCF_RestorePositionAndDimensions(frame)
-	end
+	-- if frame:IsMovable() then
+	-- 	FCF_RestorePositionAndDimensions(frame)
+	-- end
     local ff = _G[frame:GetName() .. "ButtonFrame"]
     ff:SetScript("OnShow", nil)
 	ff:Show()

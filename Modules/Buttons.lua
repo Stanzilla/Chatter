@@ -81,26 +81,34 @@ end
 
 function mod:OnEnable()
 	ChatFrameMenuButton:Hide()
-	ChatFrameMenuButton:SetScript("OnShow", hide)
-	QuickJoinToastButton:Hide()
-	QuickJoinToastButton:SetScript("OnShow", hide)
+    ChatFrameMenuButton:SetScript("OnShow", hide)
+    if not Chatter.IsClassic then
+        QuickJoinToastButton:Hide()
+        QuickJoinToastButton:SetScript("OnShow", hide)
+    end
 	ChatFrameChannelButton:Hide()
-	ChatFrameChannelButton:SetScript("OnShow", hide)
-	ChatFrameToggleVoiceDeafenButton:Hide()
-	ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", hide)
-	ChatFrameToggleVoiceMuteButton:Hide()
-	ChatFrameToggleVoiceMuteButton:SetScript("OnShow", hide)
+    ChatFrameChannelButton:SetScript("OnShow", hide)
+    if not Chatter.IsClassic then
+        ChatFrameToggleVoiceDeafenButton:Hide()
+        ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", hide)
+        ChatFrameToggleVoiceMuteButton:Hide()
+        ChatFrameToggleVoiceMuteButton:SetScript("OnShow", hide)
+    end
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]
 		self:Decorate(f)
-		--self:ApplyFrameChanges(f)
-	end
-	if(self.db.profile.scrollReminder) then self:EnableBottomButton() end
+		self:ApplyFrameChanges(f)
+    end
+
+    if self.db.profile.scrollReminder then
+        self:EnableBottomButton()
+    end
+
 	for index,frame in ipairs(self.TempChatFrames) do
 		local f = _G[frame]
 		self:Decorate(f)
-		--self:ApplyFrameChanges(f)
+		self:ApplyFrameChanges(f)
 	end
 end
 
@@ -110,22 +118,26 @@ function mod:UnDecorate(frame)
 	if frame:IsMovable() then
 		FCF_RestorePositionAndDimensions(frame)
 	end
-	local ff = _G[frame:GetName() .. "ButtonFrame"]
+    local ff = _G[frame:GetName() .. "ButtonFrame"]
+    ff:SetScript("OnShow", nil)
 	ff:Show()
-	ff:SetScript("OnShow", nil)
 end
 
 function mod:OnDisable()
+    ChatFrameMenuButton:SetScript("OnShow", nil)
 	ChatFrameMenuButton:Show()
-	ChatFrameMenuButton:SetScript("OnShow", nil)
-	QuickJoinToastButton:Show()
-	QuickJoinToastButton:SetScript("OnShow", nil)
+    if not Chatter.IsClassic then
+        QuickJoinToastButton:SetScript("OnShow", nil)
+        QuickJoinToastButton:Show()
+    end
+    ChatFrameChannelButton:SetScript("OnShow", nil)
 	ChatFrameChannelButton:Show()
-	ChatFrameChannelButton:SetScript("OnShow", nil)
-	ChatFrameToggleVoiceDeafenButton:Show()
-	ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", nil)
-	ChatFrameToggleVoiceMuteButton:Show()
-	ChatFrameToggleVoiceMuteButton:SetScript("OnShow", nil)
+    if not Chatter.IsClassic then
+        ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", nil)
+        ChatFrameToggleVoiceDeafenButton:Show()
+        ChatFrameToggleVoiceMuteButton:SetScript("OnShow", nil)
+        ChatFrameToggleVoiceMuteButton:Show()
+    end
 	self:DisableBottomButton()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local f = _G["ChatFrame" .. i]

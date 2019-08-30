@@ -9,7 +9,6 @@
 ## SavedVariables: ChatterDB
 
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, LibSink-2.0, LibAlts-1.0, LibDialog-1.0, LibChatAnims
-## X-Embeds: Ace3, LibSharedMedia-3.0, LibSink-2.0, LibAlts-1.0, LibDialog-1.0, LibChatAnims
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua

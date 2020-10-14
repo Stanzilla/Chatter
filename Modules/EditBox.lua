@@ -424,6 +424,10 @@ end
 
 function mod:SetBackdrop()
 	for _, frame in ipairs(self.frames) do
+		-- Restore pre 9.0 backdrop functionality
+		if not frame.SetBackdrop then
+			Mixin(frame, BackdropTemplateMixin)
+		end
 		frame:SetBackdrop({
 			bgFile = Media:Fetch("background", self.db.profile.background),
 			edgeFile = Media:Fetch("border", self.db.profile.border),

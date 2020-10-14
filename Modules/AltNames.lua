@@ -18,6 +18,7 @@ local type = _G.type
 local unpack = _G.unpack
 local strlower= _G.string.lower
 local gmatch = _G.string.gmatch
+local GuildRoster = C_GuildInfo and C_GuildInfo.GuildRoster or GuildRoster
 
 local leftBracket, rightBracket
 

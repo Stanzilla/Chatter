@@ -33,7 +33,7 @@ local GetNumGuildMembers = _G.GetNumGuildMembers
 local GetNumGroupMembers = _G.GetNumGroupMembers
 local GetNumWhoResults = _G.GetNumWhoResults
 local GetWhoInfo = C_FriendList.GetWhoInfo
-local GuildRoster = _G.GuildRoster
+local GuildRoster = C_GuildInfo and C_GuildInfo.GuildRoster or GuildRoster
 local SetGuildRosterSelection = _G.SetGuildRosterSelection
 local SetGuildRosterShowOffline = _G.SetGuildRosterShowOffline
 local UnitClass = _G.UnitClass
@@ -341,7 +341,14 @@ end
 	Taken from Basic Chat Mods since funkeh already did the work
 --]]
 local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
-	local _, charName, _, _, _, _, _, localizedClass = BNGetGameAccountInfo(id)
+	local charName, localizedClass, _
+	if BNGetGameAccountInfo then -- pre 9.0
+		_, charName, _, _, _, _, _, localizedClass = BNGetGameAccountInfo(id)
+	else
+		local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(id)
+		charName = gameAccountInfo.characterName
+		localizedClass = gameAccountInfo.className
+	end
 	if charName ~= "" then
 		if storedName then storedName[id] = charName end --Store name for logoff events, if enabled
 		--Replace real name with charname if enabled

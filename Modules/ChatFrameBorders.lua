@@ -245,6 +245,10 @@ do
 		if profile and profile.tileSize and profile.tileSize > 1 then
 			doTile = true
 		end
+		-- Restore pre 9.0 backdrop functionality
+		if not frame.SetBackdrop then
+			Mixin(frame, BackdropTemplateMixin)
+		end
 		frame:SetBackdrop({
 			bgFile = Media:Fetch("background", profile.background),
 			edgeFile = Media:Fetch("border", profile.border),

@@ -39,7 +39,7 @@ local defaults = {
 function mod:OnInitialize()
 	self.db = Chatter.db:RegisterNamespace("CopyChat", defaults)
 
-	local frame = CreateFrame("Frame", "ChatterCopyFrame", UIParent)
+	local frame = CreateFrame("Frame", "ChatterCopyFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate")
 	tinsert(UISpecialFrames, "ChatterCopyFrame")
 	frame:SetBackdrop(PaneBackdrop)
 	frame:SetBackdropColor(0,0,0,1)

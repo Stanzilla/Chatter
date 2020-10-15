@@ -345,9 +345,11 @@ local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 	if BNGetGameAccountInfo then -- pre 9.0
 		_, charName, _, _, _, _, _, localizedClass = BNGetGameAccountInfo(id)
 	else
-		local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(id)
-		charName = gameAccountInfo.characterName
-		localizedClass = gameAccountInfo.className
+		local accountTable = C_BattleNet.GetGameAccountInfoByID(id)
+        if accountTable then
+            charName = accountTable.gameAccountInfo.characterName
+            localizedClass = accountTable.gameAccountInfo.className
+        end
 	end
 	if charName ~= "" then
 		if storedName then storedName[id] = charName end --Store name for logoff events, if enabled

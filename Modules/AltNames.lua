@@ -357,7 +357,7 @@ function mod:EnableGuildNotes(enable)
 	GUILDNOTES={}
 	if enable then
 		if IsInGuild() then
-			GuildRoster()
+			C_GuildInfo.GuildRoster()
 			local ranks = {}
 			for i = 1, (GetNumGuildMembers()) do
 				local _, rank, index = GetGuildRosterInfo(i)
@@ -377,7 +377,7 @@ function mod:EnableGuildNotes(enable)
 			end
 
 		end
-		mod:ScanGuildNotes()	-- Unfortunately we can't count on GuildRoster() triggering the event if someone else triggered it recently. So we try once at first straight off the bat.
+		mod:ScanGuildNotes()	-- Unfortunately we can't count on C_GuildInfo.GuildRoster() triggering the event if someone else triggered it recently. So we try once at first straight off the bat.
 		mod:RegisterEvent("GUILD_ROSTER_UPDATE")
 	else
 		mod:UnregisterEvent("GUILD_ROSTER_UPDATE")
@@ -400,7 +400,7 @@ function mod:GUILD_ROSTER_UPDATE(event,arg1)
 
 	-- arg1 gets set for SOME changes to the guild, but notably not for player notes.. doh  (unless you're the one editing them yourself)
 	-- we force a scan when the guild frame is actually visible (i.e. when we know the player is actually interested in seeing changes)
-	-- i'd like to be able to not have the guildframe check there, but there's plenty of stupid-ass addons that spam GuildRoster() every 10/15/20 seconds, so ... no.
+	-- i'd like to be able to not have the guildframe check there, but there's plenty of stupid-ass addons that spam C_GuildInfo.GuildRoster() every 10/15/20 seconds, so ... no.
 	if arg1 or (GuildFrame and GuildFrame:IsVisible()) or doscan then
 		doscan=false
 		mod:ScanGuildNotes()

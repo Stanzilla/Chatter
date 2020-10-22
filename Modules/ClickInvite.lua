@@ -6,15 +6,15 @@ local L = LibStub("AceLocale-3.0"):GetLocale(addon)
 mod.modName = L["Invite Links"]
 mod.toggleLabel = L["Invite Links"]
 
-local gsub = _G.string.gsub
-local ipairs = _G.ipairs
-local fmt = _G.string.format
-local sub = _G.string.sub
-local InviteUnit = _G.InviteUnit
-local next = _G.next
-local type = _G.type
-local IsAltKeyDown = _G.IsAltKeyDown
-local match = _G.string.match
+local gsub = string.gsub
+local ipairs = ipairs
+local fmt = string.format
+local sub = string.sub
+local C_PartyInfo.InviteUnit = C_PartyInfo.InviteUnit
+local next = next
+local type = type
+local IsAltKeyDown = IsAltKeyDown
+local match = string.match
 
 local options = {
 	addWord = {
@@ -128,11 +128,11 @@ function mod:ChatFrame_OnHyperlinkShow(frame, linkData, link, button)
 
 	if IsAltKeyDown() and linkType == "player" and self.db.profile.altClickToInvite then
 		local name = match(linkData, "player:([^:]+)")
-		InviteUnit(name)
+		C_PartyInfo.InviteUnit(name)
 		return nil
 	elseif linkType == "invite" then
 		local name = sub(linkData, 8)
-		InviteUnit(name)
+		C_PartyInfo.InviteUnit(name)
 		return nil
 	else
 		return self.hooks["ChatFrame_OnHyperlinkShow"](frame, linkData, link, button)

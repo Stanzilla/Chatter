@@ -357,7 +357,7 @@ function mod:EnableGuildNotes(enable)
 	GUILDNOTES={}
 	if enable then
 		if IsInGuild() then
-			C_GuildInfo.GuildRoster()
+			GuildRoster()
 			local ranks = {}
 			for i = 1, (GetNumGuildMembers()) do
 				local _, rank, index = GetGuildRosterInfo(i)

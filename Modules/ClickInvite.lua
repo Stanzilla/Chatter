@@ -10,7 +10,7 @@ local gsub = string.gsub
 local ipairs = ipairs
 local fmt = string.format
 local sub = string.sub
-local C_PartyInfo.InviteUnit = C_PartyInfo.InviteUnit
+local InviteUnit = C_PartyInfo and C_PartyInfo.InviteUnit or InviteUnit
 local next = next
 local type = type
 local IsAltKeyDown = IsAltKeyDown
@@ -128,11 +128,11 @@ function mod:ChatFrame_OnHyperlinkShow(frame, linkData, link, button)
 
 	if IsAltKeyDown() and linkType == "player" and self.db.profile.altClickToInvite then
 		local name = match(linkData, "player:([^:]+)")
-		C_PartyInfo.InviteUnit(name)
+		InviteUnit(name)
 		return nil
 	elseif linkType == "invite" then
 		local name = sub(linkData, 8)
-		C_PartyInfo.InviteUnit(name)
+		InviteUnit(name)
 		return nil
 	else
 		return self.hooks["ChatFrame_OnHyperlinkShow"](frame, linkData, link, button)

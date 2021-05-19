@@ -82,13 +82,13 @@ end
 function mod:OnEnable()
     ChatFrameMenuButton:SetScript("OnShow", hide)
 	ChatFrameMenuButton:Hide()
-    if not Chatter.IsClassic then
+    if Chatter.IsRetail() then
         QuickJoinToastButton:SetScript("OnShow", hide)
         QuickJoinToastButton:Hide()
     end
     ChatFrameChannelButton:SetScript("OnShow", hide)
 	ChatFrameChannelButton:Hide()
-    if not Chatter.IsClassic then
+    if Chatter.IsRetail() then
         ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", hide)
         ChatFrameToggleVoiceDeafenButton:Hide()
         ChatFrameToggleVoiceMuteButton:SetScript("OnShow", hide)
@@ -126,13 +126,13 @@ end
 function mod:OnDisable()
     ChatFrameMenuButton:SetScript("OnShow", nil)
 	ChatFrameMenuButton:Show()
-    if not Chatter.IsClassic then
+    if Chatter.IsRetail() then
         QuickJoinToastButton:SetScript("OnShow", nil)
         QuickJoinToastButton:Show()
     end
     ChatFrameChannelButton:SetScript("OnShow", nil)
 	ChatFrameChannelButton:Show()
-    if not Chatter.IsClassic then
+    if Chatter.IsRetail() then
         ChatFrameToggleVoiceDeafenButton:SetScript("OnShow", nil)
         ChatFrameToggleVoiceDeafenButton:Show()
         ChatFrameToggleVoiceMuteButton:SetScript("OnShow", nil)

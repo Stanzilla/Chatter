@@ -6,8 +6,18 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local CreateFrame = _G.CreateFrame
 local UIParent = _G.UIParent
 
-local IsClassic = select(4, GetBuildInfo()) < 20000
-Chatter.IsClassic = IsClassic
+
+function Chatter.IsClassic()
+  return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+end
+
+function Chatter.IsBCC()
+  return WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+end
+
+function Chatter.IsRetail()
+  return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+end
 
 local optFrame
 

@@ -323,7 +323,7 @@ function mod:OnEnable()
 		_G["ChatFrame"..i.."EditBoxLeft"]:Hide()
 		_G["ChatFrame"..i.."EditBoxRight"]:Hide()
         _G["ChatFrame"..i.."EditBoxMid"]:Hide()
-        if not Chatter.IsClassic then
+        if Chatter.IsRetail() then
             _G["ChatFrame"..i.."EditBoxFocusLeft"]:SetTexture(nil)
             _G["ChatFrame"..i.."EditBoxFocusRight"]:SetTexture(nil)
             _G["ChatFrame"..i.."EditBoxFocusMid"]:SetTexture(nil)
@@ -339,7 +339,7 @@ function mod:OnEnable()
 		_G[name.."EditBoxLeft"]:Hide()
 		_G[name.."EditBoxRight"]:Hide()
         _G[name.."EditBoxMid"]:Hide()
-        if not Chatter.IsClassic then
+        if Chatter.IsRetail() then
             _G[name.."EditBoxFocusLeft"]:SetTexture(nil)
             _G[name.."EditBoxFocusRight"]:SetTexture(nil)
             _G[name.."EditBoxFocusMid"]:SetTexture(nil)

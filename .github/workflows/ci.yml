@@ -14,5 +14,5 @@ jobs:
       - name: Install and run Luacheck
         uses: nebularg/actions-luacheck@v1
         with:
-          args: "--no-color -q"
+          args: "--no-color -q --exclude-files Tests/*.lua"
           annotate: warning

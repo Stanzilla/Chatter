@@ -86,7 +86,6 @@ function Chatter:OnInitialize()
 
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Chatter", options)
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("ChatterModules", options.args.modules)
-	optFrame = ACD3:AddToBlizOptions("Chatter", nil, nil, "defaultArgs")
 
 	for k, v in self:IterateModules() do
 		options.args.modules.args[k:gsub(" ", "_")] = {

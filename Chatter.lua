@@ -19,8 +19,6 @@ function Chatter.IsRetail()
   return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 end
 
-local optFrame
-
 local options = {
 	type = "group",
 	args = {
@@ -215,10 +213,9 @@ function Chatter:FCF_OpenTemporaryWindow(chatType, chatTarget, sourceChatFrame, 
 end
 
 function Chatter:OpenConfig(input)
-
-		options.args.defaultArgs.guiHidden = true
-		AceConfigDialog:SetDefaultSize("Chatter", 500, 550)
-		AceConfigDialog:Open("Chatter")
+    options.args.defaultArgs.guiHidden = true
+    AceConfigDialog:SetDefaultSize("Chatter", 500, 550)
+    AceConfigDialog:Open("Chatter")
 end
 
 do
@@ -251,6 +248,7 @@ function Chatter:OnEnable()
 		self:Print(L["Welcome to Chatter! Type /chatter to configure."])
 		self.db.profile.welcomeMessaged = true
 	end
+
 	for k, v in self:IterateModules() do
 		if self.db.profile.modules[k] ~= false then
 			v:Enable()

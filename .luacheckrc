@@ -96,6 +96,7 @@ globals = {
 
 	-- framexml misc
     "C_Timer",
+    "C_Spell",
     "C_FriendList",
 	"CooldownFrame_Set",
 	"DEFAULT_CHAT_FRAME",

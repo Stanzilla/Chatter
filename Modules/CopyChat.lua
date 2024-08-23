@@ -9,7 +9,7 @@ mod.toggleLabel = L["Copy Chat"]
 local lines = {}
 local table_concat = _G.table.concat
 local CreateFrame = _G.CreateFrame
-local GetSpellInfo = _G.GetSpellInfo
+local GetSpellTexture = C_Spell.GetSpellTexture
 local select = _G.select
 local tinsert = _G.tinsert
 local tostring = _G.tostring
@@ -28,7 +28,7 @@ local InsetBackdrop  = {
 	insets = { left = 3, right = 3, top = 5, bottom = 3 }
 }
 
-local tex = select(3, GetSpellInfo(586))
+local tex = GetSpellTexture(586)
 local buttons = {}
 local defaults = {
 	profile = {

@@ -215,16 +215,10 @@ function Chatter:FCF_OpenTemporaryWindow(chatType, chatTarget, sourceChatFrame, 
 end
 
 function Chatter:OpenConfig(input)
-	if input == "config" or not InterfaceOptionsFrame:IsResizable() then
+
 		options.args.defaultArgs.guiHidden = true
-		InterfaceOptionsFrame:Hide()
 		AceConfigDialog:SetDefaultSize("Chatter", 500, 550)
 		AceConfigDialog:Open("Chatter")
-	else
-		InterfaceOptionsFrame_OpenToCategory(Chatter.lastConfig)
-		options.args.defaultArgs.guiHidden = false
-		InterfaceOptionsFrame_OpenToCategory(optFrame)
-	end
 end
 
 do

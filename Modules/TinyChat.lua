@@ -11,21 +11,18 @@ function mod:Info()
 end
 
 function mod:Decorate(frame)
-	frame:SetMinResize(50, 20)
-	frame:SetMaxResize(5000, 5000)
+	frame:SetResizeBounds(50, 20, 5000, 5000)
 end
 
 function mod:OnEnable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
-		cf:SetMinResize(50, 20)
-		cf:SetMaxResize(5000, 5000)
+		cf:SetResizeBounds(50, 20, 5000, 5000)
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local cf = _G[name]
 		if cf then
-			cf:SetMinResize(50, 20)
-			cf:SetMaxResize(5000, 5000)
+			cf:SetResizeBounds(50, 20, 5000, 5000)
 		end
 	end
 end
@@ -33,14 +30,12 @@ end
 function mod:OnDisable()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G["ChatFrame" .. i]
-		cf:SetMinResize(296, 75)
-		cf:SetMaxResize(608, 400)
+		cf:SetResizeBounds(296, 75, 608, 400)
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local cf = _G[name]
 		if cf then
-			cf:SetMinResize(296, 75)
-			cf:SetMaxResize(608, 400)
+			cf:SetResizeBounds(296, 75, 608, 400)
 		end
 	end
 end

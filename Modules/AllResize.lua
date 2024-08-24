@@ -17,6 +17,7 @@ function mod:OnInitialize()
 end
 
 local function ChatFrame_StartResizing(self)
+	FCF_SetLocked(_G["ChatFrame1"], false)
 	local chatFrame = self:GetParent()
 	if chatFrame.isLocked then return end
 	if chatFrame.isDocked and chatFrame ~= DEFAULT_CHAT_FRAME then return end
@@ -55,17 +56,17 @@ function mod:MakeResizers(frame)
 			local k = "resize" .. v
 			f[k] = CreateFrame("Button", "ChatFrame" .. frame:GetID() .. "Resize" .. v, f)
 			f[k].anchorPoint = v:upper()
-			f[k]:SetWidth(16)
-			f[k]:SetHeight(16)
+			f[k]:SetWidth(26)
+			f[k]:SetHeight(26)
 			f[k]:SetScript("OnMouseDown", ChatFrame_StartResizing)
 			f[k]:SetScript("OnMouseUp", ChatFrame_StopResizing)
 			LowerFrameLevel(f[k])
 		end
-		f.resizeTopLeft:SetPoint("TOPLEFT", f.background, -2, 2)
+		f.resizeTopLeft:SetPoint("TOPLEFT", f.background, -20, 20)
 		f.resizeTopRight:SetPoint("TOPRIGHT", f.background, 2, 2)
 		f.resizeBottomLeft:SetPoint("BOTTOMLEFT", f.background, -2, -3)
 		f.resizeBottomRight:SetPoint("BOTTOMRIGHT", f.background, 2, -3)
-		f.resizeTop:SetPoint("LEFT", f.resizeTopLeft, "RIGHT", 0, 0)
+		f.resizeTop:SetPoint("LEFT", f.resizeTopLeft, "RIGHT", 20, 20)
 		f.resizeTop:SetPoint("RIGHT", f.resizeTopRight, "LEFT", 0, 0)
 		f.resizeRight:SetPoint("TOP", f.resizeTopRight, "BOTTOM", 0, 0)
 		f.resizeRight:SetPoint("BOTTOM", f.resizeBottomRight, "TOP", 0, 0)

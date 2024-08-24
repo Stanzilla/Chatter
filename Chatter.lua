@@ -146,9 +146,6 @@ function Chatter:OnInitialize()
 		tinsert(moduleNames, v.name)
 	end
 	table.sort(moduleNames)
-	for _, name in ipairs(moduleNames) do
-		ACD3:AddToBlizOptions("ChatterModules", name, "Chatter", moduleList[name])
-	end
 
 	self:RegisterChatCommand("chatter", "OpenConfig")
 
@@ -256,7 +253,6 @@ function Chatter:OnEnable()
 
 	if not options.args.Profiles then
         options.args.Profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
-		self.lastConfig = ACD3:AddToBlizOptions("Chatter", L["Profiles"], "Chatter", "Profiles")
 	end
 end
 

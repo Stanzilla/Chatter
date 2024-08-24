@@ -7,7 +7,6 @@ mod.modName = L["Chat Font"]
 mod.toggleLabel = L["Chat Font"]
 
 local Media = LibStub("LibSharedMedia-3.0")
-local pairs = _G.pairs
 local player_entered_world = false
 
 local defaults = {
@@ -28,7 +27,7 @@ local options = {
 		get = function() return mod.db.profile.font end,
 		set = function(info, v)
 			mod.db.profile.font = v
-			mod:SetFont(nil, v)
+			mod:SetFont(nil, v, nil)
 		end
 	},
 	fontsize = {
@@ -93,7 +92,7 @@ function mod:OnInitialize()
 					get = function() return mod.db.profile.frames["FRAME_" .. i].font or mod.db.profile.font end,
 					set = function(info, v)
 						mod.db.profile.frames["FRAME_" .. i].font = v
-						mod:SetFont(cf, v)
+						mod:SetFont(cf, v, nil)
 					end
 				},
 				outline = {

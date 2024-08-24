@@ -381,7 +381,7 @@ function mod:OnDisable()
 		f:EnableMouse(true)
 		f.frame:Hide()
 		self:SetAttach("BOTTOM")
-		f:SetFont(Media:Fetch("font", defaults.profile.font), 14)
+		f:SetFont(Media:Fetch("font", defaults.profile.font), 14, "")
 	end
 	for index,name in ipairs(self.TempChatFrames) do
 		local f = _G[name.."EditBox"]
@@ -392,7 +392,7 @@ function mod:OnDisable()
 		f:EnableMouse(true)
 		f.frame:Hide()
 		self:SetAttach("BOTTOM")
-		f:SetFont(Media:Fetch("font", defaults.profile.font), 14)
+		f:SetFont(Media:Fetch("font", defaults.profile.font), 14, "")
 	end
 	if self:IsHooked("ChatEdit_UpdateHeader","SetBorderByChannel") then
 		self:Unhook("ChatEdit_UpdateHeader","SetBorderByChannel")
@@ -543,7 +543,7 @@ do
 				frame:SetScript("OnMouseUp", stopMoving)
 				frame:SetWidth(w)
 				frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
-				frame:SetMinResize(40, 1)
+				frame:SetResizeBounds(40, 1)
 
 				frame.lDrag:EnableMouse(true)
 				frame.rDrag:EnableMouse(true)
@@ -593,7 +593,7 @@ do
 				frame:SetScript("OnMouseUp", stopMoving)
 				frame:SetWidth(w)
 				frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
-				frame:SetMinResize(40, 1)
+				frame:SetResizeBounds(40, 1)
 				frame.lDrag:EnableMouse(true)
 				frame.rDrag:EnableMouse(true)
 				frame.lDrag:SetScript("OnMouseDown", startDragging)

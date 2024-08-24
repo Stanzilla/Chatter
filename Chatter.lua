@@ -139,14 +139,6 @@ function Chatter:OnInitialize()
 		options.args.modules.args[k:gsub(" ", "_")].args = t
 	end
 
-	local moduleList = {}
-	local moduleNames = {}
-	for k, v in pairs(options.args.modules.args) do
-		moduleList[v.name] = k
-		tinsert(moduleNames, v.name)
-	end
-	table.sort(moduleNames)
-
 	self:RegisterChatCommand("chatter", "OpenConfig")
 
 	self.db.RegisterCallback(self, "OnProfileChanged", "SetUpdateConfig")

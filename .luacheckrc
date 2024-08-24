@@ -95,6 +95,7 @@ globals = {
     "UnitPopupMenus",
 
 	-- framexml misc
+    "FCF_SetLocked",
     "C_Timer",
     "C_Spell",
     "C_FriendList",

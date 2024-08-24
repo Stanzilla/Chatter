@@ -7,10 +7,8 @@ mod.modName = L["Automatic Whisper Windows"]
 -- built in now, just toggle the Blizzard cvars
 function mod:OnEnable()
 	SetCVar("whisperMode", "popout")
-	InterfaceOptionsSocialPanelChatStyle_SetChatStyle("im")
 end
 
 function mod:OnDisable()
 	SetCVar("whisperMode", "inline")
-	InterfaceOptionsSocialPanelChatStyle_SetChatStyle("classic")
 end

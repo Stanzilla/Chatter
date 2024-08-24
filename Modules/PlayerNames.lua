@@ -192,19 +192,13 @@ function mod:OnEnable()
 
 	if self.db.profile.noRealNames then
 		storedName = {}
-        local _, n = BNGetNumFriends()
-		for i = 1, n do
-            if BNGetFriendInfo then -- pre 9.0
-                local _, _, _, _, toon, id = BNGetFriendInfo(i)
-                storedName[id] = toon
-            else
-                local friendInfo = C_BattleNet.GetFriendAccountInfo(i)
-                if friendInfo and friendInfo.gameAccountInfo then
-                    storedName[friendInfo.gameAccountInfo.gameAccountID] = friendInfo.gameAccountInfo.characterName
-                end
-            end
-        end
-    end
+		local _, n = BNGetNumFriends()
+		for i=1, n do
+			local account = C_BattleNet.GetFriendAccountInfo(i)
+			local gameAccount = account.gameAccountInfo
+			storedName[gameAccount.gameAccountID] = gameAccount.characterName
+		end
+	end
 
 	self:TogglePlayerColors(self.db.profile.blizzardNameColoring)
 end
@@ -349,15 +343,9 @@ end
 --]]
 local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 	local charName, localizedClass, _
-	if BNGetGameAccountInfo then -- pre 9.0
-		_, charName, _, _, _, _, _, localizedClass = BNGetGameAccountInfo(id)
-	else
-		local accountTable = C_BattleNet.GetGameAccountInfoByID(id)
-        if accountTable then
-            charName = accountTable.gameAccountInfo.characterName
-            localizedClass = accountTable.gameAccountInfo.className
-        end
-	end
+    local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(id)
+    charName = gameAccountInfo.characterName
+    localizedClass = gameAccountInfo.className
 	if charName ~= "" then
 		if storedName then storedName[id] = charName end --Store name for logoff events, if enabled
 		--Replace real name with charname if enabled

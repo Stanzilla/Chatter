@@ -1,17 +1,6 @@
 <Ui>
 	<Script file="ChatFrameBorders.lua" />
-	<Frame name="ChatFrameBorderTemplate" virtual="true" enableMouse="false">
-		<Backdrop bgFile="Interface\\ChatFrame\\ChatFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="16"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="16"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
-			</BackgroundInsets>
-		</Backdrop>
+	<Frame name="ChatFrameBorderTemplate" virtual="true" enableMouse="false" inherits="BackdropTemplate">
 		<Anchors>
 			<Anchor point="TOPLEFT" relativePoint="TOPLEFT">
 				<Offset>
@@ -34,5 +23,18 @@
 				</Offset>
 			</Anchor>
 		</Anchors>
+		<Scripts>
+			<OnLoad inherit="prepend">
+				self:SetBackdrop( {
+					bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+					edgeFile = "Interface\Tooltips\UI-Tooltip-Border",
+					tile= "true",
+					tileEdge = "true",
+					tileSize = 16,
+					edgeSize = 16,
+					insets = { left = 5, right = 5, top = 5, bottom = 5 }
+				})
+			</OnLoad>
+		</Scripts>						
 	</Frame>
 </Ui>

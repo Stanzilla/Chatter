@@ -344,9 +344,9 @@ end
 local function changeBNetName(misc, id, moreMisc, fakeName, tag, colon)
 	local charName, localizedClass, _
     local gameAccountInfo = C_BattleNet.GetGameAccountInfoByID(id)
-    charName = gameAccountInfo.characterName
-    localizedClass = gameAccountInfo.className
-	if charName ~= "" then
+    charName = gameAccountInfo and gameAccountInfo.characterName or ""
+    localizedClass = gameAccountInfo and gameAccountInfo.className or ""
+	if charName and charName ~= "" then
 		if storedName then storedName[id] = charName end --Store name for logoff events, if enabled
 		--Replace real name with charname if enabled
 		fakeName = mod.db.profile.noRealNames and charName or fakeName
